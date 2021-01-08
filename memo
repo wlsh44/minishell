@@ -1,0 +1,4 @@
+export aa=\"a\" -> aa="a"
+
+
+echo aa\aa -> aaaa
