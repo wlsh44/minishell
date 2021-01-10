@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int main() {
+int main(int argc, char *argv[], char *envp[]) {
 	t_minishell ms;
 
 	// for (int i = 0; i < 20; i++)
@@ -23,24 +23,14 @@ int main() {
 	ms.cmd->head->next = ms.cmd->tail;
 	ms.cmd->tail->prev = ms.cmd->head;
 	ms.cmd->tail->next = NULL;
+	ms.env = malloc(sizeof(t_lstenv));
+	ms.env->head = malloc(sizeof(t_env_node));
 	char *test;
 
-	//test = "cd";
-	//printf("%s\n", test);
-	// t_node node1 = {"asdf"};
-	// t_node node2 = {"qwer"};
-	// push_back(ms.cmd, &node1);
-	// push_back(ms.cmd, &node2);
-	//show(ms.cmd);
-	// parsing(ms.cmd, &line);
-	// parsing(ms.cmd, &l2);
-	// parsing(ms.cmd, &l3);
-	// parsing(ms.cmd, &l4);
-	// parsing(ms.cmd, &l5);
-	// parsing(ms.cmd, &l6);
-	// parsing(ms.cmd, &l7);
-	 char buf[1000];
 
+	char buf[1000];
+
+	init_env(ms, envp);
 	while (1) {
 		for (int i = 0; i < 1000; i++)
 			buf[i] = 0;

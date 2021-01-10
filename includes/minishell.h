@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include "structs.h"
 #include "parsing.h"
+#include "errors.h"
+#include "utils.h"
 
 #define SYSTAX_ERROR -6
 #define WRONG_CMD -5
