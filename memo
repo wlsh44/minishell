@@ -2,3 +2,5 @@ export aa=\"a\" -> aa="a"
 
 
 echo aa\aa -> aaaa
+
+bash에서 테스트하기
