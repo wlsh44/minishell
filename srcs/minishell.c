@@ -35,7 +35,7 @@ int main(int argc, char *argv[], char *envp[]) {
 
 	char buf[1000];
 
-	init_env(ms, envp);
+	init_env(&ms, envp);
 	while (1) {
 		for (int i = 0; i < 1000; i++)
 			buf[i] = 0;

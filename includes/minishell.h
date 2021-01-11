@@ -8,6 +8,9 @@
 #include "parsing.h"
 #include "errors.h"
 #include "utils.h"
+#include "get_next_line.h"
+#include "libft.h"
+#include "env.h"
 
 #define SYSTAX_ERROR -6
 #define WRONG_CMD -5

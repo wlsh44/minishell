@@ -2,55 +2,41 @@ NAME = minishell
 
 CC = gcc
 
-INC = ./includes/minishell \
-	./includes/structs \
-	./includes/parsing
+INC = -I ./includes/ \
+		-I ./libs/libft \
 
-CFLAGS = -Wall -Werror -Wextra
+LIBS = -L./libs/libft -lft
 
-SRCS = parsing.c	\
-		minishell.c \
-		errors.c 	\
-		utils.c 	\
+CFLAGS = $(INC) #-Wall -Werror -Wextra
+
+SRC =	minishell.c \
+		env.c\
+ 		parsing/parsing.c	\
+		error/errors.c 	\
+		utils/lstcmd.c 	\
+		utils/get_next_line.c \
+		execute/execute.c
 		
 DIR_SRCS = ./srcs/
-HEADER = ./includes/
 
-#SRCS = $(addprefix $(SRC_DIR), $(SRC))
+SRCS = $(addprefix $(DIR_SRCS), $(SRC))
 
-OBJS 		=	$(SRCS:%.c=$(DIR_OBJS)%.o)
-
+OBJS = $(SRCS:.c=.o)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) -I $(HEADER) $(OBJS) -o $(NAME)
-
-
-$(OBJS):		| $(DIR_OBJS)
-
-#OBJS = $(SRCS:.c=.o)
-
-$(DIR_OBJS)%.o: $(DIR_SRCS)%.c
-				@$(CC) $(FLAGS) -I $(HEADER) -c $< -o $@
-
-
-# $(DIR_OBJS):
-# 				@mkdir $(DIR_OBJS)
-# 				@mkdir $(DIR_OBJS)$(DIR_COMMANDS)
-# 				@mkdir $(DIR_OBJS)$(DIR_CMDS_RUN)
-# 				@mkdir $(DIR_OBJS)$(DIR_ENV_V)
-# 				@mkdir $(DIR_OBJS)$(DIR_ERRORS)
-# 				@mkdir $(DIR_OBJS)$(DIR_PARSING)
-# 				@mkdir $(DIR_OBJS)$(DIR_STYLE)
-# 				@mkdir $(DIR_OBJS)$(DIR_UTILS)
+	$(MAKE) -C libs/libft
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIBS)
 
 RM			=	rm -rf
 
 all: $(NAME)
 
 clean:
+	$(MAKE) clean -C libs/libft
 	$(RM) $(OBJS)
 
 fclean: clean
+	$(MAKE) fclean -C libs/libft
 	$(RM) $(NAME)
 
 re: fclean all

@@ -2,3 +2,4 @@
 a.out
 *.dSYM
 test.c
+.DS_Store
