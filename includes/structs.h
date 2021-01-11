@@ -5,10 +5,12 @@ typedef struct s_env_node {
 	char *name;
 	char *val;
 	struct s_env_node *next;
+	struct s_env_node *prev;
 } t_env_node;
 
 typedef struct {
 	t_env_node *head;
+	t_env_node *tail;
 } t_lstenv;
 
 typedef struct s_node {

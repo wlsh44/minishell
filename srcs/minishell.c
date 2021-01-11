@@ -25,6 +25,11 @@ int main(int argc, char *argv[], char *envp[]) {
 	ms.cmd->tail->next = NULL;
 	ms.env = malloc(sizeof(t_lstenv));
 	ms.env->head = malloc(sizeof(t_env_node));
+	ms.env->tail = malloc(sizeof(t_env_node));
+	ms.env->head->prev = NULL;
+	ms.env->head->next = ms.env->tail;
+	ms.env->tail->prev = ms.env->head;
+	ms.env->tail->next = NULL;
 	char *test;
 
 

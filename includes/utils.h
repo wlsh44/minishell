@@ -20,6 +20,8 @@ int		ft_isalpha(char c);
 int		ft_isseparator(char c);
 int		ft_isquote(char c);
 int		ft_isdigit(char c);
+char		**ft_split(char const *s, char c);
+char	*ft_strchr(const char *str, int c);
 
 
 #endif
