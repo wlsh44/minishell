@@ -1,5 +1,20 @@
 #include "minishell.h"
 
+char *get_env_value(t_lstenv *env, char *name) {
+	t_env_node *cur;
+
+	cur = env->head->next;
+	while (cur != env->tail) {
+		if (ft_strcmp(cur->name, name) == 0) {
+			return (cur->val);
+		}
+		cur = cur->next;
+	}
+	return (NULL);
+}
+
+
+
 void push_back_env(t_lstenv *env, char *name, char *val) {
 	t_env_node *node;
 
