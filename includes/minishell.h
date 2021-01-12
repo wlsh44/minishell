@@ -11,6 +11,8 @@
 #include "get_next_line.h"
 #include "libft.h"
 #include "env.h"
+#include "builtins.h"
+#include <limits.h>
 
 #define SYSTAX_ERROR -6
 #define WRONG_CMD -5
@@ -31,6 +33,10 @@
 #define TYPE_DOUBLE_REDIRECT 10
 #define TYPE_EXIT 11
 #define TYPE_SEMICOLON 12
+
+# ifndef PATH_MAX
+#  define PATH_MAX 1024
+#endif
 
 
 #endif

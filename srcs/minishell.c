@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include <stdio.h>
 
 int main(int argc, char *argv[], char *envp[]) {
 	t_minishell ms;
@@ -45,7 +46,11 @@ int main(int argc, char *argv[], char *envp[]) {
 		if ((ret = parsing(&ms)) < 0)
 			cmd_error(ret);
 		else
+		{
 			show(ms.cmd);
+			if (!execute(&ms))
+				return (0);
+		}
 		clear(ms.cmd);
 	}
 // //	ms.cmd_line = l2;
