@@ -302,10 +302,11 @@ int parsing_unset(t_lstcmd *cmd, char **line) {
 			(*line)++;
 	if ((arg_num = get_arg_num(*line)) == 0)
 		return (NOT_ENOUGH_ARG);
+	arg = malloc(sizeof(char));
 	while (arg_num--) {
 		size = get_arg_size(*line);
-		arg = malloc(sizeof(char) * (size + 1));
-		if ((ret = get_arg_export_unset(line, arg)) < 0) {
+		tmp = malloc(sizeof(char) * (size + 1));
+		if ((ret = get_arg_export_unset(line, tmp)) < 0) {
 			free(arg);
 			return (ret);
 		}
@@ -437,7 +438,7 @@ int parsing(t_minishell *ms) {
 				if ((ret = parsing_redirect(ms->cmd)) < 0)
 					break;
 			} else {
-				ret = SYSTAX_ERROR;
+				ret = SYNTAX_ERROR;
 				break;
 			}
 		} else if (type == TYPE_DOUBLE_REDIRECT && (!**line || ft_isspace((**line)))) {
@@ -445,7 +446,7 @@ int parsing(t_minishell *ms) {
 				if ((ret = parsing_double_redirect(ms->cmd)) < 0)
 					break;
 			} else {
-				ret = SYSTAX_ERROR;
+				ret = SYNTAX_ERROR;
 				break;
 			}
 		} else if (type == TYPE_PIPE && (!**line || ft_isspace((**line)))) {
@@ -453,14 +454,14 @@ int parsing(t_minishell *ms) {
 				if ((ret = parsing_pipe(ms->cmd)) < 0)
 					break;
 			} else {
-				ret = SYSTAX_ERROR;
+				ret = SYNTAX_ERROR;
 				break;
 			}
 		} else if (type == TYPE_SEMICOLON && (!**line || ft_isspace((**line)))) {
 			if (**line && !ft_isseparator(**line)) {
 				(*line)++;
 			} else {
-				ret = SYSTAX_ERROR;
+				ret = SYNTAX_ERROR;
 				break;
 			}
 		}

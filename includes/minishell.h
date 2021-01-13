@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <limits.h>
 #include "structs.h"
 #include "parsing.h"
 #include "errors.h"
@@ -11,8 +12,11 @@
 #include "get_next_line.h"
 #include "libft.h"
 #include "env.h"
+#include "execute.h"
 
-#define SYSTAX_ERROR -6
+#define NOT_VAILD_IDENTIFIER -8
+#define NO_DIRECTORY -7
+#define SYNTAX_ERROR -6
 #define WRONG_CMD -5
 #define NOT_VAILD_ARG -4
 #define WRONG_QUOTE -3

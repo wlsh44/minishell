@@ -3,3 +3,6 @@ a.out
 *.dSYM
 test.c
 .DS_Store
+en.subject.pdf
+minishell
+libft.a

@@ -45,7 +45,11 @@ int main(int argc, char *argv[], char *envp[]) {
 		if ((ret = parsing(&ms)) < 0)
 			cmd_error(ret);
 		else
+		{
 			show(ms.cmd);
+			if(!execute(&ms))
+				execute_error(ret);
+		}
 		clear(ms.cmd);
 	}
 // //	ms.cmd_line = l2;
