@@ -1,61 +1,62 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/15 20:10:02 by schang            #+#    #+#             */
+/*   Updated: 2021/01/15 20:21:10 by schang           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static void	handle_line(char **str, char **buffer)
+static int	return_line(char **line, char **str_fd, char *nl)
 {
-	char	*temp;
+	char	*tmp;
 
-	if (*str == NULL)
-		temp = ft_strdup(*buffer);
-	else
-		temp = ft_strjoin(*str, *buffer);
-	if (*str != NULL)
-		free(*str);
-	*str = temp;
-}
-
-static int	get_line(char **save, char **line, char *end_line)
-{
-	char	*temp;
-
-	if (end_line != NULL)
+	if (nl)
 	{
-		temp = *save;
-		*line = ft_substr(*save, 0, end_line - *save);
-		*save = ft_strdup(end_line + 1);
-		free(temp);
+		*line = ft_strndup(*str_fd, (nl - *str_fd));
+		tmp = ft_strndup(nl + 1, ft_strlen(nl + 1));
+		free(*str_fd);
+		*str_fd = tmp;
 		return (1);
 	}
-	else if (*save != NULL)
+	if (*str_fd)
 	{
-		*line = *save;
-		*save = NULL;
+		*line = *str_fd;
+		*str_fd = NULL;
 	}
+	else
+		*line = ft_strndup("", 1);
 	return (0);
 }
 
 int			get_next_line(int fd, char **line)
 {
-	static char	*save[FD_MAX];
-	char		*buffer;
-	char		*end_line;
-	int			size;
+	static char	*str[1024];
+	char		*nl;
+	char		*buf;
+	char		*tmp;
+	int			ret;
 
-	size = 1;
-	if (fd < 0 || !line || BUFFER_SIZE <= 0)
+	if (fd < 0 || line == NULL || BUFFER_SIZE <= 0)
 		return (-1);
-	if (!(buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1))))
-		return (-1);
-	while (!(end_line = ft_strchr(save[fd], '\n')) && size != 0)
+	buf = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	while (!(nl = ft_strchr(str[fd], '\n'))
+		&& (ret = read(fd, buf, BUFFER_SIZE)) > 0)
 	{
-		if ((size = read(fd, buffer, BUFFER_SIZE)) == -1)
-		{
-			free(buffer);
-			return (-1);
-		}
-		buffer[size] = '\0';
-		handle_line(&save[fd], &buffer);
+		buf[ret] = 0;
+		tmp = str[fd] == NULL ? ft_strndup(buf, ret) :
+			ft_strjoin(str[fd], buf);
+		if (str[fd])
+			free(str[fd]);
+		str[fd] = tmp;
 	}
-	free(buffer);
-	return (get_line(&save[fd], line, end_line));
+	free(buf);
+	if (ret < 0)
+		return (-1);
+	return (return_line(line, &str[fd], nl));
 }

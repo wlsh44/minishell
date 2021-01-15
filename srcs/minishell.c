@@ -34,14 +34,12 @@ int main(int argc, char *argv[], char *envp[]) {
 	char *test;
 
 
-	char buf[1000];
+	char	*line;
 
 	init_env(&ms, envp);
 	while (1) {
-		for (int i = 0; i < 1000; i++)
-			buf[i] = 0;
-		read(STDIN_FILENO, buf, 1000);
-		ms.cmd_line = buf;
+		get_next_line(0, &line);
+		ms.cmd_line = line;
 		int ret;
 		if ((ret = parsing(&ms)) < 0)
 			cmd_error(ret);
@@ -52,6 +50,8 @@ int main(int argc, char *argv[], char *envp[]) {
 				return (0);
 		}
 		clear(ms.cmd);
+		// free(ms.cmd_line);
+		// ms.cmd_line = NULL;
 	}
 // //	ms.cmd_line = l2;
 // 	int ret;

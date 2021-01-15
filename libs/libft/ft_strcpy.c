@@ -1,29 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/04/27 22:07:43 by jinhkim           #+#    #+#             */
-/*   Updated: 2021/01/15 20:20:49 by schang           ###   ########.fr       */
+/*   Created: 2021/01/15 20:11:01 by schang            #+#    #+#             */
+/*   Updated: 2021/01/15 20:13:04 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strchr(const char *s, int c)
+size_t	ft_strcpy(char *dest, const char *src, size_t n)
 {
-	unsigned int	i;
+	size_t i;
 
+	if (dest == 0 && src == 0)
+		return (0);
 	i = 0;
-	while (s && *(s + i))
+	while (i < n)
 	{
-		if (*(s + i) == (unsigned char)c)
-			return ((char *)s + i);
+		dest[i] = src[i];
 		i++;
 	}
-	if (c == '\0')
-		return ((char *)s + i);
-	return (0);
+	return (1);
 }
