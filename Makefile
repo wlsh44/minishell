@@ -16,9 +16,13 @@ SRC =	minishell.c \
 		utils/lstcmd.c 	\
 		utils/get_next_line.c \
 		execute/execute.c \
-		builtins/exit.c \
-		builtins/echo.c \
-		builtins/pwd.c \
+		execute/builtins/exit.c \
+		execute/builtins/echo.c \
+		execute/builtins/pwd.c \
+		execute/builtins/cd.c \
+		execute/builtins/env.c \
+		execute/builtins/unset.c \
+		execute/builtins/export.c \
 
 DIR_SRCS = ./srcs/
 

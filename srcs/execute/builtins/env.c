@@ -1,23 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.h                                         :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/12 21:39:53 by schang            #+#    #+#             */
-/*   Updated: 2021/01/12 22:12:57 by schang           ###   ########.fr       */
+/*   Created: 2021/01/15 21:05:34 by schang            #+#    #+#             */
+/*   Updated: 2021/01/15 21:10:20 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTINS_H
-# define BUILTINS_H
+#include "minishell.h"
 
-# include "minishell.h"
+int	ft_env(t_minishell *ms) {
+	t_env_node *cur;
 
-int		execute(t_minishell *ms);
-void	ft_exit(t_minishell *ms);
-int		ft_echo(t_node *node);
-int		ft_pwd(t_node *node);
-
-#endif
+	cur = ms->env->head->next;
+	while (cur != ms->env->tail) {
+		write(STDOUT_FILENO, cur->name, ft_strlen(cur->name));
+		write(STDOUT_FILENO, "=", 1);
+		if (cur->val) {
+			write(STDOUT_FILENO, cur->val, ft_strlen(cur->val));
+		}
+		write(STDOUT_FILENO, "\n", 1);
+		cur = cur->next;
+	}
+	return (0);
+}

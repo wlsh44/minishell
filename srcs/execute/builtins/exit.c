@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 19:44:07 by schang            #+#    #+#             */
-/*   Updated: 2021/01/15 20:26:59 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/15 21:16:08 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	free_lstenv(t_lstenv *env)
 	env->tail->prev = env->head;
 }
 
-void	ft_exit(t_minishell *ms)
+int	ft_exit(t_minishell *ms)
 {
 	free_lstcmd(ms->cmd);
 	free_lstenv(ms->env);
@@ -60,5 +60,5 @@ void	ft_exit(t_minishell *ms)
 	ms->env = NULL;
 
 	write(1, "exit\n", 5);
-	exit(0);
+	return (0);
 }
