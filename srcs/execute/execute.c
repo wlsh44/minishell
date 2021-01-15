@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include <stdio.h>
 
 int execute_cd(t_minishell *ms, t_node *cur) {
 	if (ft_strcmp(cur->arg, "") == 0) {
@@ -114,6 +115,22 @@ int execute_unset(t_minishell *ms, t_node *cur) {
 	return (0);
 }
 
+int	execute_exit(t_minishell *ms)
+{
+	ft_exit(ms);
+	return (0);
+}
+
+int	execute_echo(t_node *node)
+{
+	return (ft_echo(node));
+}
+
+int	execute_pwd(t_node *node)
+{
+	return (ft_pwd(node));
+}
+
 int execute(t_minishell *ms) {
 	t_node *cur;
 	int ret;
@@ -128,7 +145,13 @@ int execute(t_minishell *ms) {
 			ret = execute_export(ms, cur);
 		else if (cur->type == TYPE_UNSET)
 			ret = execute_unset(ms, cur);
+		else if (cur->type == TYPE_EXIT)
+			ret = execute_exit(ms);
+		else if (cur->type == TYPE_ECHO || cur->type == TYPE_ECHO_N)
+			ret = execute_echo(cur);
+		else if (cur->type == TYPE_PWD)
+			ret = execute_pwd(cur);
 		cur = cur->next;
 	}
-	return (ret);
+	return (0);
 }

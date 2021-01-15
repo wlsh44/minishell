@@ -1,29 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/04/27 22:07:43 by jinhkim           #+#    #+#             */
-/*   Updated: 2021/01/15 20:20:49 by schang           ###   ########.fr       */
+/*   Created: 2021/01/15 20:11:29 by schang            #+#    #+#             */
+/*   Updated: 2021/01/15 20:13:00 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strchr(const char *s, int c)
+char	*ft_strndup(const char *s, size_t size)
 {
-	unsigned int	i;
+	char	*str;
 
-	i = 0;
-	while (s && *(s + i))
-	{
-		if (*(s + i) == (unsigned char)c)
-			return ((char *)s + i);
-		i++;
-	}
-	if (c == '\0')
-		return ((char *)s + i);
-	return (0);
+	if (!(str = malloc(sizeof(char) * (size + 1))))
+		return (NULL);
+	ft_strcpy(str, s, size);
+	str[size] = 0;
+	return (str);
 }

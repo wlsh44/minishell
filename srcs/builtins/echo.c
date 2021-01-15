@@ -1,29 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/04/27 22:07:43 by jinhkim           #+#    #+#             */
-/*   Updated: 2021/01/15 20:20:49 by schang           ###   ########.fr       */
+/*   Created: 2021/01/12 21:55:13 by schang            #+#    #+#             */
+/*   Updated: 2021/01/12 22:12:23 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-char	*ft_strchr(const char *s, int c)
+int	ft_echo(t_node *node)
 {
-	unsigned int	i;
+	if (!node->arg)
+		return (0);
 
-	i = 0;
-	while (s && *(s + i))
-	{
-		if (*(s + i) == (unsigned char)c)
-			return ((char *)s + i);
-		i++;
-	}
-	if (c == '\0')
-		return ((char *)s + i);
-	return (0);
+	ft_putstr_fd(node->arg, 1);
+	if (node->type == TYPE_ECHO)
+		write(1, "\n", 1);
+	return (1);
 }

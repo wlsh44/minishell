@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jinhkim <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 00:20:22 by jinhkim           #+#    #+#             */
-/*   Updated: 2020/04/29 00:34:09 by jinhkim          ###   ########.fr       */
+/*   Updated: 2021/01/15 20:13:54 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ typedef struct		s_list
 }					t_list;
 
 
-int		ft_strcmp(const char *s1, const char *s2);
-int		ft_isspace(char c);
-int		ft_isseparator(char c);
-int		ft_isquote(char c);
+int					ft_strcmp(const char *s1, const char *s2);
+int					ft_isspace(char c);
+int					ft_isseparator(char c);
+int					ft_isquote(char c);
 
 void				*ft_bzero(void *ptr, size_t size);
 void				*ft_memccpy(void *dst, const void *src, int c, size_t size);
@@ -74,5 +74,7 @@ void				ft_lstclear(t_list **lst, void (*del)(void *));
 void				ft_lstiter(t_list *lst, void (*f)(void *));
 t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
 					void (*del)(void *));
+size_t				ft_strcpy(char *dest, const char *src, size_t n);
+char				*ft_strndup(const char *s, size_t size);
 
 #endif

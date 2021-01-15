@@ -24,7 +24,7 @@ int get_arg_num(char *line) {
 
 int get_arg_size(char *line) {
 	int size;
-	
+
 	size = 0;
 	while (ft_isspace(*line))
 		line++;
@@ -37,7 +37,7 @@ int get_arg_size(char *line) {
 
 int get_arg_char(char **line, char *arg) {
 	char quote;
-	
+
 	quote = 0;
 	while (ft_isspace(**line))
 		(*line)++;
@@ -57,7 +57,7 @@ int get_arg_char(char **line, char *arg) {
 					(*line)++;
 				*(arg++) = *(*line)++;
 			}
-		} else 
+		} else
 			*(arg++) = *(*line)++;
 	}
 	while (ft_isspace(**line))
@@ -107,7 +107,7 @@ int check_echo_option(char **line) {
 
 int get_arg_char_echo(char **line, char *arg) {
 	char quote;
-	
+
 	quote = 0;
 	while (ft_isspace(**line))
 		(*line)++;
@@ -127,7 +127,7 @@ int get_arg_char_echo(char **line, char *arg) {
 					(*line)++;
 				*(arg++) = *(*line)++;
 			}
-		} else 
+		} else
 			*(arg++) = *(*line)++;
 	}
 	while (ft_isspace(*(arg - 1)))
@@ -140,7 +140,7 @@ int get_arg_char_echo(char **line, char *arg) {
 
 int get_arg_size_echo(char *line) {
 	int size;
-	
+
 	size = 0;
 	while (ft_isspace(*line))
 		line++;
@@ -223,11 +223,11 @@ int get_arg_export_unset(char **line, char *arg) {
 				} else if (**line == '\\' && (ft_isquote((*line[1])) || (*line)[1] == '\\')) {
 					(*line)++;
 					*(arg++) = *(*line)++;
-				} else 
+				} else
 					return (NOT_VAILD_ARG);
 			}
 		}
-		else 
+		else
 			return (NOT_VAILD_ARG);
 	}
 	if (**line == '=' && !quote) {
@@ -248,7 +248,7 @@ int get_arg_export_unset(char **line, char *arg) {
 						(*line)++;
 					*(arg++) = *(*line)++;
 				}
-			} else 
+			} else
 				*(arg++) = *(*line)++;
 		}
 	}
@@ -416,6 +416,7 @@ int parsing(t_minishell *ms) {
 		else if (type == TYPE_ECHO && (!**line || ft_isspace((**line)) || ft_isseparator((**line)))) {
 			if ((ret = parsing_echo(ms->cmd, line)) < 0)
 				break;
+			//printf(">>>>>>>> %s|\n", *line);
 		} else if (type == TYPE_EXPORT && (!**line || ft_isspace((**line)) || ft_isseparator((**line)))) {
 			if ((ret = parsing_export(ms->cmd, line)) < 0)
 				break;
@@ -441,7 +442,7 @@ int parsing(t_minishell *ms) {
 				ret = SYNTAX_ERROR;
 				break;
 			}
-		} else if (type == TYPE_DOUBLE_REDIRECT && (!**line || ft_isspace((**line)))) {
+		} else if (type == TYPE_DOUBLE_REDIRECT && (**line || ft_isspace((**line)))) {
 			if (**line && !ft_isseparator(**line)) {
 				if ((ret = parsing_double_redirect(ms->cmd)) < 0)
 					break;
@@ -449,7 +450,7 @@ int parsing(t_minishell *ms) {
 				ret = SYNTAX_ERROR;
 				break;
 			}
-		} else if (type == TYPE_PIPE && (!**line || ft_isspace((**line)))) {
+		} else if (type == TYPE_PIPE && (**line || ft_isspace((**line)))) {
 			if (**line && !ft_isseparator(**line)) {
 				if ((ret = parsing_pipe(ms->cmd)) < 0)
 					break;
@@ -457,7 +458,7 @@ int parsing(t_minishell *ms) {
 				ret = SYNTAX_ERROR;
 				break;
 			}
-		} else if (type == TYPE_SEMICOLON && (!**line || ft_isspace((**line)))) {
+		} else if (type == TYPE_SEMICOLON && (**line || ft_isspace((**line)))) {
 			if (**line && !ft_isseparator(**line)) {
 				(*line)++;
 			} else {

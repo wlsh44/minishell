@@ -1,29 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/04/27 22:07:43 by jinhkim           #+#    #+#             */
-/*   Updated: 2021/01/15 20:20:49 by schang           ###   ########.fr       */
+/*   Created: 2021/01/12 22:06:03 by schang            #+#    #+#             */
+/*   Updated: 2021/01/12 22:11:18 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-char	*ft_strchr(const char *s, int c)
+int ft_pwd(t_node *node)
 {
-	unsigned int	i;
+	char	path[PATH_MAX];
 
-	i = 0;
-	while (s && *(s + i))
+	if (getcwd(path, PATH_MAX))
 	{
-		if (*(s + i) == (unsigned char)c)
-			return ((char *)s + i);
-		i++;
+		ft_putendl_fd(path, 1);
+		return (1);
 	}
-	if (c == '\0')
-		return ((char *)s + i);
-	return (0);
+	else
+		return (0);
 }

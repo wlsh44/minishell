@@ -15,8 +15,11 @@ SRC =	minishell.c \
 		error/errors.c 	\
 		utils/lstcmd.c 	\
 		utils/get_next_line.c \
-		execute/execute.c
-		
+		execute/execute.c \
+		builtins/exit.c \
+		builtins/echo.c \
+		builtins/pwd.c \
+
 DIR_SRCS = ./srcs/
 
 SRCS = $(addprefix $(DIR_SRCS), $(SRC))

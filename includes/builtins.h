@@ -1,29 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/04/27 22:07:43 by jinhkim           #+#    #+#             */
-/*   Updated: 2021/01/15 20:20:49 by schang           ###   ########.fr       */
+/*   Created: 2021/01/12 21:39:53 by schang            #+#    #+#             */
+/*   Updated: 2021/01/12 22:12:57 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef BUILTINS_H
+# define BUILTINS_H
 
-char	*ft_strchr(const char *s, int c)
-{
-	unsigned int	i;
+# include "minishell.h"
 
-	i = 0;
-	while (s && *(s + i))
-	{
-		if (*(s + i) == (unsigned char)c)
-			return ((char *)s + i);
-		i++;
-	}
-	if (c == '\0')
-		return ((char *)s + i);
-	return (0);
-}
+int		execute(t_minishell *ms);
+void	ft_exit(t_minishell *ms);
+int		ft_echo(t_node *node);
+int		ft_pwd(t_node *node);
+
+#endif
