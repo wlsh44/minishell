@@ -8,7 +8,7 @@ char *parse_env_val(t_lstenv *env, char *arg) {
 		}
 		return (get_env_value(env, arg));
 	} else {
-		return (ft_strdup(arg));
+		return (arg);
 	}
 }
 

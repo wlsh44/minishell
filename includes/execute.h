@@ -5,7 +5,7 @@
 
 int	execute(t_minishell *ms);
 int	ft_exit(t_minishell *ms);
-int	ft_echo(t_node *node);
+int	ft_echo(t_minishell *ms, t_node *node);
 int	ft_pwd(t_node *node);
 int	ft_cd(t_minishell *ms, t_node *cur);
 int	ft_env(t_minishell *ms);
