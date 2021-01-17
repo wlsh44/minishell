@@ -5,7 +5,7 @@ int get_arg_export_unset(char **line, char *arg) {
 
 	quote = 0;
 	while (**line && !ft_isseparator(**line) && !ft_isspace(**line) && **line != '=') {
-		if (ft_isalpha(**line) || ft_isdigit(**line) || **line == '_')
+		if (ft_isalpha(**line) || ft_isdigit(**line) || **line == '_' || **line == '$')
 			*(arg++) = *(*line)++;
 		else if (**line == '\\') {
 			(*line)++;
