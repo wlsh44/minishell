@@ -11,5 +11,6 @@ int	ft_cd(t_minishell *ms, t_node *cur);
 int	ft_env(t_minishell *ms);
 int	ft_export(t_minishell *ms, t_node *cur);
 int	ft_unset(t_minishell *ms, t_node *cur);
+int	ft_bin(t_minishell *ms, t_node *cur);
 
 #endif

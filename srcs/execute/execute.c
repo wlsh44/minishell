@@ -6,18 +6,22 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:12:02 by schang            #+#    #+#             */
-/*   Updated: 2021/01/15 21:42:15 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/19 14:14:43 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdio.h>
 
 int execute(t_minishell *ms) {
 	t_node *cur;
 	int ret;
 
+	ret = 1;
 	cur = ms->cmd->head->next;
 	while (cur != ms->cmd->tail && !(ret = 0)) {
+
+
 		if (cur->type == TYPE_CD)
 			ret = ft_cd(ms, cur);
 		else if (cur->type == TYPE_ENV)
@@ -32,6 +36,8 @@ int execute(t_minishell *ms) {
 			ret = ft_echo(ms, cur);
 		else if (cur->type == TYPE_PWD)
 			ret = ft_pwd(cur);
+		else if (cur->type == TYPE_NORMAL)
+			ret = ft_bin(ms, cur);
 		cur = cur->next;
 	}
 	return (0);

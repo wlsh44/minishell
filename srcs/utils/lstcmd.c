@@ -6,6 +6,21 @@ void push_back(t_lstcmd *cmd, int type, char *arg) {
 
 	node = malloc(sizeof(t_node));
 	node->type = type;
+	node->name = NULL;
+	node->arg = arg;
+	node->prev = cmd->tail->prev;
+	node->next = cmd->tail;
+	cmd->tail->prev->next = node;
+	cmd->tail->prev = node;
+}
+
+void	push_back_normal(t_lstcmd *cmd, int type, char *name, char *arg)
+{
+	t_node *node;
+
+	node = malloc(sizeof(t_node));
+	node->type = type;
+	node->name = name;
 	node->arg = arg;
 	node->prev = cmd->tail->prev;
 	node->next = cmd->tail;
@@ -43,7 +58,12 @@ void show(t_lstcmd *cmd) {
 	while (cur != cmd->tail) {
 		//printf("TYPE: %d\nARG: %s\n", cur->type, cur->arg);
 		write(1, "TYPE: ", 6);
-		write(1, ft_itoa(cur->type), 1);
+		write(1, ft_itoa(cur->type), 2);
+		if (cur->name)
+		{
+			write(1, "\nNAME: ", 8);
+			write(1, cur->name, ft_strlen(cur->name));
+		}
 		write(1, "\nARG: ", 6);
 		if (cur->arg)
 			write(1, cur->arg, ft_strlen(cur->arg));

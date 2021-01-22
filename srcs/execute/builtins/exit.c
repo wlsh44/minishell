@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 19:44:07 by schang            #+#    #+#             */
-/*   Updated: 2021/01/15 21:16:08 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/17 21:19:42 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,5 @@ int	ft_exit(t_minishell *ms)
 	ms->env = NULL;
 
 	write(1, "exit\n", 5);
-	return (0);
+	exit(0);
 }

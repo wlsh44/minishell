@@ -13,6 +13,10 @@
 #include "libft.h"
 #include "env.h"
 #include "execute.h"
+#include <sys/wait.h>
+#include <sys/stat.h>
+#include <signal.h>
+#include <errno.h>
 
 #define NOT_VAILD_IDENTIFIER -8
 #define NO_DIRECTORY -7
@@ -35,10 +39,12 @@
 #define TYPE_DOUBLE_REDIRECT 10
 #define TYPE_EXIT 11
 #define TYPE_SEMICOLON 12
+#define TYPE_NORMAL 13
 
 # ifndef PATH_MAX
 #  define PATH_MAX 1024
 #endif
 
+extern t_signal	g_signal;
 
 #endif

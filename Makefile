@@ -16,6 +16,7 @@ SRC =	minishell.c \
 		utils/lstcmd.c 	\
 		utils/get_next_line.c \
 		execute/execute.c \
+		execute/bin.c \
 		execute/builtins/exit.c \
 		execute/builtins/echo.c \
 		execute/builtins/pwd.c \

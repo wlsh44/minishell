@@ -6,9 +6,9 @@ char *parse_env_val(t_lstenv *env, char *arg) {
 		if (!*arg) {
 			return (NULL);
 		}
-		return (get_env_value(env, arg));
+		return (ft_strdup(get_env_value(env, arg)));
 	} else {
-		return (arg);
+		return (ft_strdup(arg));
 	}
 }
 

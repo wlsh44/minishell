@@ -205,7 +205,7 @@ int get_arg_export_unset(char **line, char *arg) {
 
 	quote = 0;
 	while (**line && !ft_isseparator(**line) && !ft_isspace(**line) && **line != '=') {
-		if (ft_isalpha(**line) || ft_isdigit(**line) || **line == '_')
+		if (ft_isalpha(**line) || ft_isdigit(**line) || **line == '_' || **line == '$')
 			*(arg++) = *(*line)++;
 		else if (**line == '\\') {
 			(*line)++;
@@ -271,6 +271,7 @@ int parsing_export(t_lstcmd *cmd, char **line) {
 			(*line)++;
 	arg_num = get_arg_num(*line);
 	arg = malloc(sizeof(char));
+	*arg = '\0';
 	while (arg_num--) {
 		size = get_arg_size(*line);
 		tmp = malloc(sizeof(char) * (size + 1));
@@ -328,6 +329,26 @@ int parsing_exit(t_lstcmd *cmd, char **line) {
 	return (0);
 }
 
+int	parsing_bin(t_lstcmd *cmd, char **line)
+{
+	int		i;
+	int		ret;
+	char	*str;
+	char	*arg;
+
+	i = 0;
+	while ((*line)[i] && !ft_isspace((*line)[i]))
+		i++;
+	str = ft_substr(*line, 0, i);
+	*line = *line + i;
+	while (ft_isspace(**line))
+		(*line)++;
+	if ((ret = get_arg_echo(line, &arg)) < 0)
+		return (ret);
+	push_back_normal(cmd, TYPE_NORMAL, str, arg);
+	return (0);
+}
+
 int parsing_cmd(char **line) {
 	char quote;
 	int type;
@@ -370,7 +391,8 @@ int parsing_cmd(char **line) {
 		type = TYPE_SEMICOLON;
 		(*line) += 1;
 	} else {
-		type = WRONG_CMD;
+		//type = WRONG_CMD;
+		type = TYPE_NORMAL;
 	}
 	if (quote) {
 		if (*(*line)++ != quote)
@@ -398,7 +420,6 @@ int parsing(t_minishell *ms) {
 	int ret;
 	int type;
 	char **line;
-
 	line = &ms->cmd_line;
 	while (**line && !(ret = 0)) {
 		while (ft_isspace(**line))
@@ -431,8 +452,9 @@ int parsing(t_minishell *ms) {
 			if ((ret = parsing_exit(ms->cmd, line)) < 0)
 				break;
 		} else if (!(type == TYPE_REDIRECT || type == TYPE_DOUBLE_REDIRECT || type == TYPE_PIPE || type == TYPE_SEMICOLON)) {
-			ret = WRONG_CMD;
-			break;
+			if ((ret = parsing_bin(ms->cmd, line)) < 0)
+				break;
+			//ret = WRONG_CMD;
 		}
 		if (type == TYPE_REDIRECT) {
 			if (**line && !ft_isseparator(**line)) {

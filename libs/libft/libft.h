@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 00:20:22 by jinhkim           #+#    #+#             */
-/*   Updated: 2021/01/15 20:13:54 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/22 19:44:58 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,5 +76,6 @@ t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
 					void (*del)(void *));
 size_t				ft_strcpy(char *dest, const char *src, size_t n);
 char				*ft_strndup(const char *s, size_t size);
+void				*ft_memdel(void *ptr);
 
 #endif

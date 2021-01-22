@@ -1,5 +1,17 @@
 #include "minishell.h"
 
+void	sighandler_int(int code)
+{
+	ft_putnbr_fd(code, STDOUT_FILENO);
+	ft_putstr_fd("\nm$ ", STDOUT_FILENO);
+}
+
+void	sighandler_quit(int code)
+{
+	ft_putnbr_fd(code, STDOUT_FILENO);
+	ft_putchar_fd('\n', STDOUT_FILENO);
+}
+
 int main(int argc, char *argv[], char *envp[]) {
 	t_minishell ms;
 
@@ -30,27 +42,49 @@ int main(int argc, char *argv[], char *envp[]) {
 	ms.env->head->next = ms.env->tail;
 	ms.env->tail->prev = ms.env->head;
 	ms.env->tail->next = NULL;
-	char *test;
 
-
+	char	*test;
 	char	*line;
+	int		ret;
 
 	init_env(&ms, envp);
+	ret = 0;
 	while (1) {
-		get_next_line(0, &line);
-		ms.cmd_line = line;
-		int ret;
-		if ((ret = parsing(&ms)) < 0)
-			cmd_error(ret);
+		ft_putstr_fd("m$ ", STDOUT_FILENO);
+
+		signal(SIGINT, &sighandler_int);
+		signal(SIGQUIT, &sighandler_quit);
+		ret = get_next_line(0, &line);
+		if (ret == -2)
+		{
+		}
+		else if (ret == 0)
+		{
+			ft_putstr_fd("exit\n", STDOUT_FILENO);
+			exit(0);
+		}
+		else if (ret < 0)
+		{
+			ret = 0;
+			continue;
+		}
 		else
 		{
-			show(ms.cmd);
-			if(!execute(&ms))
-				execute_error(ret);
+			ms.cmd_line = line;
+			ret = parsing(&ms);
+			if (ret < 0)
+				cmd_error(ret);
+			else
+			{
+				show(ms.cmd);
+				if(!execute(&ms))
+					execute_error(ret);
+			}
+			clear(ms.cmd);
 		}
-		clear(ms.cmd);
 		// free(ms.cmd_line);
 		// ms.cmd_line = NULL;
+
 	}
 // //	ms.cmd_line = l2;
 // 	int ret;

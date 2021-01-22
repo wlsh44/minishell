@@ -14,7 +14,7 @@ typedef struct {
 } t_lstenv;
 
 typedef struct s_node {
-	//char *name;
+	char *name;
 	char *arg;
 	int type;
 	struct s_node *next;
@@ -32,5 +32,11 @@ typedef struct {
 	char *cmd_line;
 	int err;
 } t_minishell;
+
+typedef struct	s_signal
+{
+	int	sig_int;
+	int	sig_quit;
+}				t_signal;
 
 #endif
