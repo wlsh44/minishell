@@ -41,13 +41,14 @@ void show(t_lstcmd *cmd) {
 
 	cur = cmd->head->next;
 	while (cur != cmd->tail) {
-		//printf("TYPE: %d\nARG: %s\n", cur->type, cur->arg);
-		write(1, "TYPE: ", 6);
-		write(1, ft_itoa(cur->type), 1);
-		write(1, "\nARG: ", 6);
-		if (cur->arg)
-			write(1, cur->arg, ft_strlen(cur->arg));
-		write(1, "\n==========\n", 12);
+		printf("TYPE: %d\nARG: |%s|\n", cur->type, cur->arg);
+		fflush(stdout);
+		// write(1, "TYPE: ", 6);
+		// write(1, ft_itoa(cur->type), 2);
+		// write(1, "\nARG: ", 6);
+		// if (cur->arg)
+		// 	write(1, cur->arg, ft_strlen(cur->arg));
+		write(1, "==========\n", 12);
 		cur = cur->next;
 	}
 }

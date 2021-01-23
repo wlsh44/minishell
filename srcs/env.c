@@ -1,12 +1,15 @@
 #include "minishell.h"
 
-char *parse_env_val(t_lstenv *env, char *arg) {
+char *parse_env_val(t_minishell *ms, char *arg) {
 	if (*arg == '$') {
 		arg++;
 		if (!*arg) {
 			return (NULL);
 		}
-		return (get_env_value(env, arg));
+		if (*arg == '?')
+			return (ft_itoa(ms->exit_status));
+		else
+			return (ft_strdup(get_env_value(ms->env, arg)));
 	} else {
 		return (ft_strdup(arg));
 	}
@@ -46,9 +49,19 @@ void delete_env(t_lstenv *env, char *name) {
 	}
 }
 
-void push_back_env(t_lstenv *env, char *name, char *val) {
+void update_env(t_lstenv *env, char *name, char *val) {
 	t_env_node *node;
+	t_env_node *cur;
 
+	cur = env->head->next;
+	while (cur != env->tail) {
+		if (ft_strcmp(cur->name, name) == 0) {
+			free(cur->val);
+			cur->val = val;
+			return ;
+		}
+		cur = cur->next;
+	}
 	node = malloc(sizeof(t_env_node));
 	node->name = name;
 	node->val = val;
@@ -73,7 +86,7 @@ void init_env(t_minishell *ms, char *envp[]) {
 			name = ft_strdup(*envp);
 			val = ft_strdup(ptr);
 		}
-		push_back_env(ms->env, name, val);
+		update_env(ms->env, name, val);
 		envp++;
 	}
 }

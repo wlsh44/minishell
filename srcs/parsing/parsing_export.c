@@ -4,6 +4,8 @@ int get_arg_export_unset(char **line, char *arg) {
 	char quote;
 
 	quote = 0;
+    printf("line is: %s\n", *line);
+    fflush(stdout);
 	while (**line && !ft_isseparator(**line) && !ft_isspace(**line) && **line != '=') {
 		if (ft_isalpha(**line) || ft_isdigit(**line) || **line == '_' || **line == '$')
 			*(arg++) = *(*line)++;
@@ -71,6 +73,7 @@ int parsing_export(t_lstcmd *cmd, char **line) {
 			(*line)++;
 	arg_num = get_arg_num(*line);
 	arg = malloc(sizeof(char));
+    *arg = '\0';
 	while (arg_num--) {
 		size = get_arg_size(*line);
 		tmp = malloc(sizeof(char) * (size + 1));
@@ -78,9 +81,11 @@ int parsing_export(t_lstcmd *cmd, char **line) {
 			free(tmp);
 			return (ret);
 		}
-		tmp2 = ft_strjoin(tmp, " ");
-		arg = ft_strjoin(arg, tmp2);
+        tmp2 = ft_strjoin(tmp, " ");
 		free(tmp);
+        tmp = arg;
+		arg = ft_strjoin(arg, tmp2);
+        free(tmp);
 		free(tmp2);
 		while (ft_isspace(**line))
 			(*line)++;

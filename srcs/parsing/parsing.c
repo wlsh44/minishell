@@ -33,7 +33,10 @@ int parsing_cmd(char **line) {
 		type = TYPE_DOUBLE_REDIRECT;
 		(*line) += 2;
 	} else if (!ft_strncmp(*line, ">", 1)) {
-		type = TYPE_REDIRECT;
+		type = TYPE_REDIRECT_OUTPUT;
+		(*line) += 1;
+	} else if (!ft_strncmp(*line, "<", 1)) {
+		type = TYPE_REDIRECT_INPUT;
 		(*line) += 1;
 	} else if (!ft_strncmp(*line, "|", 1)) {
 		type = TYPE_PIPE;
@@ -73,7 +76,6 @@ int parsing(t_minishell *ms) {
 		else if (type == TYPE_ECHO && (!**line || ft_isspace((**line)) || ft_isseparator((**line)))) {
 			if ((ret = parsing_echo(ms->cmd, line)) < 0)
 				break;
-			//printf(">>>>>>>> %s|\n", *line);
 		} else if (type == TYPE_EXPORT && (!**line || ft_isspace((**line)) || ft_isseparator((**line)))) {
 			if ((ret = parsing_export(ms->cmd, line)) < 0)
 				break;
@@ -87,13 +89,22 @@ int parsing(t_minishell *ms) {
 		} else if (type == TYPE_EXIT && (!**line || ft_isspace((**line)) || ft_isseparator((**line)))) {
 			if ((ret = parsing_exit(ms->cmd, line)) < 0)
 				break;
-		} else if (!(type == TYPE_REDIRECT || type == TYPE_DOUBLE_REDIRECT || type == TYPE_PIPE || type == TYPE_SEMICOLON)) {
+		} else if (!(type == TYPE_REDIRECT_INPUT || type == TYPE_REDIRECT_OUTPUT || type == TYPE_DOUBLE_REDIRECT || type == TYPE_PIPE || type == TYPE_SEMICOLON)) {
 			ret = WRONG_CMD;
 			break;
 		}
-		if (type == TYPE_REDIRECT) {
+		if (type == TYPE_REDIRECT_OUTPUT) {
 			if (**line && !ft_isseparator(**line)) {
-				if ((ret = parsing_redirect(ms->cmd)) < 0)
+				if ((ret = parsing_redirect_output(ms->cmd, line)) < 0)
+					break;
+			} else {
+				ret = SYNTAX_ERROR;
+				break;
+			}
+		}
+		else if (type == TYPE_REDIRECT_INPUT) {
+			if (**line && !ft_isseparator(**line)) {
+				if ((ret = parsing_redirect_input(ms->cmd, line)) < 0)
 					break;
 			} else {
 				ret = SYNTAX_ERROR;
@@ -101,7 +112,7 @@ int parsing(t_minishell *ms) {
 			}
 		} else if (type == TYPE_DOUBLE_REDIRECT && (**line || ft_isspace((**line)))) {
 			if (**line && !ft_isseparator(**line)) {
-				if ((ret = parsing_double_redirect(ms->cmd)) < 0)
+				if ((ret = parsing_double_redirect(ms->cmd, line)) < 0)
 					break;
 			} else {
 				ret = SYNTAX_ERROR;

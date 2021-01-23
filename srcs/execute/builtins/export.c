@@ -46,16 +46,16 @@ int	ft_export(t_minishell *ms, t_node *cur) {
 	while (*args && !(val = NULL)) {
 		ptr = ft_strchr(*args, '=');
 		if (ptr == NULL) {
-			if ((name = parse_env_val(ms->env, *args)) == NULL) {
+			if ((name = parse_env_val(ms, *args)) == NULL) {
 				return (export_print_env(ms->env));
 			}
 		} else {
 			*ptr++ = '\0';
-			if ((name = parse_env_val(ms->env, *args)) == NULL) {
+			if ((name = parse_env_val(ms, *args)) == NULL) {
 				return (NOT_VAILD_IDENTIFIER);
 			}
-			val = parse_env_val(ms->env, ptr);
-			push_back_env(ms->env, name, val);
+			val = parse_env_val(ms, ptr);
+			update_env(ms->env, name, val);
 		}
 		args++;
 	}

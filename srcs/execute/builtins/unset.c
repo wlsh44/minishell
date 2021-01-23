@@ -26,10 +26,12 @@ int ft_unset(t_minishell *ms, t_node *cur) {
 		if (ptr != NULL) {
 			return (NOT_VAILD_IDENTIFIER);
 		} else {
-			if ((name = parse_env_val(ms->env, *args)) == NULL) {
+			if ((name = parse_env_val(ms, *args)) == NULL) {
 				continue;
 			}
 			delete_env(ms->env, name);
+			free(name);
+			break ;
 		}
 		args++;
 	}

@@ -14,6 +14,7 @@ int parsing_unset(t_lstcmd *cmd, char **line) {
 	if ((arg_num = get_arg_num(*line)) == 0)
 		return (NOT_ENOUGH_ARG);
 	arg = malloc(sizeof(char));
+    *arg = '\0';
 	while (arg_num--) {
 		size = get_arg_size(*line);
 		tmp = malloc(sizeof(char) * (size + 1));

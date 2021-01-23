@@ -23,6 +23,8 @@ int main(int argc, char *argv[], char *envp[]) {
 	ms.cmd->head->next = ms.cmd->tail;
 	ms.cmd->tail->prev = ms.cmd->head;
 	ms.cmd->tail->next = NULL;
+	ms.cmd->tail->type = TAIL;
+	ms.cmd->head->type = HEAD;
 	ms.env = malloc(sizeof(t_lstenv));
 	ms.env->head = malloc(sizeof(t_env_node));
 	ms.env->tail = malloc(sizeof(t_env_node));
@@ -36,6 +38,8 @@ int main(int argc, char *argv[], char *envp[]) {
 	char	*line;
 
 	init_env(&ms, envp);
+	ms.fd[0] = -1;
+	ms.fd[1] = -1;
 	while (1) {
 		get_next_line(0, &line);
 		ms.cmd_line = line;
