@@ -1,15 +1,15 @@
 #include "minishell.h"
 
-void	sighandler_int(int code)
+void	sighandler_all(int code)
 {
-	ft_putnbr_fd(code, STDOUT_FILENO);
-	ft_putstr_fd("\nm$ ", STDOUT_FILENO);
+	if (code != SIGQUIT)
+		ft_putstr_fd("\nm$ ", STDOUT_FILENO);
 }
 
 void	sighandler_quit(int code)
 {
-	ft_putnbr_fd(code, STDOUT_FILENO);
-	ft_putchar_fd('\n', STDOUT_FILENO);
+	if (code != SIGQUIT)
+		ft_putchar_fd('\n', STDOUT_FILENO);
 }
 
 int main(int argc, char *argv[], char *envp[]) {
@@ -35,6 +35,8 @@ int main(int argc, char *argv[], char *envp[]) {
 	ms.cmd->head->next = ms.cmd->tail;
 	ms.cmd->tail->prev = ms.cmd->head;
 	ms.cmd->tail->next = NULL;
+	ms.cmd->tail->type = TAIL;
+	ms.cmd->head->type = HEAD;
 	ms.env = malloc(sizeof(t_lstenv));
 	ms.env->head = malloc(sizeof(t_env_node));
 	ms.env->tail = malloc(sizeof(t_env_node));
@@ -49,10 +51,13 @@ int main(int argc, char *argv[], char *envp[]) {
 
 	init_env(&ms, envp);
 	ret = 0;
+
+	ms.fd[0] = -1;
+	ms.fd[1] = -1;
 	while (1) {
 		ft_putstr_fd("m$ ", STDOUT_FILENO);
 
-		signal(SIGINT, &sighandler_int);
+		signal(SIGINT, &sighandler_all);
 		signal(SIGQUIT, &sighandler_quit);
 		ret = get_next_line(0, &line);
 		if (ret == -2)

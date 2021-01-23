@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 13:08:54 by schang            #+#    #+#             */
-/*   Updated: 2021/01/22 17:10:50 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/23 21:07:55 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,12 +125,12 @@ void	child_sig_quit(int code)
 	exit(0);
 }
 
-void        override_signal(int signal_no)
+void	override_signal(int signal_no)
 {
-    if (signal_no == SIGINT)
-        ft_putchar_fd('\n', 1);
-    else if (signal_no == SIGQUIT)
-        ft_putstr_fd("Quit: 3\n", 2);
+	if (signal_no == SIGINT)
+		ft_putchar_fd('\n', 1);
+	else if (signal_no == SIGQUIT)
+		ft_putstr_fd("Quit\n", 2);
 }
 
 int	ft_execute_bin(t_minishell *ms, char *path, char *arg)
