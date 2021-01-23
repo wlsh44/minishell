@@ -35,6 +35,7 @@ SRC =	minishell.c \
 		execute/builtins/unset.c \
 		execute/builtins/export.c \
 		execute/builtins/redirect_output.c \
+		execute/builtins/redirect_input.c \
 
 
 DIR_SRCS = ./srcs/

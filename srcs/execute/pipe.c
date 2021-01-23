@@ -21,18 +21,15 @@ int fork_process(t_minishell *ms, t_node *cur) {
 			printf("error\n");
 		io_flag = STDOUT_FILENO;
 	}
-	if (cur->next->type == TYPE_REDIRECT_INPUT && ms->fd[0] != -1) {
-		pipe(ms->fd);
-	}
-	if (cur->type == TYPE_REDIRECT_INPUT)
-		io_flag = STDOUT_FILENO;
 	pid = fork();
 	if (pid > 0)
 		waitpid(pid, &status, 0);
 	else if (pid == 0) {
-		set_pipe(ms->fd, io_flag);
-		if (cur->next->type == TYPE_REDIRECT_INPUT)
-			fork_process(ms, cur->next);
+		if (cur->next->type == TYPE_REDIRECT_INPUT) {
+			ft_redirect_input(cur->next);
+		}
+		else
+			set_pipe(ms->fd, io_flag);
 		ret = execute_command(ms, cur);
 		write(1, &c, 1);
 		exit(0);

@@ -188,7 +188,7 @@ char	*ft_check_abs_path(t_minishell *ms, char *name)
 		}
 		free(tmp);
 		free(abs_path);
-		*dir++;
+		(*dir)++;
 	}
 	return (NULL);
 }
