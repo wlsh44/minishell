@@ -29,7 +29,9 @@ typedef struct {
 typedef struct {
 	t_lstcmd *cmd;
 	t_lstenv *env;
-	int fd[2];
+	int oldfd[2];
+	int newfd[2];
+	bool io_flag[0];
 	// char *buf;
 	//int last_cmd;
 	int exit_status;

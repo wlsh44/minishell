@@ -32,6 +32,22 @@ t_node *pop(t_lstcmd *cmd) {
 	return (cmd->head->next);
 }
 
+void delete_cmd(t_node *cur) {
+	if (cur->name)
+	{
+		free(cur->name);
+		cur->name = NULL;
+	}
+	if (cur->arg)
+	{
+		free(cur->arg);
+		cur->arg = NULL;
+	}
+	cur->prev->next = cur->next;
+	cur->next->prev = cur->prev;
+	free(cur);
+}
+
 void clear(t_lstcmd *cmd) {
 	t_node *cur;
 

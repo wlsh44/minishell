@@ -52,8 +52,8 @@ int main(int argc, char *argv[], char *envp[]) {
 	init_env(&ms, envp);
 	ret = 0;
 
-	ms.fd[0] = -1;
-	ms.fd[1] = -1;
+	// ms.fd[0] = -1;
+	// ms.fd[1] = -1;
 	while (1) {
 		ft_putstr_fd("m$ ", STDOUT_FILENO);
 
@@ -81,6 +81,7 @@ int main(int argc, char *argv[], char *envp[]) {
 				cmd_error(ret);
 			else
 			{
+				write(1, "parse end\n", 10);
 				show(ms.cmd);
 				if(!execute(&ms))
 					execute_error(ret);

@@ -171,25 +171,29 @@ char	*ft_check_abs_path(t_minishell *ms, char *name)
 	char	**dir;
 	char	*tmp;
 	char	*abs_path;
-	int		ret;
+	int		i;
 
+	i = 0;
 	if (!(path = get_env_value(ms->env, "PATH")))
 		return (0);
 	if (!(dir = ft_split(path, ':')))
 		return (0);
-	while (*dir)
+	while (dir[i])
 	{
-		tmp = ft_strjoin(*dir, "/");
+		tmp = ft_strjoin(dir[i], "/");
 		abs_path = ft_strjoin(tmp, name);
 		if (ft_file_exists(abs_path))
 		{
 			free(tmp);
+			free_double_char(dir);
 			return (abs_path);
 		}
 		free(tmp);
 		free(abs_path);
-		(*dir)++;
+		i++;
 	}
+	free_double_char(dir);
+	cmd_error(WRONG_CMD);
 	return (NULL);
 }
 

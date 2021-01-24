@@ -16,5 +16,6 @@ int	ft_bin(t_minishell *ms, t_node *cur);
 int ft_redirect_input(t_node *cur);
 int ft_redirect_output(t_node *cur);
 int fork_process(t_minishell *ms, t_node *cur);
+//int init_fork(t_minishell *ms, t_node *cur);
 
 #endif
