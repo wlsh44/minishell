@@ -18,6 +18,7 @@
 #include <sys/stat.h>
 #include <signal.h>
 #include <errno.h>
+#include <string.h>
 
 #define HEAD -10
 #define TAIL -9
@@ -49,6 +50,6 @@
 #  define PATH_MAX 1024
 #endif
 
-extern t_signal	g_signal;
+extern int	exit_status;
 
 #endif

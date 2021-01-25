@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 13:08:54 by schang            #+#    #+#             */
-/*   Updated: 2021/01/23 21:07:55 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/25 18:30:52 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ void	child_sig_int(int code)
 
 void	child_sig_quit(int code)
 {
+	(void)code;
 	exit(0);
 }
 
@@ -139,6 +140,7 @@ int	ft_execute_bin(t_minishell *ms, char *path, char *arg)
 	int		ret;
 	char	**env_list;
 	char	**args;
+	int		st;
 
 	if (!(env_list = get_env_list(ms)))
 		return (-1);
@@ -147,22 +149,27 @@ int	ft_execute_bin(t_minishell *ms, char *path, char *arg)
 	signal(SIGINT, &override_signal);
 	signal(SIGQUIT, &override_signal);
 	pid = fork();
-	ret = 1;
 	if (pid > 0)
+	{
 		waitpid(pid, &ret, 0);
+		st = WIFEXITED(ret);
+		if (st > 0)
+			exit_status = WEXITSTATUS(ret);
+	}
 	else
 	{
 		signal(SIGINT, &child_sig_int);
 		signal(SIGQUIT, &child_sig_quit);
-
-
 		ret = execve(path, args, env_list);
 		free(path);
 		free_double_char(env_list);
 		free_double_char(args);
 		exit(ret);
 	}
-	return (0);
+	free(path);
+	free_double_char(env_list);
+	free_double_char(args);
+	return (ret);
 }
 
 char	*ft_check_abs_path(t_minishell *ms, char *name)
@@ -171,40 +178,38 @@ char	*ft_check_abs_path(t_minishell *ms, char *name)
 	char	**dir;
 	char	*tmp;
 	char	*abs_path;
-	int		ret;
+	int		i;
 
 	if (!(path = get_env_value(ms->env, "PATH")))
 		return (0);
 	if (!(dir = ft_split(path, ':')))
 		return (0);
-	while (*dir)
+	i = 0;
+	while (dir[i])
 	{
-		tmp = ft_strjoin(*dir, "/");
+		tmp = ft_strjoin(dir[i], "/");
 		abs_path = ft_strjoin(tmp, name);
+		free(tmp);
 		if (ft_file_exists(abs_path))
 		{
-			free(tmp);
+			free_double_char(dir);
 			return (abs_path);
 		}
-		free(tmp);
 		free(abs_path);
-		*dir++;
+		i++;
 	}
+	free_double_char(dir);
+	cmd_error(WRONG_CMD);
 	return (NULL);
 }
 
 int	ft_bin(t_minishell *ms, t_node *node)
 {
-	int		ret;
-	char	**env_keys;
-	char	**args;
-
 	char	*path;
-	char	**bin;
 
 	if (ft_file_exists(node->name))
 		return (ft_execute_bin(ms, ft_strdup(node->name), node->arg));
 	if (!(path = ft_check_abs_path(ms, node->name)))
-		return (-1);
+		return (127);
 	return (ft_execute_bin(ms, path, node->arg));
 }

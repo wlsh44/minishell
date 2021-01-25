@@ -7,7 +7,7 @@ char *parse_env_val(t_minishell *ms, char *arg) {
 			return (NULL);
 		}
 		if (*arg == '?')
-			return (ft_itoa(ms->exit_status));
+			return (ft_itoa(exit_status));
 		else
 			return (ft_strdup(get_env_value(ms->env, arg)));
 	} else {
@@ -72,7 +72,6 @@ void update_env(t_lstenv *env, char *name, char *val) {
 }
 
 void init_env(t_minishell *ms, char *envp[]) {
-	char **buf;
 	char *name;
 	char *val;
 	char *ptr;

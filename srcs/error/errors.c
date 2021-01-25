@@ -10,7 +10,7 @@ void cmd_error(int err) {
 	} else if (err == NOT_VAILD_ARG) {
 		write(1, "not vaild arg\n", 13);
 	} else if (err == WRONG_CMD) {
-		write(1, "wrong cmd\n", 10);
+		write(1, "command not found\n", 18);
 	} else if (err == SYNTAX_ERROR) {
 		write(1, "syntax error\n", 13);
 	}

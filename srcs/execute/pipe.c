@@ -15,6 +15,7 @@ int fork_process(t_minishell *ms, t_node *cur) {
 	int status;
 	int c = 0;
 
+	ret = 0;
 	io_flag = STDIN_FILENO;
 	if ((cur->next->type == TYPE_REDIRECT_OUTPUT || cur->next->type == TYPE_DOUBLE_REDIRECT) && ms->fd[0] == -1) {
 		if (pipe(ms->fd) < 0)
@@ -37,11 +38,11 @@ int fork_process(t_minishell *ms, t_node *cur) {
 		write(1, &c, 1);
 		exit(0);
 	}
-	return (0);
+	return (ret);
 }
 /*
 0 -> 3
-1 
+1
 2
 3 -> close
 4

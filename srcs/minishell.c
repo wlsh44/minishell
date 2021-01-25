@@ -1,22 +1,35 @@
 #include "minishell.h"
 
-void	sighandler_all(int code)
-{
-	if (code != SIGQUIT)
-		ft_putstr_fd("\nm$ ", STDOUT_FILENO);
-}
+int	exit_status;
 
-void	sighandler_quit(int code)
+void	ft_default_sighandler(int code)
 {
-	if (code != SIGQUIT)
-		ft_putchar_fd('\n', STDOUT_FILENO);
+	if (code == SIGINT)
+	{
+		ft_putstr_fd(" \b\b \b\b \b\n", STDOUT_FILENO);
+		ft_putstr_fd("m$ ", STDOUT_FILENO);
+		exit_status = 130;
+	}
+	else if (code == SIGQUIT)
+	{
+		ft_putstr_fd(" \b\b \b\b \b", STDOUT_FILENO);
+		exit_status = 131;
+	}
 }
 
 int main(int argc, char *argv[], char *envp[]) {
 	t_minishell ms;
 
+
+	exit_status = 0;
+
+	(void)argc;
+	(void)argv;
+
 	// for (int i = 0; i < 20; i++)
 	// 	buf[i] = 0;
+
+	/*
 	char *l1 = "cd test";
 	char *l2 = "cd";
 	char *l3 = "cd  test";
@@ -28,6 +41,8 @@ int main(int argc, char *argv[], char *envp[]) {
 	char *l9 = "pwd \'\'";
 	char *l10 = "cd \\\"test\\\"";
 	char *l11 = "cd a\'a";
+	*/
+
 	ms.cmd = malloc(sizeof(ms.cmd));
 	ms.cmd->head = malloc(sizeof(t_node));
 	ms.cmd->tail = malloc(sizeof(t_node));
@@ -45,7 +60,6 @@ int main(int argc, char *argv[], char *envp[]) {
 	ms.env->tail->prev = ms.env->head;
 	ms.env->tail->next = NULL;
 
-	char	*test;
 	char	*line;
 	int		ret;
 
@@ -57,22 +71,16 @@ int main(int argc, char *argv[], char *envp[]) {
 	while (1) {
 		ft_putstr_fd("m$ ", STDOUT_FILENO);
 
-		signal(SIGINT, &sighandler_all);
-		signal(SIGQUIT, &sighandler_quit);
+		signal(SIGINT, &ft_default_sighandler);
+		signal(SIGQUIT, &ft_default_sighandler);
 		ret = get_next_line(0, &line);
-		if (ret == -2)
-		{
-		}
-		else if (ret == 0)
+		if (ret == 0)
 		{
 			ft_putstr_fd("exit\n", STDOUT_FILENO);
-			exit(0);
+			exit(EXIT_SUCCESS);
 		}
 		else if (ret < 0)
-		{
-			ret = 0;
 			continue;
-		}
 		else
 		{
 			ms.cmd_line = line;
@@ -104,4 +112,5 @@ int main(int argc, char *argv[], char *envp[]) {
 	// else
 	// 	show(ms.cmd);
 	// clear(ms.cmd);
+	return (exit_status);
 }

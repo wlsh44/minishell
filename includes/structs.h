@@ -43,4 +43,6 @@ typedef struct	s_signal
 	int	sig_quit;
 }				t_signal;
 
+extern int	exit_status;
+
 #endif
