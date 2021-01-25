@@ -31,11 +31,9 @@ typedef struct {
 	t_lstenv *env;
 	int oldfd[2];
 	int newfd[2];
-	bool io_flag[0];
-	// char *buf;
-	//int last_cmd;
 	int exit_status;
 	char *cmd_line;
+	char *oldpath;
 	int err;
 } t_minishell;
 

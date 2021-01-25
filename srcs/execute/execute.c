@@ -37,7 +37,7 @@ int execute_command(t_minishell *ms, t_node *cur) {
 	else if (cur->type == TYPE_PWD)
 		ret = ft_pwd(cur);
 	else if (cur->type == TYPE_REDIRECT_OUTPUT || cur->type == TYPE_DOUBLE_REDIRECT)
-		ret = ft_redirect_output(cur);
+		ret = ft_redirect_output(ms, cur);
 	else if (cur->type == TYPE_REDIRECT_INPUT)
 		ret = ft_redirect_input(cur);
 	else
