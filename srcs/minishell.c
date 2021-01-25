@@ -72,8 +72,8 @@ int main(int argc, char *argv[], char *envp[]) {
 					execute_error(ret);
 			}
 			clear(ms.cmd);
-			if (ms.cmd_line)
-				free(ms.cmd_line);
+			//if (ms.cmd_line)
+				//free(ms.cmd_line);
 		}
 	}
 	return (exit_status);
