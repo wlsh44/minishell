@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 13:08:54 by schang            #+#    #+#             */
-/*   Updated: 2021/01/25 18:30:52 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/25 20:48:21 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,7 @@ char	*ft_check_abs_path(t_minishell *ms, char *name)
 	char	*abs_path;
 	int		i;
 
+	i = 0;
 	if (!(path = get_env_value(ms->env, "PATH")))
 		return (0);
 	if (!(dir = ft_split(path, ':')))

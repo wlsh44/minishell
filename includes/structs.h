@@ -29,11 +29,11 @@ typedef struct {
 typedef struct {
 	t_lstcmd *cmd;
 	t_lstenv *env;
-	int fd[2];
-	// char *buf;
-	//int last_cmd;
+	int oldfd[2];
+	int newfd[2];
 	int exit_status;
 	char *cmd_line;
+	char *oldpath;
 	int err;
 } t_minishell;
 
