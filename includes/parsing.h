@@ -23,5 +23,8 @@ int parsing_pipe(t_lstcmd *cmd);
 int parsing_redirect_output(t_lstcmd *cmd, char **line);
 int parsing_redirect_input(t_lstcmd *cmd, char **line);
 int parsing_double_redirect(t_lstcmd *cmd, char **line);
+int	parsing_bin(t_lstcmd *cmd, char **line);
+
+int parsing_type(char **line);
 
 #endif

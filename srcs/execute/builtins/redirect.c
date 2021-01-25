@@ -25,11 +25,26 @@ int ft_redirect_output(t_node *cur) {
 	option = cur->type == TYPE_REDIRECT_OUTPUT ? O_TRUNC : O_APPEND;
 	fd = open(cur->arg, O_CREAT | O_WRONLY | option, 0644);
 	read_line(STDIN_FILENO, &line);
-	if ((cur->next->type == TYPE_REDIRECT_OUTPUT || cur->next->type == TYPE_DOUBLE_REDIRECT || cur->prev->type == HEAD))
+	if ((cur->next->type == TYPE_REDIRECT_OUTPUT ||
+		cur->next->type == TYPE_DOUBLE_REDIRECT || cur->prev->type == HEAD))
 		write(1, line, ft_strlen(line));
 	else 
 		write(fd, line, ft_strlen(line));
 	free(line);
+	close(fd);
+	return (ret);
+}
+
+int ft_redirect_input(t_node *cur) {
+	char *line;
+	int fd;
+	int ret;
+	
+	ret = 0;
+	line = ft_strdup("");
+	fd = open(cur->arg, O_RDONLY);
+	read_line(fd, &line);
+	write(1, line, ft_strlen(line));
 	close(fd);
 	return (ret);
 }

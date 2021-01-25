@@ -45,6 +45,23 @@ int execute_command(t_minishell *ms, t_node *cur) {
 	return (ret);
 }
 
+void close_fd(t_minishell *ms) {
+	if (ms->newfd[0] == -1 || ms->newfd[1] == -1)
+	{
+		close(ms->newfd[0]);
+		close(ms->newfd[1]);
+		ms->newfd[0] = -1;
+		ms->newfd[1] = -1;
+	}
+	if (ms->oldfd[0] == -1 || ms->oldfd[1] == -1)
+	{
+		close(ms->oldfd[0]);
+		close(ms->oldfd[1]);
+		ms->oldfd[0] = -1;
+		ms->oldfd[1] = -1;
+	}
+}
+
 int execute(t_minishell *ms) {
 	t_node *cur;
 	int ret;
@@ -55,20 +72,13 @@ int execute(t_minishell *ms) {
 		if (!is_env_cmd(cur->type) && (cur->next->type == TYPE_REDIRECT_OUTPUT || cur->next->type == TYPE_REDIRECT_INPUT ||
 			cur->next->type == TYPE_DOUBLE_REDIRECT || cur->next->type == TYPE_PIPE ||
 			cur->type == TYPE_REDIRECT_OUTPUT || cur->type == TYPE_REDIRECT_INPUT ||
-			cur->type == TYPE_DOUBLE_REDIRECT || cur->prev->type == TYPE_PIPE || cur->prev->type == TYPE_REDIRECT_INPUT)) {
+			cur->type == TYPE_DOUBLE_REDIRECT || cur->prev->type == TYPE_PIPE || cur->prev->type == TYPE_REDIRECT_INPUT))
 			ret = fork_process(ms, cur);
-		} else if (!(cur->type == TYPE_REDIRECT_INPUT || cur->type == TYPE_PIPE))
+		else if (!(cur->type == TYPE_REDIRECT_INPUT || cur->type == TYPE_PIPE))
 			ret = execute_command(ms, cur);
 		ms->exit_status = ret;
 		cur = cur->next;
 	}
-	close(ms->newfd[0]);
-	close(ms->newfd[1]);
-	close(ms->oldfd[0]);
-	close(ms->oldfd[1]);
-	ms->newfd[0] = -1;
-	ms->newfd[1] = -1;
-	ms->oldfd[0] = -1;
-	ms->oldfd[1] = -1;
+	close_fd(ms);
 	return (0);
 }

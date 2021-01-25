@@ -1,0 +1,104 @@
+#include "minishell.h"
+
+int parsing_type1(char **line)
+{
+	int type;
+
+	type = 0;
+	if (!ft_strncmp(*line, "cd", 2))
+	{
+		type = TYPE_CD;
+		(*line) += 2;
+	}
+	else if (!ft_strncmp(*line, "pwd", 3))
+	{
+		type = TYPE_PWD;
+		(*line) += 3;
+	}
+	else if (!ft_strncmp(*line, "echo", 4))
+	{
+		type = TYPE_ECHO;
+		(*line) += 4;
+	}
+	else if (!ft_strncmp(*line, "export", 6)) 
+	{
+		type = TYPE_EXPORT;
+		(*line) += 6;
+	} 
+	return (type);
+}
+
+int parsing_type2(char **line)
+{
+	int type;
+
+	type = 0;
+	if (!ft_strncmp(*line, "env", 3)) 
+	{
+		type = TYPE_ENV;
+		(*line) += 3;
+	} 
+	else if (!ft_strncmp(*line, "unset", 5)) 
+	{
+		type = TYPE_UNSET;
+		(*line) += 5;
+	} 
+	else if (!ft_strncmp(*line, "exit", 4)) 
+	{
+		type = TYPE_EXIT;
+		(*line) += 4;
+	} 
+	else if (!ft_strncmp(*line, ">>", 2)) 
+	{
+		type = TYPE_DOUBLE_REDIRECT;
+		(*line) += 2;
+	} 
+	return (type);
+}
+
+int parsing_type3(char **line)
+{
+	int type;
+
+	type = 0;
+	if (!ft_strncmp(*line, ">", 1)) 
+	{
+		type = TYPE_REDIRECT_OUTPUT;
+		(*line) += 1;
+	} 
+	else if (!ft_strncmp(*line, "<", 1)) 
+	{
+		type = TYPE_REDIRECT_INPUT;
+		(*line) += 1;
+	} 
+	else if (!ft_strncmp(*line, "|", 1)) 
+	{
+		type = TYPE_PIPE;
+		(*line) += 1;
+	} 
+	else if (!ft_strncmp(*line, ";", 1)) 
+	{
+		type = TYPE_SEMICOLON;
+		(*line) += 1;
+	} 
+	return (type);
+}
+
+int parsing_type(char **line) {
+	char quote;
+	int type;
+
+	quote = 0;
+	if (ft_isquote(**line))
+		quote = *(*line)++;
+	type = parsing_type1(line);
+	if (!type)
+		type = parsing_type2(line);
+	if (!type)
+		type = parsing_type3(line);
+	if (!type) 
+		type = TYPE_NORMAL;
+	if (quote && *(*line)++ != quote) 
+		type = WRONG_QUOTE;
+	return (type);
+}

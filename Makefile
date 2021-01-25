@@ -12,6 +12,7 @@ CFLAGS = $(INC) #-Wall -Werror -Wextra
 SRC =	minishell.c \
 		env.c\
  		parsing/parsing.c	\
+ 		parsing/parsing_type.c	\
  		parsing/parsing_cd.c	\
  		parsing/parsing_pwd.c	\
  		parsing/parsing_env.c	\
@@ -21,6 +22,7 @@ SRC =	minishell.c \
  		parsing/parsing_exit.c	\
  		parsing/parsing_sep.c	\
  		parsing/parsing_utils.c	\
+ 		parsing/parsing_bin.c	\
 		error/errors.c 	\
 		utils/lstcmd.c 	\
 		utils/get_next_line.c \
@@ -34,8 +36,7 @@ SRC =	minishell.c \
 		execute/builtins/env.c \
 		execute/builtins/unset.c \
 		execute/builtins/export.c \
-		execute/builtins/redirect_output.c \
-		execute/builtins/redirect_input.c \
+		execute/builtins/redirect.c \
 
 
 DIR_SRCS = ./srcs/
