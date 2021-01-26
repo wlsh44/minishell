@@ -1,5 +1,13 @@
 #include "minishell.h"
 
+int parsing_semicolon(t_minishell *ms, char **line)
+{
+	(*line)++;
+	if (ms->cmd->head->next == ms->cmd->tail)
+		return (SYNTAX_ERROR);
+	return (0);
+}
+
 int parsing_pipe(t_lstcmd *cmd) {
 	push_back(cmd, TYPE_PIPE, NULL);
 	return (0);

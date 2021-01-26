@@ -9,8 +9,17 @@ int get_arg_num(char *line);
 int get_arg_size(char *line);
 int get_arg_char(char **line, char *arg);
 int get_arg(char **line, char **arg);
-int get_arg_export_unset(char **line, char *arg);
+int get_arg_char_basic(char **line, char *arg);
+
+int get_arg_export(char **line, char *arg);
+int get_arg_unset(char **line, char *arg);
 int get_arg_echo(char **line, char **arg);
+
+
+int get_arg_quote(char **line, char **arg);
+int get_arg_key_quote(char **line, char **arg);
+int is_key_char(char c);
+int get_arg_key(char **line, char **arg);
 
 int parsing_cd(t_lstcmd *cmd, char **line);
 int parsing_echo(t_lstcmd *cmd, char **line);
@@ -24,6 +33,7 @@ int parsing_redirect_output(t_lstcmd *cmd, char **line);
 int parsing_redirect_input(t_lstcmd *cmd, char **line);
 int parsing_double_redirect(t_lstcmd *cmd, char **line);
 int	parsing_bin(t_lstcmd *cmd, char **line);
+int parsing_semicolon(t_minishell *ms, char **line);
 
 int parsing_type(char **line);
 

@@ -81,8 +81,11 @@ void show(t_lstcmd *cmd) {
 			write(1, cur->name, ft_strlen(cur->name));
 		}
 		write(1, "\nARG: ", 6);
-		if (cur->arg)
+		if (cur->arg) {
+			write(1, "|", 1);
 			write(1, cur->arg, ft_strlen(cur->arg));
+			write(1, "|", 1);
+		}
 		write(1, "\n==========\n", 12);
 		cur = cur->next;
 	}

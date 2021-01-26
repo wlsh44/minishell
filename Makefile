@@ -22,6 +22,7 @@ SRC =	minishell.c \
  		parsing/parsing_exit.c	\
  		parsing/parsing_sep.c	\
  		parsing/parsing_utils.c	\
+ 		parsing/parsing_utils2.c	\
  		parsing/parsing_bin.c	\
 		error/errors.c 	\
 		utils/lstcmd.c 	\

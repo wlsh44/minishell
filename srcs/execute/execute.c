@@ -69,7 +69,7 @@ int execute(t_minishell *ms) {
 	ret = 1;
 	cur = ms->cmd->head->next;
 	while (cur != ms->cmd->tail && !(ret = 0)) {
-		if (!is_env_cmd(cur->type) && (cur->next->type == TYPE_REDIRECT_OUTPUT || cur->next->type == TYPE_REDIRECT_INPUT ||
+		if (!(is_env_cmd(cur->type) || is_env_cmd(cur->prev->type)) && (cur->next->type == TYPE_REDIRECT_OUTPUT || cur->next->type == TYPE_REDIRECT_INPUT ||
 			cur->next->type == TYPE_DOUBLE_REDIRECT || cur->next->type == TYPE_PIPE ||
 			cur->type == TYPE_REDIRECT_OUTPUT || cur->type == TYPE_REDIRECT_INPUT ||
 			cur->type == TYPE_DOUBLE_REDIRECT || cur->prev->type == TYPE_PIPE || cur->prev->type == TYPE_REDIRECT_INPUT))

@@ -33,6 +33,10 @@ void init_ms(t_minishell *ms)
 	ms->env->head->next = ms->env->tail;
 	ms->env->tail->prev = ms->env->head;
 	ms->env->tail->next = NULL;
+	ms->oldfd[0] = -1;
+	ms->oldfd[1] = -1;
+	ms->newfd[0] = -1;
+	ms->newfd[1] = -1;
 }
 
 int main(int argc, char *argv[], char *envp[]) {

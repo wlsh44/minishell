@@ -23,19 +23,20 @@ int parsing_cmd1(t_minishell *ms, char **line, int type)
 
 int parsing_cmd2(t_minishell *ms, char **line, int type)
 {
-	if (!**line && (type == TYPE_REDIRECT_OUTPUT || type == TYPE_REDIRECT_INPUT || type == TYPE_DOUBLE_REDIRECT || type == TYPE_PIPE || type == TYPE_SEMICOLON))
-		return (SYNTAX_ERROR);
+	int ret;
+
+	ret = 0;
 	if (type == TYPE_REDIRECT_OUTPUT && !ft_isseparator(**line))
-		return (parsing_redirect_output(ms->cmd, line));
+		ret = parsing_redirect_output(ms->cmd, line);
 	else if (type == TYPE_REDIRECT_INPUT && !ft_isseparator(**line))
-		return (parsing_redirect_input(ms->cmd, line));
+		ret = parsing_redirect_input(ms->cmd, line);
 	else if (type == TYPE_DOUBLE_REDIRECT && !ft_isseparator(**line))
-		return (parsing_double_redirect(ms->cmd, line));
+		ret = parsing_double_redirect(ms->cmd, line);
 	else if (type == TYPE_PIPE && !ft_isseparator(**line))
-		return (parsing_pipe(ms->cmd));
+		ret = parsing_pipe(ms->cmd);
 	else if (type == TYPE_SEMICOLON && !ft_isseparator(**line))
-		(*line)++;
-	return (0);
+		ret = parsing_semicolon(ms, line);
+	return (ret);
 }
 
 int parsing(t_minishell *ms) {

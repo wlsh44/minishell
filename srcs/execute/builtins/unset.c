@@ -31,7 +31,6 @@ int ft_unset(t_minishell *ms, t_node *cur) {
 			}
 			delete_env(ms->env, name);
 			free(name);
-			break ;
 		}
 		args++;
 	}
