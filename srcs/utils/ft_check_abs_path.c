@@ -1,33 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing_bin.c                                      :+:      :+:    :+:   */
+/*   ft_check_abs_path.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/25 23:11:54 by schang            #+#    #+#             */
-/*   Updated: 2021/01/25 23:12:03 by schang           ###   ########.fr       */
+/*   Created: 2021/01/25 21:37:50 by schang            #+#    #+#             */
+/*   Updated: 2021/01/25 21:41:56 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	parsing_bin(t_lstcmd *cmd, char **line)
+char	*ft_check_abs_path(t_minishell *ms, char *name)
 {
+	char	*path;
+	char	**dir;
+	char	*tmp;
+	char	*abs_path;
 	int		i;
-	int		ret;
-	char	*str;
-	char	*arg;
 
+	if (!(path = get_env_value(ms->env, "PATH"))
+		|| !(dir = ft_split(path, ':')))
+		return (0);
 	i = 0;
-	while ((*line)[i] && !ft_isspace((*line)[i]))
+	while (dir[i])
+	{
+		tmp = ft_strjoin(dir[i], "/");
+		abs_path = ft_strjoin(tmp, name);
+		free(tmp);
+		if (ft_file_exists(abs_path))
+		{
+			free_double_char(dir);
+			return (abs_path);
+		}
+		free(abs_path);
 		i++;
-	str = ft_substr(*line, 0, i);
-	*line = *line + i;
-	while (ft_isspace(**line))
-		(*line)++;
-	if ((ret = get_arg_echo(line, &arg)) < 0)
-		return (ret);
-	push_back_normal(cmd, TYPE_NORMAL, str, arg);
-	return (0);
+	}
+	free_double_char(dir);
+	return (NULL);
 }

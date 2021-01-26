@@ -6,67 +6,13 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 13:08:54 by schang            #+#    #+#             */
-/*   Updated: 2021/01/25 20:48:21 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/25 23:00:01 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**get_env_list(t_minishell *ms)
-{
-	int			cnt;
-	char		*tmp;
-	char		**env_list;
-	t_env_node	*cur;
-
-	cnt = 0;
-	cur = ms->env->head->next;
-	while (cur != ms->env->tail) {
-		cur = cur->next;
-		cnt++;
-	}
-	if (!(env_list = ft_calloc(sizeof(char *), (cnt + 1))))
-		return (NULL);
-	cur = ms->env->head->next;
-	cnt = 0;
-	while (cur != ms->env->tail) {
-		tmp = ft_strjoin(cur->name, "=");
-		env_list[cnt] = ft_strjoin(tmp, cur->val);
-		free(tmp);
-		cur = cur->next;
-		cnt++;
-	}
-	return (env_list);
-}
-
-void	free_double_char(char **str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i])
-		{
-			free(str[i]);
-			str[i] = NULL;
-		}
-		i++;
-	}
-	free(str);
-}
-int	ft_file_exists(const char *file)
-{
-	struct stat	buf;
-	int			exists;
-
-	exists = stat(file, &buf);
-	if (exists < 0)
-		return (0);
-	return (1);
-}
-
-char	*get_command(char *name)
+static char	*get_command(char *name)
 {
 	char	*str;
 
@@ -75,142 +21,59 @@ char	*get_command(char *name)
 	return (str + 1);
 }
 
-char	**ft_bin_args(char *cmd, char *arg)
+static void	free_data(char **env, char **args, char *path)
 {
-	int		i;
-	int		cnt;
-	int		offset;
-	char	**args;
-
-	i = 0;
-	cnt = 0;
-	while (arg[i])
-	{
-		while (arg[i] && ft_isspace(arg[i]))
-			i++;
-		while (arg[i] && !ft_isspace(arg[i]))
-			i++;
-		cnt++;
-	}
-	if (!(args = ft_calloc(sizeof(char *), cnt + 2)))
-		return (NULL);
-	args[0] = ft_strdup(cmd);
-	i = 0;
-	cnt = 1;
-	while (arg[i])
-	{
-		while (arg[i] && ft_isspace(arg[i]))
-			i++;
-		offset = i;
-		while (arg[i] && !ft_isspace(arg[i]))
-			i++;
-		args[cnt] = ft_substr(arg, offset, i);
-		cnt++;
-	}
-	return (args);
+	free(path);
+	free_double_char(env);
+	free_double_char(args);
 }
 
-
-void	child_sig_int(int code)
-{
-	if (code == 2)
-	{
-		write(1, "\n", 1);
-		exit(0);
-	}
-}
-
-void	child_sig_quit(int code)
-{
-	(void)code;
-	exit(0);
-}
-
-void	override_signal(int signal_no)
-{
-	if (signal_no == SIGINT)
-		ft_putchar_fd('\n', 1);
-	else if (signal_no == SIGQUIT)
-		ft_putstr_fd("Quit\n", 2);
-}
-
-int	ft_execute_bin(t_minishell *ms, char *path, char *arg)
+int			ft_execute_bin(t_minishell *ms, char *path, char *arg)
 {
 	pid_t	pid;
-	int		ret;
+	int		status;
 	char	**env_list;
 	char	**args;
-	int		st;
 
-	if (!(env_list = get_env_list(ms)))
+	if (!(env_list = get_env_list(ms))
+		|| !(args = ft_bin_args(get_command(path), arg)))
 		return (-1);
-	if (!(args = ft_bin_args(get_command(path), arg)))
-		return (-1);
-	signal(SIGINT, &override_signal);
-	signal(SIGQUIT, &override_signal);
+	signal(SIGINT, &bin_parent_sighandler);
+	signal(SIGQUIT, &bin_parent_sighandler);
 	pid = fork();
-	if (pid > 0)
+	if (pid == 0)
 	{
-		waitpid(pid, &ret, 0);
-		st = WIFEXITED(ret);
-		if (st > 0)
-			exit_status = WEXITSTATUS(ret);
+		signal(SIGINT, &bin_child_sighandler);
+		signal(SIGQUIT, &bin_child_sighandler);
+		status = execve(path, args, env_list);
+		free_data(env_list, args, path);
+		exit(status);
 	}
-	else
-	{
-		signal(SIGINT, &child_sig_int);
-		signal(SIGQUIT, &child_sig_quit);
-		ret = execve(path, args, env_list);
-		free(path);
-		free_double_char(env_list);
-		free_double_char(args);
-		exit(ret);
-	}
-	free(path);
-	free_double_char(env_list);
-	free_double_char(args);
-	return (ret);
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status) > 0)
+		g_exit_status = WEXITSTATUS(status);
+	free_data(env_list, args, path);
+	return (0);
 }
 
-char	*ft_check_abs_path(t_minishell *ms, char *name)
+int			ft_bin(t_minishell *ms, t_node *node)
 {
 	char	*path;
-	char	**dir;
 	char	*tmp;
-	char	*abs_path;
-	int		i;
-
-	i = 0;
-	if (!(path = get_env_value(ms->env, "PATH")))
-		return (0);
-	if (!(dir = ft_split(path, ':')))
-		return (0);
-	i = 0;
-	while (dir[i])
-	{
-		tmp = ft_strjoin(dir[i], "/");
-		abs_path = ft_strjoin(tmp, name);
-		free(tmp);
-		if (ft_file_exists(abs_path))
-		{
-			free_double_char(dir);
-			return (abs_path);
-		}
-		free(abs_path);
-		i++;
-	}
-	free_double_char(dir);
-	cmd_error(WRONG_CMD);
-	return (NULL);
-}
-
-int	ft_bin(t_minishell *ms, t_node *node)
-{
-	char	*path;
 
 	if (ft_file_exists(node->name))
 		return (ft_execute_bin(ms, ft_strdup(node->name), node->arg));
-	if (!(path = ft_check_abs_path(ms, node->name)))
-		return (127);
-	return (ft_execute_bin(ms, path, node->arg));
+	tmp = ft_strchr(node->name, '/');
+	path = ft_check_abs_path(ms, node->name);
+	if (!path)
+	{
+		if (tmp == NULL)
+			cmd_error(WRONG_CMD);
+		else
+			execute_error(NO_DIRECTORY);
+		g_exit_status = 127;
+		return (0);
+	}
+	else
+		return (ft_execute_bin(ms, path, node->arg));
 }

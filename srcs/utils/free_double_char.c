@@ -1,26 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   free_double_char.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/12 22:06:03 by schang            #+#    #+#             */
-/*   Updated: 2021/01/25 22:49:33 by schang           ###   ########.fr       */
+/*   Created: 2021/01/25 20:52:43 by schang            #+#    #+#             */
+/*   Updated: 2021/01/25 20:52:51 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_pwd(t_node *node)
+void	free_double_char(char **str)
 {
-	char	path[PATH_MAX];
+	int	i;
 
-	if (getcwd(path, PATH_MAX))
+	i = 0;
+	while (str[i])
 	{
-		ft_putendl_fd(path, 1);
-		return (0);
+		if (str[i])
+		{
+			free(str[i]);
+			str[i] = NULL;
+		}
+		i++;
 	}
-	else
-		return (1);
+	free(str);
 }

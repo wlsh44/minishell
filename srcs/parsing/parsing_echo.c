@@ -28,7 +28,7 @@ int get_arg_char_echo(char **line, char *arg) {
 					quote = 0;
 					(*line)++;
 					break;
-				} else if (**line == '\\' && (ft_isquote((*line[1])) || (*line)[1] == '\\'))
+				} else if (**line == '\\' && (ft_isquote(*line[1]) == 1 || (*line)[1] == '\\'))
 					(*line)++;
 				*(arg++) = *(*line)++;
 			}

@@ -6,12 +6,11 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/12 19:44:07 by schang            #+#    #+#             */
-/*   Updated: 2021/01/17 21:19:42 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/25 23:00:26 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>
 
 void	free_lstcmd(t_lstcmd *cmd)
 {
@@ -20,12 +19,14 @@ void	free_lstcmd(t_lstcmd *cmd)
 
 void	free_lstenv(t_lstenv *env)
 {
-	t_env_node *cur;
+	t_env_node	*cur;
 
 	cur = env->head->next;
-	while (cur != env->tail) {
+	while (cur != env->tail)
+	{
 		cur = cur->next;
-		if (cur->prev->name) {
+		if (cur->prev->name)
+		{
 			free(cur->prev->name);
 			cur->prev->name = NULL;
 		}
@@ -41,24 +42,15 @@ void	free_lstenv(t_lstenv *env)
 	env->tail->prev = env->head;
 }
 
-int	ft_exit(t_minishell *ms)
+int		ft_exit(t_minishell *ms)
 {
 	free_lstcmd(ms->cmd);
 	free_lstenv(ms->env);
 	free(ms->cmd);
 	free(ms->env);
-
-	/*
-	if (ms->cmd_line)
-	{
-		free(ms->cmd_line);
-		ms->cmd_line = NULL;
-	}
-	*/
-
 	ms->cmd = NULL;
 	ms->env = NULL;
-
 	write(1, "exit\n", 5);
 	exit(0);
+	return (0);
 }

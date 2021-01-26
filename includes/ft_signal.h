@@ -1,26 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_signal.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/12 22:06:03 by schang            #+#    #+#             */
-/*   Updated: 2021/01/25 22:49:33 by schang           ###   ########.fr       */
+/*   Created: 2021/01/25 21:03:22 by schang            #+#    #+#             */
+/*   Updated: 2021/01/25 21:33:11 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef FT_SIGNAL_H
+# define FT_SIGNAL_H
 
-int	ft_pwd(t_node *node)
-{
-	char	path[PATH_MAX];
+void	bin_parent_sighandler(int code);
+void	bin_child_sighandler(int code);
+void	default_sighandler(int code);
 
-	if (getcwd(path, PATH_MAX))
-	{
-		ft_putendl_fd(path, 1);
-		return (0);
-	}
-	else
-		return (1);
-}
+#endif

@@ -1,26 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_file_exists.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/12 22:06:03 by schang            #+#    #+#             */
-/*   Updated: 2021/01/25 22:49:33 by schang           ###   ########.fr       */
+/*   Created: 2021/01/25 20:53:46 by schang            #+#    #+#             */
+/*   Updated: 2021/01/25 20:53:57 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_pwd(t_node *node)
+int	ft_file_exists(const char *file)
 {
-	char	path[PATH_MAX];
+	struct stat	buf;
+	int			exists;
 
-	if (getcwd(path, PATH_MAX))
-	{
-		ft_putendl_fd(path, 1);
+	exists = stat(file, &buf);
+	if (exists < 0)
 		return (0);
-	}
-	else
-		return (1);
+	return (1);
 }

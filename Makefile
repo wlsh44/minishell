@@ -11,6 +11,7 @@ CFLAGS = $(INC) #-Wall -Werror -Wextra
 
 SRC =	minishell.c \
 		env.c\
+		signal.c \
  		parsing/parsing.c	\
  		parsing/parsing_type.c	\
  		parsing/parsing_cd.c	\
@@ -26,6 +27,12 @@ SRC =	minishell.c \
 		error/errors.c 	\
 		utils/lstcmd.c 	\
 		utils/get_next_line.c \
+		utils/ft_file_exists.c \
+		utils/free_double_char.c \
+		utils/get_env_list.c \
+		utils/ft_check_abs_path.c \
+		utils/ft_bin_args.c \
+		utils/show.c \
 		execute/execute.c \
 		execute/bin.c \
 		execute/pipe.c \

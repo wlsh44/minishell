@@ -1,23 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/25 22:45:36 by schang            #+#    #+#             */
+/*   Updated: 2021/01/26 00:03:00 by schang           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int	exit_status;
+int		g_exit_status;
 
-void	ft_default_sighandler(int code)
-{
-	if (code == SIGINT)
-	{
-		ft_putstr_fd(" \b\b \b\b \b\n", STDOUT_FILENO);
-		ft_putstr_fd("m$ ", STDOUT_FILENO);
-		exit_status = 130;
-	}
-	else if (code == SIGQUIT)
-	{
-		ft_putstr_fd(" \b\b \b\b \b", STDOUT_FILENO);
-		exit_status = 131;
-	}
-}
-
-void init_ms(t_minishell *ms)
+void	init_ms(t_minishell *ms)
 {
 	ms->cmd = malloc(sizeof(ms->cmd));
 	ms->cmd->head = malloc(sizeof(t_node));
@@ -35,7 +32,7 @@ void init_ms(t_minishell *ms)
 	ms->env->tail->next = NULL;
 }
 
-int main(int argc, char *argv[], char *envp[]) {
+int		main(int argc, char *argv[], char *envp[]) {
 	t_minishell	ms;
 	char		*line;
 	int			ret;
@@ -47,10 +44,11 @@ int main(int argc, char *argv[], char *envp[]) {
 	ret = 0;
 
 	while (1) {
+		g_exit_status = 0;
 		ft_putstr_fd("m$ ", STDOUT_FILENO);
 
-		signal(SIGINT, &ft_default_sighandler);
-		signal(SIGQUIT, &ft_default_sighandler);
+		signal(SIGINT, &default_sighandler);
+		signal(SIGQUIT, &default_sighandler);
 		ret = get_next_line(0, &line);
 		if (ret == 0)
 		{
@@ -76,5 +74,5 @@ int main(int argc, char *argv[], char *envp[]) {
 				//free(ms.cmd_line);
 		}
 	}
-	return (exit_status);
+	return (g_exit_status);
 }
