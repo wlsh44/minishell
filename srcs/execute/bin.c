@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 13:08:54 by schang            #+#    #+#             */
-/*   Updated: 2021/01/25 23:00:01 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/26 22:15:48 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int			ft_execute_bin(t_minishell *ms, char *path, char *arg)
 	if (WIFEXITED(status) > 0)
 		g_exit_status = WEXITSTATUS(status);
 	free_data(env_list, args, path);
-	return (0);
+	return (g_exit_status);
 }
 
 int			ft_bin(t_minishell *ms, t_node *node)
@@ -71,8 +71,7 @@ int			ft_bin(t_minishell *ms, t_node *node)
 			cmd_error(WRONG_CMD);
 		else
 			execute_error(NO_DIRECTORY);
-		g_exit_status = 127;
-		return (0);
+		return (ERR_COMMAND_NOT_FOUND);
 	}
 	else
 		return (ft_execute_bin(ms, path, node->arg));

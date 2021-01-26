@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 21:50:03 by schang            #+#    #+#             */
-/*   Updated: 2021/01/25 22:45:08 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/26 21:51:34 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,9 @@
 # define TYPE_PIPE 14
 # define TYPE_EXIT 15
 # define TYPE_NORMAL 16
+
+# define ERR_COMMAND_NOT_FOUND 127
+# define ERR_NO_DIRECTORY 1
 
 # ifndef PATH_MAX
 #  define PATH_MAX 1024

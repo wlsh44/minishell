@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 22:45:36 by schang            #+#    #+#             */
-/*   Updated: 2021/01/26 21:09:13 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/26 21:46:09 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int		main(int argc, char *argv[], char *envp[])
 	ret = 0;
 	while (1)
 	{
-		g_exit_status = 0;
 		ft_putstr_fd("m$ ", STDOUT_FILENO);
 		signal(SIGINT, &default_sighandler);
 		signal(SIGQUIT, &default_sighandler);
@@ -72,7 +71,7 @@ int		main(int argc, char *argv[], char *envp[])
 			else
 			{
 				show(ms.cmd);
-				if (!execute(&ms))
+				if (!(g_exit_status = execute(&ms)))
 					execute_error(ret);
 			}
 			clear(ms.cmd);

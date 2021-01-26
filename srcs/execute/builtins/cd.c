@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:04:48 by schang            #+#    #+#             */
-/*   Updated: 2021/01/26 20:45:34 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/26 21:51:47 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ int	ft_cd(t_minishell *ms, t_node *cur)
 	else
 	{
 		if (chdir(cur->arg) < 0)
-			return (NO_DIRECTORY);
+		{
+			execute_error(NO_DIRECTORY);
+			return (ERR_NO_DIRECTORY);
+		}
 	}
 	return (0);
 }

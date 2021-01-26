@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:12:02 by schang            #+#    #+#             */
-/*   Updated: 2021/01/26 20:58:48 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/26 22:17:51 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,10 @@ int		execute(t_minishell *ms)
 		else if (!(cur->type == TYPE_REDIRECT_INPUT
 			|| cur->type == TYPE_PIPE))
 			ret = execute_command(ms, cur);
-		ms->exit_status = ret;
+		if (ret != 0)
+			break ;
 		cur = cur->next;
 	}
 	close_fd(ms);
-	return (0);
+	return (ret);
 }
