@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirect.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/26 20:48:12 by schang            #+#    #+#             */
+/*   Updated: 2021/01/26 20:48:38 by schang           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int		read_line(int fd, char **line)
@@ -6,7 +18,8 @@ int		read_line(int fd, char **line)
 	char	*tmp;
 
 	buf = ft_strdup(" ");
-	while (read(fd, buf, 1) > 0) {
+	while (read(fd, buf, 1) > 0)
+	{
 		tmp = *line;
 		*line = ft_strjoin(tmp, buf);
 		free(tmp);
@@ -20,7 +33,7 @@ void	get_oldpath(t_minishell *ms, t_node *cur)
 	char	*tmp;
 
 	tmp = ms->oldpath;
-	ms->oldpath = ft_strjoin(ms->oldpath , "/");
+	ms->oldpath = ft_strjoin(ms->oldpath, "/");
 	free(tmp);
 	tmp = cur->arg;
 	cur->arg = ft_strjoin(ms->oldpath, cur->arg);
@@ -48,7 +61,7 @@ int		ft_redirect_output(t_minishell *ms, t_node *cur)
 	if ((cur->next->type == TYPE_REDIRECT_OUTPUT ||
 		cur->next->type == TYPE_DOUBLE_REDIRECT || cur->prev->type == HEAD))
 		write(1, line, ft_strlen(line));
-	else 
+	else
 		write(fd, line, ft_strlen(line));
 	free(line);
 	close(fd);
@@ -60,7 +73,7 @@ int		ft_redirect_input(t_node *cur)
 	char	*line;
 	int		fd;
 	int		ret;
-	
+
 	ret = 0;
 	line = ft_strdup("");
 	fd = open(cur->arg, O_RDONLY);

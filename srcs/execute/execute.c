@@ -6,20 +6,22 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:12:02 by schang            #+#    #+#             */
-/*   Updated: 2021/01/25 20:47:44 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/26 20:58:48 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdio.h>
 
-bool is_env_cmd(int type) {
+bool	is_env_cmd(int type)
+{
 	if (type == TYPE_CD || type == TYPE_EXPORT || type == TYPE_UNSET)
 		return (true);
 	return (false);
 }
 
-int execute_command(t_minishell *ms, t_node *cur) {
+int		execute_command(t_minishell *ms, t_node *cur)
+{
 	int ret;
 
 	if (cur->type == TYPE_CD)
@@ -36,7 +38,8 @@ int execute_command(t_minishell *ms, t_node *cur) {
 		ret = ft_echo(ms, cur);
 	else if (cur->type == TYPE_PWD)
 		ret = ft_pwd(cur);
-	else if (cur->type == TYPE_REDIRECT_OUTPUT || cur->type == TYPE_DOUBLE_REDIRECT)
+	else if (cur->type == TYPE_REDIRECT_OUTPUT
+		|| cur->type == TYPE_DOUBLE_REDIRECT)
 		ret = ft_redirect_output(ms, cur);
 	else if (cur->type == TYPE_REDIRECT_INPUT)
 		ret = ft_redirect_input(cur);
@@ -45,7 +48,8 @@ int execute_command(t_minishell *ms, t_node *cur) {
 	return (ret);
 }
 
-void close_fd(t_minishell *ms) {
+void	close_fd(t_minishell *ms)
+{
 	if (ms->newfd[0] != -1)
 	{
 		close(ms->newfd[0]);
@@ -68,19 +72,27 @@ void close_fd(t_minishell *ms) {
 	}
 }
 
-int execute(t_minishell *ms) {
-	t_node *cur;
-	int ret;
+int		execute(t_minishell *ms)
+{
+	t_node	*cur;
+	int		ret;
 
-	ret = 1;
 	cur = ms->cmd->head->next;
-	while (cur != ms->cmd->tail && !(ret = 0)) {
-		if (!(is_env_cmd(cur->type) || is_env_cmd(cur->prev->type)) && (cur->next->type == TYPE_REDIRECT_OUTPUT || cur->next->type == TYPE_REDIRECT_INPUT ||
-			cur->next->type == TYPE_DOUBLE_REDIRECT || cur->next->type == TYPE_PIPE ||
-			cur->type == TYPE_REDIRECT_OUTPUT || cur->type == TYPE_REDIRECT_INPUT ||
-			cur->type == TYPE_DOUBLE_REDIRECT || cur->prev->type == TYPE_PIPE || cur->prev->type == TYPE_REDIRECT_INPUT))
+	while (cur != ms->cmd->tail && !(ret = 0))
+	{
+		if (!(is_env_cmd(cur->type) || is_env_cmd(cur->prev->type))
+			&& (cur->next->type == TYPE_REDIRECT_OUTPUT
+			|| cur->next->type == TYPE_REDIRECT_INPUT
+			|| cur->next->type == TYPE_DOUBLE_REDIRECT
+			|| cur->next->type == TYPE_PIPE
+			|| cur->type == TYPE_REDIRECT_OUTPUT
+			|| cur->type == TYPE_REDIRECT_INPUT
+			|| cur->type == TYPE_DOUBLE_REDIRECT
+			|| cur->prev->type == TYPE_PIPE
+			|| cur->prev->type == TYPE_REDIRECT_INPUT))
 			ret = fork_process(ms, cur);
-		else if (!(cur->type == TYPE_REDIRECT_INPUT || cur->type == TYPE_PIPE))
+		else if (!(cur->type == TYPE_REDIRECT_INPUT
+			|| cur->type == TYPE_PIPE))
 			ret = execute_command(ms, cur);
 		ms->exit_status = ret;
 		cur = cur->next;

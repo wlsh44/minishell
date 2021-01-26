@@ -6,13 +6,13 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:10:48 by schang            #+#    #+#             */
-/*   Updated: 2021/01/26 20:39:33 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/26 20:48:03 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static bool is_error(bool *flag, char *arg)
+static bool	is_error(bool *flag, char *arg)
 {
 	if (ft_strchr(arg, NOT_VAILD_IDENTIFIER))
 	{
@@ -35,11 +35,12 @@ static bool is_error(bool *flag, char *arg)
 	return (false);
 }
 
-int ft_unset(t_minishell *ms, t_node *cur) {
-	char **args;
-	char **tmp;
-	char *key;
-	bool flag;
+int			ft_unset(t_minishell *ms, t_node *cur)
+{
+	char	**args;
+	char	**tmp;
+	char	*key;
+	bool	flag;
 
 	flag = false;
 	args = ft_split(cur->arg, ' ');
@@ -56,10 +57,6 @@ int ft_unset(t_minishell *ms, t_node *cur) {
 		}
 		args++;
 	}
-	while (*tmp) {
-		free(*tmp);
-		*tmp = NULL;
-		tmp++;
-	}
+	free_double_char(tmp);
 	return (0);
 }

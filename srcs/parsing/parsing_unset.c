@@ -6,15 +6,15 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 23:13:03 by schang            #+#    #+#             */
-/*   Updated: 2021/01/26 20:37:42 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/26 21:05:42 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int get_arg_unset(char **line, char *arg)
+int	get_arg_unset(char **line, char *arg)
 {
-	int ret;
+	int	ret;
 
 	ret = get_arg_key(line, &arg);
 	if (!ret && !(ft_isseparator(**line) || ft_isspace(**line) || !**line))
@@ -26,13 +26,13 @@ int get_arg_unset(char **line, char *arg)
 			(*line)++;
 	}
 	while (ft_isspace(**line))
-			(*line)++;
+		(*line)++;
 	*(arg++) = ' ';
 	*arg = '\0';
 	return (0);
 }
 
-int parsing_unset(t_lstcmd *cmd, char **line)
+int	parsing_unset(t_lstcmd *cmd, char **line)
 {
 	int		arg_num;
 	char	*arg;
@@ -40,7 +40,7 @@ int parsing_unset(t_lstcmd *cmd, char **line)
 	char	*save;
 
 	while (ft_isspace(**line))
-			(*line)++;
+		(*line)++;
 	arg_num = get_arg_num(*line);
 	arg = ft_strdup("");
 	while (arg_num--)

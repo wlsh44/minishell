@@ -6,13 +6,13 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:07:39 by schang            #+#    #+#             */
-/*   Updated: 2021/01/15 21:10:16 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/26 20:49:08 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	export_print_env(t_lstenv *env)
+int			export_print_env(t_lstenv *env)
 {
 	t_env_node	*cur;
 
@@ -34,7 +34,7 @@ int	export_print_env(t_lstenv *env)
 	return (0);
 }
 
-static bool is_error(bool *flag, char *arg)
+static bool	is_error(bool *flag, char *arg)
 {
 	if (ft_strchr(arg, NOT_VAILD_IDENTIFIER))
 	{
@@ -57,7 +57,7 @@ static bool is_error(bool *flag, char *arg)
 	return (false);
 }
 
-int set_env(t_minishell *ms, char *arg)
+int			set_env(t_minishell *ms, char *arg)
 {
 	char	*ptr;
 	char	*key;
@@ -79,7 +79,7 @@ int set_env(t_minishell *ms, char *arg)
 	return (0);
 }
 
-int	ft_export(t_minishell *ms, t_node *cur)
+int			ft_export(t_minishell *ms, t_node *cur)
 {
 	char	**args;
 	char	**tmp;
@@ -88,7 +88,7 @@ int	ft_export(t_minishell *ms, t_node *cur)
 
 	flag = false;
 	if (ft_strcmp(cur->arg, "") == 0)
-		return(export_print_env(ms->env));
+		return (export_print_env(ms->env));
 	args = ft_split(cur->arg, ' ');
 	tmp = args;
 	while (*args)
@@ -98,12 +98,6 @@ int	ft_export(t_minishell *ms, t_node *cur)
 				execute_error(ret);
 		args++;
 	}
-	while (*tmp)
-	{
-		free(*tmp);
-		*tmp = NULL;
-		tmp++;
-	}
-	//free(tmp);
-	return(0);
+	free_double_char(tmp);
+	return (0);
 }

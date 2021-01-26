@@ -1,20 +1,36 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/26 21:03:18 by schang            #+#    #+#             */
+/*   Updated: 2021/01/26 21:04:06 by schang           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int get_arg_num(char *line)
+int	get_arg_num(char *line)
 {
-	int arg_num;
-	int flag;
+	int	arg_num;
+	int	flag;
 
 	flag = 0;
 	arg_num = 0;
 	while (*line && !ft_isseparator(*line))
 	{
-		if (ft_isspace(*line)) {
+		if (ft_isspace(*line))
+		{
 			flag = 0;
 			while (ft_isspace(*line))
 				line++;
-		} else {
-			if (!flag) {
+		}
+		else
+		{
+			if (!flag)
+			{
 				flag = 1;
 				arg_num++;
 			}
@@ -24,9 +40,9 @@ int get_arg_num(char *line)
 	return (arg_num);
 }
 
-int get_arg_size(char *line)
+int	get_arg_size(char *line)
 {
-	int size;
+	int	size;
 
 	size = 0;
 	while (ft_isspace(*line))
@@ -39,9 +55,9 @@ int get_arg_size(char *line)
 	return (size);
 }
 
-int get_arg_char_basic(char **line, char *arg)
+int	get_arg_char_basic(char **line, char *arg)
 {
-	int ret;
+	int	ret;
 
 	ret = 0;
 	while (**line && !ft_isseparator(**line) && !ft_isspace(**line))
@@ -61,7 +77,7 @@ int get_arg_char_basic(char **line, char *arg)
 	return (ret);
 }
 
-int get_arg_char(char **line, char *arg)
+int	get_arg_char(char **line, char *arg)
 {
 	char	ret;
 
@@ -74,7 +90,7 @@ int get_arg_char(char **line, char *arg)
 	return (0);
 }
 
-int get_arg(char **line, char **arg)
+int	get_arg(char **line, char **arg)
 {
 	int		size;
 	int		ret;

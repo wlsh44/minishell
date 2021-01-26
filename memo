@@ -1,9 +1,0 @@
-export aa=\"a\" -> aa="a"
-
-
-echo aa\aa -> aaaa
-
-cd .. > 123 -> 123 만들어지는 위치 이상함
->> 파싱 잘 안됨
-
-< prev가 > 면 > 실행x
