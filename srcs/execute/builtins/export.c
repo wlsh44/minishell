@@ -12,15 +12,18 @@
 
 #include "minishell.h"
 
-int	export_print_env(t_lstenv *env) {
-	t_env_node *cur;
+int	export_print_env(t_lstenv *env)
+{
+	t_env_node	*cur;
 
 	cur = env->head->next;
-	while (cur != env->tail) {
+	while (cur != env->tail)
+	{
 		write(STDOUT_FILENO, "declare -x ", 11);
 		write(STDOUT_FILENO, cur->name, ft_strlen(cur->name));
 		write(STDOUT_FILENO, "=", 1);
-		if (cur->val) {
+		if (cur->val)
+		{
 			write(STDOUT_FILENO, "\"", 1);
 			write(STDOUT_FILENO, cur->val, ft_strlen(cur->val));
 			write(STDOUT_FILENO, "\"", 1);
@@ -31,35 +34,39 @@ int	export_print_env(t_lstenv *env) {
 	return (0);
 }
 
-int	ft_export(t_minishell *ms, t_node *cur) {
-	char *ptr;
-	char **args;
-	char **tmp;
-	char *name;
-	char *val;
+int	ft_export(t_minishell *ms, t_node *cur)
+{
+	char	*ptr;
+	char	**args;
+	char	**tmp;
+	char	*name;
+	char	*val;
 
-	if (ft_strcmp(cur->arg, "") == 0) {
+	if (ft_strcmp(cur->arg, "") == 0)
 		return(export_print_env(ms->env));
-	}
 	args = ft_split(cur->arg, ' ');
 	tmp = args;
-	while (*args && !(val = NULL)) {
+	while (*args && !(val = NULL))
+	{
 		ptr = ft_strchr(*args, '=');
-		if (ptr == NULL) {
-			if ((name = parse_env_val(ms, *args)) == NULL) {
+		if (ptr == NULL)
+		{
+			if ((name = parse_env_val(ms, *args)) == NULL)
 				return (export_print_env(ms->env));
-			}
-		} else {
+			free(name);
+		}
+		else
+		{
 			*ptr++ = '\0';
-			if ((name = parse_env_val(ms, *args)) == NULL) {
+			if ((name = parse_env_val(ms, *args)) == NULL)
 				return (NOT_VAILD_IDENTIFIER);
-			}
 			val = parse_env_val(ms, ptr);
 			update_env(ms->env, name, val);
 		}
 		args++;
 	}
-	while (*tmp) {
+	while (*tmp)
+	{
 		free(*tmp);
 		*tmp = NULL;
 		tmp++;

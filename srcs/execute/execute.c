@@ -46,18 +46,24 @@ int execute_command(t_minishell *ms, t_node *cur) {
 }
 
 void close_fd(t_minishell *ms) {
-	if (ms->newfd[0] == -1 || ms->newfd[1] == -1)
+	if (ms->newfd[0] != -1)
 	{
 		close(ms->newfd[0]);
-		close(ms->newfd[1]);
 		ms->newfd[0] = -1;
+	}
+	if (ms->newfd[1] != -1)
+	{
+		close(ms->newfd[1]);
 		ms->newfd[1] = -1;
 	}
-	if (ms->oldfd[0] == -1 || ms->oldfd[1] == -1)
+	if (ms->oldfd[0] != -1)
 	{
 		close(ms->oldfd[0]);
-		close(ms->oldfd[1]);
 		ms->oldfd[0] = -1;
+	}
+	if (ms->oldfd[1] != -1)
+	{
+		close(ms->oldfd[1]);
 		ms->oldfd[1] = -1;
 	}
 }

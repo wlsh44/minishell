@@ -19,13 +19,15 @@ void	ft_default_sighandler(int code)
 
 void init_ms(t_minishell *ms)
 {
-	ms->cmd = malloc(sizeof(ms->cmd));
+	ms->cmd = malloc(sizeof(t_lstcmd));
 	ms->cmd->head = malloc(sizeof(t_node));
 	ms->cmd->tail = malloc(sizeof(t_node));
 	ms->cmd->head->prev = NULL;
 	ms->cmd->head->next = ms->cmd->tail;
 	ms->cmd->tail->prev = ms->cmd->head;
 	ms->cmd->tail->next = NULL;
+	ms->cmd->head->type = HEAD;
+	ms->cmd->tail->type = TAIL;
 	ms->env = malloc(sizeof(t_lstenv));
 	ms->env->head = malloc(sizeof(t_env_node));
 	ms->env->tail = malloc(sizeof(t_env_node));
@@ -39,11 +41,21 @@ void init_ms(t_minishell *ms)
 	ms->newfd[1] = -1;
 }
 
+void free_ms(t_minishell *ms)
+{
+	free(ms->env->head);
+	free(ms->env->tail);
+	free(ms->env);
+	free(ms->cmd->head);
+	free(ms->cmd->tail);
+	free(ms->cmd);
+}
+
 int main(int argc, char *argv[], char *envp[]) {
 	t_minishell	ms;
 	char		*line;
 	int			ret;
-
+	
 	(void)argc;
 	(void)argv;
 	init_ms(&ms);
@@ -76,9 +88,10 @@ int main(int argc, char *argv[], char *envp[]) {
 					execute_error(ret);
 			}
 			clear(ms.cmd);
-			//if (ms.cmd_line)
-				//free(ms.cmd_line);
+			if (line)
+				free(line);
 		}
 	}
+	free_ms(&ms);
 	return (exit_status);
 }

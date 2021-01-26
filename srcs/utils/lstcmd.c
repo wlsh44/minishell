@@ -54,6 +54,10 @@ void clear(t_lstcmd *cmd) {
 	cur = cmd->head->next;
 	while (cur != cmd->tail) {
 		cur = cur->next;
+		if (cur->prev->name) {
+			free(cur->prev->name);
+			cur->prev->name = NULL;
+		}
 		if (cur->prev->arg) {
 			free(cur->prev->arg);
 			cur->prev->arg = NULL;
@@ -73,8 +77,10 @@ void show(t_lstcmd *cmd) {
 	cur = cmd->head->next;
 	while (cur != cmd->tail) {
 		//printf("TYPE: %d\nARG: %s\n", cur->type, cur->arg);
+		char *a = ft_itoa(cur->type);
 		write(1, "TYPE: ", 6);
-		write(1, ft_itoa(cur->type), 2);
+		write(1, a, 2);
+		free(a);
 		if (cur->name)
 		{
 			write(1, "\nNAME: ", 8);

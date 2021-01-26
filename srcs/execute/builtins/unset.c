@@ -22,13 +22,12 @@ int ft_unset(t_minishell *ms, t_node *cur) {
 	args = ft_split(cur->arg, ' ');
 	tmp = args;
 	while (*args && !(val = NULL)) {
-		ptr = ft_strchr(*args, '=');
-		if (ptr != NULL) {
-			return (NOT_VAILD_IDENTIFIER);
-		} else {
-			if ((name = parse_env_val(ms, *args)) == NULL) {
-				continue;
-			}
+		// ptr = ft_strchr(*args, '=');
+		// if (ptr != NULL) {
+		// 	return (NOT_VAILD_IDENTIFIER);
+		//} else {
+		if ((name = parse_env_val(ms, *args)) != NULL)
+		{
 			delete_env(ms->env, name);
 			free(name);
 		}

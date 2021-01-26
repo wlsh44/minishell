@@ -1,6 +1,9 @@
 #include "minishell.h"
 
-void set_pipe(t_minishell *ms, t_node *cur) {
+void	set_pipe(t_minishell *ms, t_node *cur)
+{
+	if (ms->newfd[0] == -1 && ms->newfd[1] == -1)
+		return ;
 	if (cur->type == TYPE_REDIRECT_OUTPUT || cur->type == TYPE_DOUBLE_REDIRECT ||
 		cur->prev->type == TYPE_PIPE || cur->prev->type == TYPE_REDIRECT_INPUT)
 	{
@@ -9,17 +12,20 @@ void set_pipe(t_minishell *ms, t_node *cur) {
 		close(ms->oldfd[1]);
 	}
 	if (cur->next->type == TYPE_REDIRECT_OUTPUT || cur->next->type == TYPE_DOUBLE_REDIRECT ||
-		cur->next->type == TYPE_PIPE || cur->type == TYPE_REDIRECT_INPUT) {
+		cur->next->type == TYPE_PIPE || cur->type == TYPE_REDIRECT_INPUT)
+	{
 		dup2(ms->newfd[1], STDOUT_FILENO);
 		close(ms->newfd[0]);
 		close(ms->newfd[1]);
 	}
 }
 
-void sort_cmd(t_node *cur) {
-	t_node *node;
+void	sort_cmd(t_node *cur)
+{
+	t_node	*node;
 
-	while (cur->next->type == TYPE_REDIRECT_INPUT) {
+	while (cur->next->type == TYPE_REDIRECT_INPUT)
+	{
 		node = cur->next;
 		node->next->prev = cur;
 		cur->prev->next = node;
@@ -30,7 +36,10 @@ void sort_cmd(t_node *cur) {
 	}
 }
 
-void close_used_fd(t_minishell *ms, t_node *cur) {
+void close_used_fd(t_minishell *ms, t_node *cur)
+{
+	if (ms->newfd[0] == -1 && ms->newfd[1] == -1)
+		return ;
 	if (cur->type == TYPE_REDIRECT_OUTPUT || cur->type == TYPE_DOUBLE_REDIRECT ||
 		cur->prev->type == TYPE_PIPE || cur->prev->type == TYPE_REDIRECT_INPUT) {
 		close(ms->oldfd[0]);
@@ -43,17 +52,20 @@ void close_used_fd(t_minishell *ms, t_node *cur) {
 	}
 }
 
-void save_pipe(int old[], int new[]) {
+void	save_pipe(int old[], int new[])
+{
 	old[0] = new[0];
 	old[1] = new[1];
 }
 
-int fork_process(t_minishell *ms, t_node *cur) {
-	pid_t pid;
-	int ret;
-	int status;
+int		fork_process(t_minishell *ms, t_node *cur)
+{
+	pid_t	pid;
+	int		ret;
+	int		status;
 
-	if (cur->next->type == TYPE_REDIRECT_INPUT) {
+	if (cur->next->type == TYPE_REDIRECT_INPUT)
+	{
 		sort_cmd(cur);
 		ret = fork_process(ms, cur->prev);
 	}
@@ -65,7 +77,8 @@ int fork_process(t_minishell *ms, t_node *cur) {
 	pid = fork();
 	if (pid > 0)
 		waitpid(pid, &status, 0);
-	else if (pid == 0) {
+	else if (pid == 0)
+	{
 		set_pipe(ms, cur);
 		ret = execute_command(ms, cur);
 		exit(0);

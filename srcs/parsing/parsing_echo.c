@@ -16,8 +16,6 @@ int get_arg_char_echo(char **line, char *arg) {
 	while (ft_isspace(**line))
 		(*line)++;
 	quote = get_arg_char_basic(line, arg);
-	while (ft_isspace(*(arg - 1)))
-		arg--;
 	if (quote)
 		return (WRONG_QUOTE);
 	return (0);

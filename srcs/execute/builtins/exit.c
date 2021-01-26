@@ -16,6 +16,8 @@
 void	free_lstcmd(t_lstcmd *cmd)
 {
 	clear(cmd);
+	free(cmd->head);
+	free(cmd->tail);
 }
 
 void	free_lstenv(t_lstenv *env)
@@ -39,6 +41,8 @@ void	free_lstenv(t_lstenv *env)
 	}
 	env->head->next = env->tail;
 	env->tail->prev = env->head;
+	free(env->head);
+	free(env->tail);
 }
 
 int	ft_exit(t_minishell *ms)
