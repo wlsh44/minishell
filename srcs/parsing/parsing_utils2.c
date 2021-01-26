@@ -27,7 +27,7 @@ int get_arg_key_quote(char **line, char **arg)
 	int quote;
 
 	quote = *(*line)++;
-	while (**line && !ft_isseparator(**line) && !ft_isspace(**line) && **line != '=')
+	while (**line && !(ft_isseparator(**line) || ft_isspace(**line) || **line == '='))
 	{
 		if (ft_isalpha(**line) || ft_isdigit(**line) || **line == '_')
 			*(*arg)++ = *(*line)++;
@@ -38,8 +38,10 @@ int get_arg_key_quote(char **line, char **arg)
 			break;
 		}
 		else
-			return (NOT_VAILD_ARG);
+			return (NOT_VAILD_IDENTIFIER);
 	}
+	if (quote)
+		return (WRONG_QUOTE);
 	return (0);
 }
 

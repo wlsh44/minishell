@@ -34,35 +34,68 @@ int	export_print_env(t_lstenv *env)
 	return (0);
 }
 
-int	ft_export(t_minishell *ms, t_node *cur)
+static bool is_error(bool *flag, char *arg)
+{
+	if (ft_strchr(arg, NOT_VAILD_IDENTIFIER))
+	{
+		if (!*flag)
+		{
+			*flag = true;
+			execute_error(NOT_VAILD_IDENTIFIER);
+		}
+		return (true);
+	}
+	if (ft_strchr(arg, WRONG_QUOTE))
+	{
+		if (!*flag)
+		{
+			*flag = true;
+			execute_error(WRONG_QUOTE);
+		}
+		return (true);
+	}
+	return (false);
+}
+
+int set_env(t_minishell *ms, char *arg)
 {
 	char	*ptr;
+	char	*key;
+
+	ptr = ft_strchr(arg, '=');
+	if (ptr == NULL)
+	{
+		if ((key = parse_env_val(ms, arg)) == NULL)
+			return (export_print_env(ms->env));
+		free(key);
+	}
+	else
+	{
+		*ptr++ = '\0';
+		if ((key = parse_env_val(ms, arg)) == NULL)
+			return (NOT_VAILD_IDENTIFIER);
+		update_env(ms->env, key, parse_env_val(ms, ptr));
+	}
+	return (0);
+}
+
+int	ft_export(t_minishell *ms, t_node *cur)
+{
 	char	**args;
 	char	**tmp;
-	char	*name;
-	char	*val;
+	bool	flag;
+	int		ret;
 
+	flag = false;
 	if (ft_strcmp(cur->arg, "") == 0)
 		return(export_print_env(ms->env));
 	args = ft_split(cur->arg, ' ');
 	tmp = args;
-	while (*args && !(val = NULL))
+	while (*args)
 	{
-		ptr = ft_strchr(*args, '=');
-		if (ptr == NULL)
-		{
-			if ((name = parse_env_val(ms, *args)) == NULL)
-				return (export_print_env(ms->env));
-			free(name);
-		}
-		else
-		{
-			*ptr++ = '\0';
-			if ((name = parse_env_val(ms, *args)) == NULL)
-				return (NOT_VAILD_IDENTIFIER);
-			val = parse_env_val(ms, ptr);
-			update_env(ms->env, name, val);
-		}
+		if (!is_error(&flag, *args))
+			if ((ret = set_env(ms, *args)) < 0 && !flag)
+				execute_error(ret);
 		args++;
 	}
 	while (*tmp)
