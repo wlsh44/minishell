@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 20:52:28 by schang            #+#    #+#             */
-/*   Updated: 2021/01/26 21:00:04 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/26 23:53:44 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,10 @@ int		fork_process(t_minishell *ms, t_node *cur)
 	else if (pid == 0)
 	{
 		set_pipe(ms, cur);
-		ret = execute_command(ms, cur);
-		exit(0);
+		status = execute_command(ms, cur);
+		exit(status);
 	}
 	close_used_fd(ms, cur);
-	return (ret);
+	status = WEXITSTATUS(status);
+	return (status);
 }

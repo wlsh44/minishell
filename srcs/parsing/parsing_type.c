@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 23:26:22 by schang            #+#    #+#             */
-/*   Updated: 2021/01/25 23:27:40 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/27 00:39:17 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,26 @@ int	parsing_type3(char **line)
 	return (type);
 }
 
+/*
+bool	check_quote(char quote, char *str)
+{
+	while (*str && !ft_isspace(*str) && !ft_isseparator(*str))
+	{
+		if (quote == 0 && ft_isquote(*str))
+			return (false);
+		else if (*str == quote)
+			return (true);
+		str++;
+	}
+	return (false);
+}
+*/
+
 int	parsing_type(char **line)
 {
 	char	quote;
 	int		type;
+	char	*tmp;
 
 	quote = 0;
 	if (ft_isquote(**line))
@@ -111,7 +127,12 @@ int	parsing_type(char **line)
 		type = parsing_type3(line);
 	if (!type)
 		type = TYPE_NORMAL;
-	if (quote && *(*line)++ != quote)
+	/*
+	tmp = *line;
+	if (type == TYPE_NORMAL && !check_quote(quote, tmp))
+		type = WRONG_QUOTE;
+	*/
+	if (type != TYPE_NORMAL && quote && *(*line)++ != quote)
 		type = WRONG_QUOTE;
 	return (type);
 }
