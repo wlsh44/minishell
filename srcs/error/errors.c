@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 22:47:42 by schang            #+#    #+#             */
-/*   Updated: 2021/01/25 22:48:34 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/26 20:40:21 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@ void	execute_error(int err)
 {
 	if (err == NOT_VAILD_IDENTIFIER)
 		write(1, "not a vaild identifier\n", 24);
-	else if (err == NO_DIRECTORY)
-		write(1, "No such file or directory\n", 27);
+	else if (err == NO_DIRECTORY) {
+		write(1, "no such file or directory\n", 27);
+	} else if (err == WRONG_QUOTE) {
+		write(1, "wrong quote\n", 12);
+	}
 }

@@ -13,31 +13,9 @@ int check_echo_option(char **line) {
 int get_arg_char_echo(char **line, char *arg) {
 	char quote;
 
-	quote = 0;
 	while (ft_isspace(**line))
 		(*line)++;
-	while (**line && !ft_isseparator(**line)) {
-		if (**line == '\\') {
-			(*line)++;
-			if (**line)
-				*(arg++) = *(*line)++;
-		} else if (ft_isquote(**line)) {
-			quote = *(*line)++;
-			while (**line && !ft_isseparator(**line)) {
-				if (**line == quote) {
-					quote = 0;
-					(*line)++;
-					break;
-				} else if (**line == '\\' && (ft_isquote(*line[1]) == 1 || (*line)[1] == '\\'))
-					(*line)++;
-				*(arg++) = *(*line)++;
-			}
-		} else
-			*(arg++) = *(*line)++;
-	}
-	while (ft_isspace(*(arg - 1)))
-		arg--;
-	*arg = '\0';
+	quote = get_arg_char_basic(line, arg);
 	if (quote)
 		return (WRONG_QUOTE);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 22:55:57 by schang            #+#    #+#             */
-/*   Updated: 2021/01/25 23:03:39 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/26 20:36:54 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,11 @@ void	clear(t_lstcmd *cmd)
 	while (cur != cmd->tail)
 	{
 		cur = cur->next;
-		if (cur->prev->arg)
-		{
+		if (cur->prev->name) {
+			free(cur->prev->name);
+			cur->prev->name = NULL;
+		}
+		if (cur->prev->arg) {
 			free(cur->prev->arg);
 			cur->prev->arg = NULL;
 		}

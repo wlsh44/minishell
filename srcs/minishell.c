@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 22:45:36 by schang            #+#    #+#             */
-/*   Updated: 2021/01/26 00:03:00 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/26 20:39:09 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,15 @@ int		g_exit_status;
 
 void	init_ms(t_minishell *ms)
 {
-	ms->cmd = malloc(sizeof(ms->cmd));
+	ms->cmd = malloc(sizeof(t_lstcmd));
 	ms->cmd->head = malloc(sizeof(t_node));
 	ms->cmd->tail = malloc(sizeof(t_node));
 	ms->cmd->head->prev = NULL;
 	ms->cmd->head->next = ms->cmd->tail;
 	ms->cmd->tail->prev = ms->cmd->head;
 	ms->cmd->tail->next = NULL;
+	ms->cmd->head->type = HEAD;
+	ms->cmd->tail->type = TAIL;
 	ms->env = malloc(sizeof(t_lstenv));
 	ms->env->head = malloc(sizeof(t_env_node));
 	ms->env->tail = malloc(sizeof(t_env_node));
@@ -30,6 +32,10 @@ void	init_ms(t_minishell *ms)
 	ms->env->head->next = ms->env->tail;
 	ms->env->tail->prev = ms->env->head;
 	ms->env->tail->next = NULL;
+	ms->oldfd[0] = -1;
+	ms->oldfd[1] = -1;
+	ms->newfd[0] = -1;
+	ms->newfd[1] = -1;
 }
 
 int		main(int argc, char *argv[], char *envp[]) {
@@ -70,8 +76,8 @@ int		main(int argc, char *argv[], char *envp[]) {
 					execute_error(ret);
 			}
 			clear(ms.cmd);
-			//if (ms.cmd_line)
-				//free(ms.cmd_line);
+			if (line)
+				free(line);
 		}
 	}
 	return (g_exit_status);

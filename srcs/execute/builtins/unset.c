@@ -6,34 +6,53 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:10:48 by schang            #+#    #+#             */
-/*   Updated: 2021/01/25 22:53:04 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/26 20:39:33 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_unset(t_minishell *ms, t_node *cur)
+static bool is_error(bool *flag, char *arg)
 {
-	char	*ptr;
-	char	**args;
-	char	**tmp;
-	char	*name;
-	char	*val;
+	if (ft_strchr(arg, NOT_VAILD_IDENTIFIER))
+	{
+		if (!*flag)
+		{
+			*flag = true;
+			execute_error(NOT_VAILD_IDENTIFIER);
+		}
+		return (true);
+	}
+	if (ft_strchr(arg, WRONG_QUOTE))
+	{
+		if (!*flag)
+		{
+			*flag = true;
+			execute_error(WRONG_QUOTE);
+		}
+		return (true);
+	}
+	return (false);
+}
 
+int ft_unset(t_minishell *ms, t_node *cur) {
+	char **args;
+	char **tmp;
+	char *key;
+	bool flag;
+
+	flag = false;
 	args = ft_split(cur->arg, ' ');
 	tmp = args;
-	while (*args && !(val = NULL))
+	while (*args)
 	{
-		ptr = ft_strchr(*args, '=');
-		if (ptr != NULL)
-			return (NOT_VAILD_IDENTIFIER);
-		else
+		if (!is_error(&flag, *args))
 		{
-			if ((name = parse_env_val(ms, *args)) == NULL)
-				continue;
-			delete_env(ms->env, name);
-			free(name);
-			break ;
+			if ((key = parse_env_val(ms, *args)) != NULL)
+			{
+				delete_env(ms->env, key);
+				free(key);
+			}
 		}
 		args++;
 	}

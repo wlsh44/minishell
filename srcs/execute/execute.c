@@ -46,18 +46,24 @@ int execute_command(t_minishell *ms, t_node *cur) {
 }
 
 void close_fd(t_minishell *ms) {
-	if (ms->newfd[0] == -1 || ms->newfd[1] == -1)
+	if (ms->newfd[0] != -1)
 	{
 		close(ms->newfd[0]);
-		close(ms->newfd[1]);
 		ms->newfd[0] = -1;
+	}
+	if (ms->newfd[1] != -1)
+	{
+		close(ms->newfd[1]);
 		ms->newfd[1] = -1;
 	}
-	if (ms->oldfd[0] == -1 || ms->oldfd[1] == -1)
+	if (ms->oldfd[0] != -1)
 	{
 		close(ms->oldfd[0]);
-		close(ms->oldfd[1]);
 		ms->oldfd[0] = -1;
+	}
+	if (ms->oldfd[1] != -1)
+	{
+		close(ms->oldfd[1]);
 		ms->oldfd[1] = -1;
 	}
 }
@@ -69,7 +75,7 @@ int execute(t_minishell *ms) {
 	ret = 1;
 	cur = ms->cmd->head->next;
 	while (cur != ms->cmd->tail && !(ret = 0)) {
-		if (!is_env_cmd(cur->type) && (cur->next->type == TYPE_REDIRECT_OUTPUT || cur->next->type == TYPE_REDIRECT_INPUT ||
+		if (!(is_env_cmd(cur->type) || is_env_cmd(cur->prev->type)) && (cur->next->type == TYPE_REDIRECT_OUTPUT || cur->next->type == TYPE_REDIRECT_INPUT ||
 			cur->next->type == TYPE_DOUBLE_REDIRECT || cur->next->type == TYPE_PIPE ||
 			cur->type == TYPE_REDIRECT_OUTPUT || cur->type == TYPE_REDIRECT_INPUT ||
 			cur->type == TYPE_DOUBLE_REDIRECT || cur->prev->type == TYPE_PIPE || cur->prev->type == TYPE_REDIRECT_INPUT))

@@ -6,14 +6,21 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 23:12:23 by schang            #+#    #+#             */
-/*   Updated: 2021/01/25 23:30:21 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/26 20:37:53 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	parsing_pipe(t_lstcmd *cmd)
+int parsing_semicolon(t_minishell *ms, char **line)
 {
+	(*line)++;
+	if (ms->cmd->head->next == ms->cmd->tail)
+		return (SYNTAX_ERROR);
+	return (0);
+}
+
+int parsing_pipe(t_lstcmd *cmd) {
 	push_back(cmd, TYPE_PIPE, NULL);
 	return (0);
 }
