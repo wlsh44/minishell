@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 20:52:10 by schang            #+#    #+#             */
-/*   Updated: 2021/01/25 22:55:11 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/26 23:24:25 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ char	**get_env_list(t_minishell *ms)
 	while (cur != ms->env->tail)
 	{
 		tmp = ft_strjoin(cur->name, "=");
-		env_list[cnt] = ft_strjoin(tmp, cur->val);
+		if (cur->val)
+			env_list[cnt] = ft_strjoin(tmp, cur->val);
 		free(tmp);
 		cur = cur->next;
 		cnt++;

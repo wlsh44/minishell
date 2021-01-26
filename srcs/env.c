@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 22:59:11 by schang            #+#    #+#             */
-/*   Updated: 2021/01/25 23:06:45 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/26 23:24:43 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ void	init_env(t_minishell *ms, char *envp[])
 		if (ptr == NULL || !*(ptr + 1))
 		{
 			name = ft_strdup(*envp);
+			name[ft_strlen(name) - 1] = 0;
 		}
 		else
 		{
