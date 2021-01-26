@@ -44,7 +44,8 @@ int ft_unset(t_minishell *ms, t_node *cur) {
 	flag = false;
 	args = ft_split(cur->arg, ' ');
 	tmp = args;
-	while (*args) {
+	while (*args)
+	{
 		if (!is_error(&flag, *args))
 		{
 			if ((key = parse_env_val(ms, *args)) != NULL)
