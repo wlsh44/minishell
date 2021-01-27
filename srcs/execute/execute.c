@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:12:02 by schang            #+#    #+#             */
-/*   Updated: 2021/01/26 22:17:51 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/27 21:19:12 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,7 @@ int		execute(t_minishell *ms)
 			|| cur->prev->type == TYPE_PIPE
 			|| cur->prev->type == TYPE_REDIRECT_INPUT))
 			ret = fork_process(ms, cur);
-		else if (!(cur->type == TYPE_REDIRECT_INPUT
-			|| cur->type == TYPE_PIPE))
+		else if (!(cur->type == TYPE_REDIRECT_INPUT || cur->type == TYPE_PIPE))
 			ret = execute_command(ms, cur);
 		if (ret != 0)
 			break ;

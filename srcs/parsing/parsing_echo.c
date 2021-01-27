@@ -6,18 +6,11 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 21:00:43 by schang            #+#    #+#             */
-/*   Updated: 2021/01/26 21:06:34 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/27 21:21:19 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	endline_condition_quote(char c)
-{
-	if (c == 0 || ft_isseparator(c))
-		return (1);
-	return (0);
-}
 
 int	check_echo_option(char **line)
 {

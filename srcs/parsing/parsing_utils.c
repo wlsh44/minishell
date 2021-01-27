@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 21:03:18 by schang            #+#    #+#             */
-/*   Updated: 2021/01/26 21:04:06 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/27 21:22:26 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,12 @@ int	get_arg_size(char *line)
 	return (size);
 }
 
-int	get_arg_char_basic(char **line, char *arg, int(*endline_condition)(char c))
+int	get_arg_char_basic(char **line, char *arg, int (*endline_cond)(char c))
 {
 	int	ret;
 
 	ret = 0;
-	while (!endline_condition(**line))
+	while (!endline_cond(**line))
 	{
 		if (**line == '\\')
 		{

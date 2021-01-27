@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 20:54:34 by schang            #+#    #+#             */
-/*   Updated: 2021/01/25 23:03:52 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/27 21:21:33 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,6 @@ char	**get_env_list(t_minishell *ms);
 char	**ft_bin_args(char *cmd, char *arg);
 char	*ft_check_abs_path(t_minishell *ms, char *name);
 void	show(t_lstcmd *cmd);
+int		endline_condition_quote(char c);
 
 #endif

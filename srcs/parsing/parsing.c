@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 23:31:09 by schang            #+#    #+#             */
-/*   Updated: 2021/01/26 20:38:37 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/27 21:23:31 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,23 @@ int	parsing_cmd1(t_minishell *ms, char **line, char *arg)
 {
 	if (!ft_strncmp(arg, "cd", ft_strlen(arg)) && ft_endline_condition(**line))
 		return (parsing_cd(ms->cmd, line));
-	else if (!ft_strncmp(arg, "pwd", ft_strlen(arg))&& ft_endline_condition(**line))
+	else if (!ft_strncmp(arg, "pwd", ft_strlen(arg))
+		&& ft_endline_condition(**line))
 		return (parsing_pwd(ms->cmd, line));
-	else if (!ft_strncmp(arg, "echo", ft_strlen(arg)) && ft_endline_condition(**line))
+	else if (!ft_strncmp(arg, "echo", ft_strlen(arg))
+		&& ft_endline_condition(**line))
 		return (parsing_echo(ms->cmd, line));
-	else if (!ft_strncmp(arg, "export", ft_strlen(arg)) && ft_endline_condition(**line))
+	else if (!ft_strncmp(arg, "export", ft_strlen(arg))
+		&& ft_endline_condition(**line))
 		return (parsing_export(ms->cmd, line));
-	else if (!ft_strncmp(arg, "env", ft_strlen(arg)) && ft_endline_condition(**line))
+	else if (!ft_strncmp(arg, "env", ft_strlen(arg))
+		&& ft_endline_condition(**line))
 		return (parsing_env(ms->cmd, line));
-	else if (!ft_strncmp(arg, "unset", ft_strlen(arg)) && ft_endline_condition(**line))
+	else if (!ft_strncmp(arg, "unset", ft_strlen(arg))
+		&& ft_endline_condition(**line))
 		return (parsing_unset(ms->cmd, line));
-	else if (!ft_strncmp(arg, "exit", ft_strlen(arg)) && ft_endline_condition(**line))
+	else if (!ft_strncmp(arg, "exit", ft_strlen(arg))
+		&& ft_endline_condition(**line))
 		return (parsing_exit(ms->cmd, line));
 	return (1);
 }
@@ -43,7 +49,7 @@ int	parsing_cmd2(t_minishell *ms, char **line, char *arg)
 		return (parsing_pipe(ms->cmd));
 	else if (!ft_strncmp(arg, ";", ft_strlen(arg)) && !ft_isseparator(**line))
 		return (parsing_semicolon(ms, line));
-	else 
+	else
 		return (parsing_bin(ms->cmd, line, arg));
 	return (0);
 }
