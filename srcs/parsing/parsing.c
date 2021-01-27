@@ -12,51 +12,56 @@
 
 #include "minishell.h"
 
-int	ft_endline_condition(char c)
+int	parsing_cmd1(t_minishell *ms, char **line, char *arg)
 {
-	if (c == 0 || ft_isspace(c) || ft_isseparator(c))
-		return (1);
-	return (0);
-}
-
-int	parsing_cmd1(t_minishell *ms, char **line, int type)
-{
-	if (type == TYPE_CD && ft_endline_condition(**line))
+	if (!ft_strncmp(arg, "cd", ft_strlen(arg)) && ft_endline_condition(**line))
 		return (parsing_cd(ms->cmd, line));
-	else if (type == TYPE_PWD && ft_endline_condition(**line))
+	else if (!ft_strncmp(arg, "pwd", ft_strlen(arg))&& ft_endline_condition(**line))
 		return (parsing_pwd(ms->cmd, line));
-	else if (type == TYPE_ECHO && ft_endline_condition(**line))
+	else if (!ft_strncmp(arg, "echo", ft_strlen(arg)) && ft_endline_condition(**line))
 		return (parsing_echo(ms->cmd, line));
-	else if (type == TYPE_EXPORT && ft_endline_condition(**line))
+	else if (!ft_strncmp(arg, "export", ft_strlen(arg)) && ft_endline_condition(**line))
 		return (parsing_export(ms->cmd, line));
-	else if (type == TYPE_ENV && ft_endline_condition(**line))
+	else if (!ft_strncmp(arg, "env", ft_strlen(arg)) && ft_endline_condition(**line))
 		return (parsing_env(ms->cmd, line));
-	else if (type == TYPE_UNSET && ft_endline_condition(**line))
+	else if (!ft_strncmp(arg, "unset", ft_strlen(arg)) && ft_endline_condition(**line))
 		return (parsing_unset(ms->cmd, line));
-	else if (type == TYPE_EXIT && ft_endline_condition(**line))
+	else if (!ft_strncmp(arg, "exit", ft_strlen(arg)) && ft_endline_condition(**line))
 		return (parsing_exit(ms->cmd, line));
-	else if (!(type == TYPE_REDIRECT_INPUT || type == TYPE_REDIRECT_OUTPUT
-		|| type == TYPE_DOUBLE_REDIRECT || type == TYPE_PIPE
-		|| type == TYPE_SEMICOLON))
-		return (parsing_bin(ms->cmd, line));
+	return (1);
+}
+
+int	parsing_cmd2(t_minishell *ms, char **line, char *arg)
+{
+	if (!ft_strncmp(arg, ">", ft_strlen(arg)) && !ft_isseparator(**line))
+		return (parsing_redirect_output(ms->cmd, line));
+	else if (!ft_strncmp(arg, "<", ft_strlen(arg)) && !ft_isseparator(**line))
+		return (parsing_redirect_input(ms->cmd, line));
+	else if (!ft_strncmp(arg, ">>", ft_strlen(arg)) && !ft_isseparator(**line))
+		return (parsing_double_redirect(ms->cmd, line));
+	else if (!ft_strncmp(arg, "|", ft_strlen(arg)) && !ft_isseparator(**line))
+		return (parsing_pipe(ms->cmd));
+	else if (!ft_strncmp(arg, ";", ft_strlen(arg)) && !ft_isseparator(**line))
+		return (parsing_semicolon(ms, line));
+	else 
+		return (parsing_bin(ms->cmd, line, arg));
 	return (0);
 }
 
-int	parsing_cmd2(t_minishell *ms, char **line, int type)
+int	parsing_cmd(t_minishell *ms, char **line)
 {
-	int ret;
+	char	*arg;
+	int		size;
+	int		ret;
 
-	ret = 0;
-	if (type == TYPE_REDIRECT_OUTPUT && !ft_isseparator(**line))
-		ret = parsing_redirect_output(ms->cmd, line);
-	else if (type == TYPE_REDIRECT_INPUT && !ft_isseparator(**line))
-		ret = parsing_redirect_input(ms->cmd, line);
-	else if (type == TYPE_DOUBLE_REDIRECT && !ft_isseparator(**line))
-		ret = parsing_double_redirect(ms->cmd, line);
-	else if (type == TYPE_PIPE && !ft_isseparator(**line))
-		ret = parsing_pipe(ms->cmd);
-	else if (type == TYPE_SEMICOLON && !ft_isseparator(**line))
-		ret = parsing_semicolon(ms, line);
+	size = get_arg_size(*line);
+	arg = malloc(sizeof(char) * (size + 1));
+	ret = get_arg_char_basic(line, arg, ft_endline_condition);
+	if (!(ret < 0))
+		ret = parsing_cmd1(ms, line, arg);
+	if (ret)
+		ret = parsing_cmd2(ms, line, arg);
+	free(arg);
 	return (ret);
 }
 
@@ -71,15 +76,8 @@ int	parsing(t_minishell *ms)
 	{
 		while (ft_isspace(**line))
 			(*line)++;
-		if ((type = parsing_type(line)) < 0)
-		{
-			ret = type;
-			break ;
-		}
-		if ((ret = parsing_cmd1(ms, line, type)) < 0)
-			break ;
-		if ((ret = parsing_cmd2(ms, line, type)) < 0)
-			break ;
+		if ((ret = parsing_cmd(ms, line)) < 0)
+			return (ret);
 	}
 	return (ret);
 }

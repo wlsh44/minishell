@@ -14,7 +14,6 @@
 
 int	parsing_semicolon(t_minishell *ms, char **line)
 {
-	(*line)++;
 	if (ms->cmd->head->next == ms->cmd->tail)
 		return (SYNTAX_ERROR);
 	return (0);

@@ -55,12 +55,12 @@ int	get_arg_size(char *line)
 	return (size);
 }
 
-int	get_arg_char_basic(char **line, char *arg)
+int	get_arg_char_basic(char **line, char *arg, int(*endline_condition)(char c))
 {
 	int	ret;
 
 	ret = 0;
-	while (**line && !ft_isseparator(**line) && !ft_isspace(**line))
+	while (!endline_condition(**line))
 	{
 		if (**line == '\\')
 		{
@@ -83,7 +83,7 @@ int	get_arg_char(char **line, char *arg)
 
 	while (ft_isspace(**line))
 		(*line)++;
-	if ((ret = get_arg_char_basic(line, arg)) < 0)
+	if ((ret = get_arg_char_basic(line, arg, ft_endline_condition)) < 0)
 		return (ret);
 	while (ft_isspace(**line))
 		(*line)++;
