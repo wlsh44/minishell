@@ -33,7 +33,7 @@ void	bin_child_sighandler(int code)
 		write(STDOUT_FILENO, "\n", 1);
 		exit(0);
 	}
-	else if (code = SIGQUIT)
+	else if (code == SIGQUIT)
 		exit(0);
 }
 

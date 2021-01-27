@@ -12,12 +12,19 @@
 
 #include "minishell.h"
 
+int	ft_endline_condition(char c)
+{
+	if (c == 0 || ft_isspace(c) || ft_isseparator(c))
+		return (1);
+	return (0);
+}
+
 int	get_arg_quote(char **line, char **arg)
 {
 	int	quote;
 
 	quote = *(*line)++;
-	while (**line && !ft_isseparator(**line) && !ft_isspace(**line))
+	while (**line)
 	{
 		if (**line == quote)
 		{

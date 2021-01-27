@@ -12,27 +12,15 @@
 
 #include "minishell.h"
 
-int	parsing_bin(t_lstcmd *cmd, char **line)
+int	parsing_bin(t_lstcmd *cmd, char **line, char *name)
 {
-	int		i;
 	int		ret;
-	char	*str;
 	char	*arg;
-	char	*tmp;
 
-	i = 0;
-	while ((*line)[i] && !ft_isspace((*line)[i]))
-		i++;
-	str = ft_substr(*line, 0, i);
-	*line = *line + i;
 	while (ft_isspace(**line))
 		(*line)++;
 	if ((ret = get_arg_echo(line, &arg)) < 0)
 		return (ret);
-	/*
-	if (ft_strchr(str, '\'') || ft_strchr(str, '\"'))
-		str[ft_strlen(str) - 1] = 0;
-	*/
-	push_back_normal(cmd, TYPE_NORMAL, str, arg);
+	push_back_normal(cmd, TYPE_NORMAL, name, arg);
 	return (0);
 }

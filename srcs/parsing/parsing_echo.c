@@ -12,6 +12,13 @@
 
 #include "minishell.h"
 
+int	endline_condition_quote(char c)
+{
+	if (c == 0 || ft_isseparator(c))
+		return (1);
+	return (0);
+}
+
 int	check_echo_option(char **line)
 {
 	while (ft_isspace(**line))
@@ -30,7 +37,7 @@ int	get_arg_char_echo(char **line, char *arg)
 
 	while (ft_isspace(**line))
 		(*line)++;
-	quote = get_arg_char_basic(line, arg);
+	quote = get_arg_char_basic(line, arg, endline_condition_quote);
 	if (quote)
 		return (WRONG_QUOTE);
 	return (0);
@@ -43,7 +50,7 @@ int	get_arg_size_echo(char *line)
 	size = 0;
 	while (ft_isspace(*line))
 		line++;
-	while (*line && !ft_isseparator(*line))
+	while (!endline_condition_quote(*line))
 	{
 		size++;
 		line++;
