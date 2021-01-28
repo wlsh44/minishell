@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 13:08:54 by schang            #+#    #+#             */
-/*   Updated: 2021/01/26 22:15:48 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/29 00:22:19 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ int			ft_bin(t_minishell *ms, t_node *node)
 		return (ft_execute_bin(ms, ft_strdup(node->name), node->arg));
 	tmp = ft_strchr(node->name, '/');
 	path = ft_check_abs_path(ms, node->name);
-		open(path, O_CREAT);	
 	if (!path)
 	{
 		if (tmp == NULL)

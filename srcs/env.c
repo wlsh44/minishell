@@ -6,33 +6,20 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 22:59:11 by schang            #+#    #+#             */
-/*   Updated: 2021/01/26 21:28:34 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/29 01:22:52 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*parse_env_val(t_minishell *ms, char *arg)
-{
-	if (*arg == '$')
-	{
-		arg++;
-		if (!*arg)
-			return (NULL);
-		if (*arg == '?')
-			return (ft_itoa(g_exit_status));
-		else
-			return (ft_strdup(get_env_value(ms->env, arg)));
-	}
-	else
-		return (ft_strdup(arg));
-}
-
 char	*get_env_value(t_lstenv *env, char *name)
 {
-	t_env_node *cur;
+	t_env_node	*cur;
+	char		*str;
 
 	cur = env->head->next;
+	if (name[0] == '?')
+		return (ft_itoa(g_exit_status));
 	while (cur != env->tail)
 	{
 		if (ft_strcmp(cur->name, name) == 0)
@@ -48,6 +35,8 @@ char	*dup_env_value(t_lstenv *env, char *name, int size)
 	t_env_node *cur;
 
 	cur = env->head->next;
+	if (name[0] == '?')
+		return (ft_itoa(g_exit_status));
 	while (cur != env->tail)
 	{
 		if (ft_strncmp(cur->name, name, size) == 0)
@@ -74,7 +63,7 @@ int make_new_line(t_lstenv *env, char **new_line, char **sub, char *ptr)
 	char *val;
 
 	size = 0;
-	while (ft_isalnum(ptr[size]) || ptr[size] == '_')
+	while (ft_isalnum(ptr[size]) || ptr[size] == '_' || ptr[size] == '?')
 		size++;
 	val = dup_env_value(env, ptr, size);
 	concatenate(sub, val);
@@ -91,7 +80,7 @@ char *parsing_env_val(t_lstenv *env, char *line)
 	char *ptr;
 	int size;
 	int start;
-	
+
 	start = 0;
 	ptr = line;
 	new_line = ft_strchr(line, '$') ? ft_strdup("") : ft_strdup(line);

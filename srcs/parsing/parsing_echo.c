@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 21:00:43 by schang            #+#    #+#             */
-/*   Updated: 2021/01/27 21:21:19 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/29 01:25:58 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ int	get_arg_char_echo(char **line, char *arg)
 		(*line)++;
 	last = get_last_char(line);
 	ptr = *line;
+	if (**line == 0)
+		last = 0;
 	tmp = (*line)[last];
 	(*line)[last] = 0;
 	ret = get_arg_char_basic(line, arg, endline_condition_quote);
