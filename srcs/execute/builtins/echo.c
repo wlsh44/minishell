@@ -18,11 +18,7 @@ int	ft_echo(t_minishell *ms, t_node *node)
 
 	if (!node->arg)
 		return (0);
-	if ((val = parse_env_val(ms, node->arg)))
-	{
-		ft_putstr_fd(val, 1);
-		free(val);
-	}
+	write(1, node->arg, ft_strlen(node->arg));
 	if (node->type == TYPE_ECHO)
 		write(1, "\n", 1);
 	return (0);

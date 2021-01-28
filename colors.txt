@@ -1,0 +1,12 @@
+blue
+black
+red
+red
+green
+blue
+green
+red
+red
+blue
+
+//다른 함수에서 포인터 변경 후 원 함수에서 마지막 값 읽으면 invaild read라 뜸

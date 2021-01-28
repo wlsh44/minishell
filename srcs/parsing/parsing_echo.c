@@ -24,31 +24,56 @@ int	check_echo_option(char **line)
 	return (0);
 }
 
+int get_last_char(char **line)
+{
+	int i;
+	int quote;
+	int last_char;
+
+	i = 0;
+	last_char = 0;
+	while (!endline_condition_quote((*line)[i]))
+	{
+		if (ft_isquote((*line)[i]))
+		{
+			quote = (*line)[i];
+			while ((*line)[++i])
+			{
+				if ((*line)[i] == quote)
+				{
+					quote = 0;
+					last_char = i++;
+					break ;
+				}
+			}
+		}
+		else if (!ft_isspace((*line)[i++]))
+			last_char = i - 1;
+	}
+	return (last_char + 1);
+}
+
 int	get_arg_char_echo(char **line, char *arg)
 {
-	char	quote;
+	int	ret;
+	int i;
+	int last;
+	char tmp;
+	char *ptr;
 
 	while (ft_isspace(**line))
 		(*line)++;
-	quote = get_arg_char_basic(line, arg, endline_condition_quote);
-	if (quote)
+	last = get_last_char(line);
+	ptr = *line;
+	tmp = (*line)[last];
+	(*line)[last] = 0;
+	ret = get_arg_char_basic(line, arg, endline_condition_quote);
+	if (ret)
 		return (WRONG_QUOTE);
+	ptr[last] = tmp;
+	while (ft_isspace(**line))
+		(*line)++;
 	return (0);
-}
-
-int	get_arg_size_echo(char *line)
-{
-	int	size;
-
-	size = 0;
-	while (ft_isspace(*line))
-		line++;
-	while (!endline_condition_quote(*line))
-	{
-		size++;
-		line++;
-	}
-	return (size);
 }
 
 int	get_arg_echo(char **line, char **arg)
@@ -57,7 +82,7 @@ int	get_arg_echo(char **line, char **arg)
 	int		ret;
 	char	*tmp;
 
-	size = get_arg_size_echo(*line);
+	size = get_last_char(line);
 	tmp = malloc(sizeof(char) * (size + 1));
 	if ((ret = get_arg_char_echo(line, tmp)) < 0)
 	{

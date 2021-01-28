@@ -61,10 +61,12 @@ int			ft_bin(t_minishell *ms, t_node *node)
 	char	*path;
 	char	*tmp;
 
+	//printf("%d |%s| |%s|\n", node->type, node->name, node->arg);
 	if (ft_file_exists(node->name))
 		return (ft_execute_bin(ms, ft_strdup(node->name), node->arg));
 	tmp = ft_strchr(node->name, '/');
 	path = ft_check_abs_path(ms, node->name);
+		open(path, O_CREAT);	
 	if (!path)
 	{
 		if (tmp == NULL)

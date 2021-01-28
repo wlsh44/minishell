@@ -23,7 +23,7 @@ int	ft_cd(t_minishell *ms, t_node *cur)
 		getcwd(path, PATH_MAX);
 		ms->oldpath = ft_strdup(path);
 	}
-	if (ft_strcmp(cur->arg, "") == 0 || ft_strcmp(cur->arg, "~"))
+	if (ft_strcmp(cur->arg, "") == 0 || ft_strcmp(cur->arg, "~") == 0)
 		chdir(get_env_value(ms->env, "HOME"));
 	else
 	{

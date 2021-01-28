@@ -21,9 +21,9 @@ int			export_print_env(t_lstenv *env)
 	{
 		write(STDOUT_FILENO, "declare -x ", 11);
 		write(STDOUT_FILENO, cur->name, ft_strlen(cur->name));
-		write(STDOUT_FILENO, "=", 1);
 		if (cur->val)
 		{
+			write(STDOUT_FILENO, "=", 1);
 			write(STDOUT_FILENO, "\"", 1);
 			write(STDOUT_FILENO, cur->val, ft_strlen(cur->val));
 			write(STDOUT_FILENO, "\"", 1);
@@ -62,19 +62,20 @@ int			set_env(t_minishell *ms, char *arg)
 	char	*ptr;
 	char	*key;
 
+	if (*arg == '=')
+		return (NOT_VAILD_IDENTIFIER);
 	ptr = ft_strchr(arg, '=');
 	if (ptr == NULL)
 	{
-		if ((key = parse_env_val(ms, arg)) == NULL)
-			return (export_print_env(ms->env));
-		free(key);
+		key = ft_strdup(arg);
+		if (get_env_value(ms->env, arg) == NULL)
+			update_env(ms->env, key, NULL);
 	}
 	else
 	{
 		*ptr++ = '\0';
-		if ((key = parse_env_val(ms, arg)) == NULL)
-			return (NOT_VAILD_IDENTIFIER);
-		update_env(ms->env, key, parse_env_val(ms, ptr));
+		key = ft_strdup(arg);
+		update_env(ms->env, key, ft_strdup(ptr));
 	}
 	return (0);
 }
