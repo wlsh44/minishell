@@ -49,11 +49,8 @@ int			ft_unset(t_minishell *ms, t_node *cur)
 	{
 		if (!is_error(&flag, *args))
 		{
-			if ((key = parse_env_val(ms, *args)) != NULL)
-			{
-				delete_env(ms->env, key);
-				free(key);
-			}
+			if (get_env_value(ms->env, *args) != NULL)
+				delete_env(ms->env, *args);
 		}
 		args++;
 	}

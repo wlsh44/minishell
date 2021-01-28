@@ -68,8 +68,11 @@ int	get_arg_char_basic(char **line, char *arg, int(*endline_condition)(char c))
 			if (**line)
 				*(arg++) = *(*line)++;
 		}
-		else if (ft_isquote(**line) && (ret = get_arg_quote(line, &arg) < 0))
-			return (ret);
+		else if (ft_isquote(**line))
+		{
+			if ((ret = get_arg_quote(line, &arg)) < 0)
+				return (ret);
+		}
 		else
 			*(arg++) = *(*line)++;
 	}

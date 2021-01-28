@@ -19,11 +19,13 @@ int	ft_env(t_minishell *ms)
 	cur = ms->env->head->next;
 	while (cur != ms->env->tail)
 	{
-		write(STDOUT_FILENO, cur->name, ft_strlen(cur->name));
-		write(STDOUT_FILENO, "=", 1);
 		if (cur->val)
+		{
+			write(STDOUT_FILENO, cur->name, ft_strlen(cur->name));
+			write(STDOUT_FILENO, "=", 1);
 			write(STDOUT_FILENO, cur->val, ft_strlen(cur->val));
-		write(STDOUT_FILENO, "\n", 1);
+			write(STDOUT_FILENO, "\n", 1);
+		}
 		cur = cur->next;
 	}
 	return (0);

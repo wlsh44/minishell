@@ -21,15 +21,19 @@ void	show(t_lstcmd *cmd)
 	while (cur != cmd->tail)
 	{
 		write(1, "TYPE: ", 6);
-		write(1, ft_itoa(cur->type), 2);
+		char *a = ft_itoa(cur->type);
+		write(1, a, 2);
+		free(a);
 		if (cur->name)
 		{
-			write(1, "\nNAME: ", 8);
+			write(1, "\nNAME: |", 9);
 			write(1, cur->name, ft_strlen(cur->name));
+			write(1, "|", 1);
 		}
-		write(1, "\nARG: ", 6);
+		write(1, "\nARG: |", 7);
 		if (cur->arg)
 			write(1, cur->arg, ft_strlen(cur->arg));
+		write(1, "|", 1);
 		write(1, "\n==========\n", 12);
 		cur = cur->next;
 	}

@@ -13,7 +13,6 @@ SRC =	minishell.c \
 		env.c\
 		signal.c \
  		parsing/parsing.c	\
- 		parsing/parsing_type.c	\
  		parsing/parsing_cd.c	\
  		parsing/parsing_pwd.c	\
  		parsing/parsing_env.c	\
