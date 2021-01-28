@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 22:45:36 by schang            #+#    #+#             */
-/*   Updated: 2021/01/26 21:46:09 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/28 21:29:04 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,37 @@ void	init_ms(t_minishell *ms)
 	ms->newfd[1] = -1;
 }
 
+int		get_line(char **line)
+{
+	char	*stock;
+	char	buf[BUFFER_SIZE + 1];
+	int		ret;
+
+	stock = NULL;
+	while (1)
+	{
+		ret = read(STDIN_FILENO, buf, BUFFER_SIZE);
+		buf[ret] = 0;
+		if (ret > 0)
+		{
+			if (buf[ret - 1] == '\n')
+			{
+				stock = strdup(buf);
+				*line = stock;
+				return (0);
+			}
+			else
+				stock = strdup(buf);
+		}
+		else if (ret == 0)
+		{
+			if (stock == NULL)
+				return (-2);
+		}
+	}
+	return (1);
+}
+
 int		main(int argc, char *argv[], char *envp[])
 {
 	t_minishell	ms;
@@ -54,14 +85,16 @@ int		main(int argc, char *argv[], char *envp[])
 		ft_putstr_fd("m$ ", STDOUT_FILENO);
 		signal(SIGINT, &default_sighandler);
 		signal(SIGQUIT, &default_sighandler);
-		ret = get_next_line(0, &line);
-		if (ret == 0)
+		while ((ret = get_line(&line)) == 1)
+			;
+		//ret = get_next_line(0, &line);
+		// printf("ret: %d|\n", ret);
+
+		if (ret == -2)
 		{
 			ft_putstr_fd("exit\n", STDOUT_FILENO);
 			exit(EXIT_SUCCESS);
 		}
-		else if (ret < 0)
-			continue;
 		else
 		{
 			ms.cmd_line = line;

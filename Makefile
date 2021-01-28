@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2021/01/27 21:40:59 by schang            #+#    #+#              #
+#    Updated: 2021/01/27 21:42:09 by schang           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME = minishell
 
 CC = gcc
@@ -10,23 +22,22 @@ LIBS = -L./libs/libft -lft
 CFLAGS = $(INC) #-Wall -Werror -Wextra
 
 SRC =	minishell.c \
-		env.c\
+		env.c \
 		signal.c \
- 		parsing/parsing.c	\
- 		parsing/parsing_type.c	\
- 		parsing/parsing_cd.c	\
- 		parsing/parsing_pwd.c	\
- 		parsing/parsing_env.c	\
- 		parsing/parsing_echo.c	\
- 		parsing/parsing_export.c	\
- 		parsing/parsing_unset.c	\
- 		parsing/parsing_exit.c	\
- 		parsing/parsing_sep.c	\
- 		parsing/parsing_utils.c	\
- 		parsing/parsing_utils2.c	\
- 		parsing/parsing_bin.c	\
-		error/errors.c 	\
-		utils/lstcmd.c 	\
+ 		parsing/parsing.c \
+ 		parsing/parsing_cd.c \
+ 		parsing/parsing_pwd.c \
+ 		parsing/parsing_env.c \
+ 		parsing/parsing_echo.c \
+ 		parsing/parsing_export.c \
+ 		parsing/parsing_unset.c \
+ 		parsing/parsing_exit.c \
+ 		parsing/parsing_sep.c \
+ 		parsing/parsing_utils.c \
+ 		parsing/parsing_utils2.c \
+ 		parsing/parsing_bin.c \
+		error/errors.c \
+		utils/lstcmd.c \
 		utils/get_next_line.c \
 		utils/ft_file_exists.c \
 		utils/free_double_char.c \
@@ -34,6 +45,7 @@ SRC =	minishell.c \
 		utils/ft_check_abs_path.c \
 		utils/ft_bin_args.c \
 		utils/show.c \
+		utils/endline_condition_quote.c \
 		execute/execute.c \
 		execute/bin.c \
 		execute/pipe.c \
