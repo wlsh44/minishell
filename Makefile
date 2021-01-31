@@ -6,7 +6,7 @@
 #    By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/27 21:40:59 by schang            #+#    #+#              #
-#    Updated: 2021/01/31 18:04:34 by schang           ###   ########.fr        #
+#    Updated: 2021/01/31 18:16:06 by schang           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,11 +19,12 @@ INC = -I ./includes/ \
 
 LIBS = -L./libs/libft -lft
 
-CFLAGS = $(INC) #-Wall -Werror -Wextra
+CFLAGS = $(INC) -Wall -Werror -Wextra
 
 SRC =	minishell.c \
-		env.c \
 		signal.c \
+		env/env.c \
+		env/env_utils.c \
  		parsing/parsing.c	\
  		parsing/parsing_cd.c	\
  		parsing/parsing_pwd.c	\
@@ -52,6 +53,7 @@ SRC =	minishell.c \
 		utils/ft_free_and_null.c \
 		execute/execute.c \
 		execute/execute_bin.c \
+		execute/exe_utils.c \
 		execute/bin.c \
 		execute/pipe.c \
 		execute/builtins/exit.c \

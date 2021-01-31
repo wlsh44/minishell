@@ -18,14 +18,11 @@ int	parsing_bin(t_lstcmd *cmd, char **line, char *name)
 	char	*arg;
 	char	*key;
 
-	arg = NULL;
 	while (ft_isspace(**line))
 		(*line)++;
-	if (**line && (ret = get_arg_echo(line, &arg)) < 0)
+	if ((ret = get_arg_echo(line, &arg)) < 0)
 		return (ret);
 	key = ft_strdup(name);
-	if (arg == NULL)
-		arg = ft_strdup("");
 	push_back_normal(cmd, TYPE_NORMAL, key, arg);
 	return (0);
 }

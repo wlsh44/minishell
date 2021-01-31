@@ -13,13 +13,6 @@
 #include "minishell.h"
 #include <stdio.h>
 
-bool	is_env_cmd(int type)
-{
-	if (type == TYPE_CD || type == TYPE_EXPORT || type == TYPE_UNSET)
-		return (true);
-	return (false);
-}
-
 int		execute_command(t_minishell *ms, t_node *cur)
 {
 	int ret;
@@ -77,11 +70,13 @@ int		execute(t_minishell *ms)
 	t_node	*cur;
 	int		ret;
 
+	sort_cmd(ms->cmd);
+	show(ms->cmd);
+
 	cur = ms->cmd->head->next;
 	while (cur != ms->cmd->tail && !(ret = 0))
 	{
-		if (!(is_env_cmd(cur->type) || is_env_cmd(cur->prev->type))
-			&& (cur->next->type == TYPE_REDIRECT_OUTPUT
+		if (cur->next->type == TYPE_REDIRECT_OUTPUT
 			|| cur->next->type == TYPE_REDIRECT_INPUT
 			|| cur->next->type == TYPE_DOUBLE_REDIRECT
 			|| cur->next->type == TYPE_PIPE
@@ -89,7 +84,7 @@ int		execute(t_minishell *ms)
 			|| cur->type == TYPE_REDIRECT_INPUT
 			|| cur->type == TYPE_DOUBLE_REDIRECT
 			|| cur->prev->type == TYPE_PIPE
-			|| cur->prev->type == TYPE_REDIRECT_INPUT))
+			|| cur->prev->type == TYPE_REDIRECT_INPUT)
 			ret = fork_process(ms, cur);
 		else if (!(cur->type == TYPE_REDIRECT_INPUT || cur->type == TYPE_PIPE))
 			ret = execute_command(ms, cur);

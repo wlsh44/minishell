@@ -12,94 +12,38 @@
 
 #include "minishell.h"
 
-char	*get_env_value(t_lstenv *env, char *name)
+char	*parsing_env_val(t_lstenv *env, char *line)
 {
-	t_env_node	*cur;
-	char		*str;
+	char	*newline;
+	int		quote;
+	int		i;
+	int		len;
 
-	cur = env->head->next;
-	if (name[0] == '?')
-		return (ft_itoa(g_exit_status));
-	while (cur != env->tail)
+	i = 0;
+	quote = 0;
+	len = ft_strlen(line);
+	newline = ft_calloc(sizeof(char), (len + 1));
+	while (*line)
 	{
-		if (ft_strcmp(cur->name, name) == 0)
+		if (*line == '$' && not_env_key(line[1]))
+			newline[i++] = *line++;
+		else if (*line == '$' && !quote)
+			i += make_new_line(env, &newline, &line, &len);
+		else
 		{
-			return (cur->val);
+			if (*line == '\\' && line[1] == '$')
+				line++;
+			else if (*line == '\'')
+				quote = quote ? 0 : 1;
+			newline[i++] = *line++;
 		}
-		cur = cur->next;
 	}
-	return (NULL);
-}
-char	*dup_env_value(t_lstenv *env, char *name, int size)
-{
-	t_env_node *cur;
-
-	cur = env->head->next;
-	if (name[0] == '?')
-		return (ft_itoa(g_exit_status));
-	while (cur != env->tail)
-	{
-		if (ft_strncmp(cur->name, name, size) == 0)
-		{
-			return (ft_strdup(cur->val));
-		}
-		cur = cur->next;
-	}
-	return (ft_strdup(""));
-}
-
-void	concatenate(char **line, char *val)
-{
-	char *tmp;
-
-	tmp = *line;
-	*line = ft_strjoin(*line, val);
-	free(tmp);
-}
-
-int make_new_line(t_lstenv *env, char **new_line, char **sub, char *ptr)
-{
-	int size;
-	char *val;
-
-	size = 0;
-	while (ft_isalnum(ptr[size]) || ptr[size] == '_' || ptr[size] == '?')
-		size++;
-	val = dup_env_value(env, ptr, size);
-	concatenate(sub, val);
-	concatenate(new_line, *sub);
-	free(*sub);
-	free(val);
-	return (size);
-}
-
-char *parsing_env_val(t_lstenv *env, char *line)
-{
-	char *new_line;
-	char *sub;
-	char *ptr;
-	int size;
-	int start;
-
-	start = 0;
-	ptr = line;
-	new_line = ft_strchr(line, '$') ? ft_strdup("") : ft_strdup(line);
-	while ((ptr = ft_strchr(ptr, '$')))
-	{
-		size = 0;
-		sub = ft_substr(line, start, ptr - line - start);
-		ptr++;
-		size = make_new_line(env, &new_line, &sub, ptr);
-		start = ptr - line + size;
-		if (!ft_strchr(ptr, '$') && *ptr)
-			concatenate(&new_line, line + start);
-	}
-	return (new_line);
+	return (newline);
 }
 
 void	delete_env(t_lstenv *env, char *name)
 {
-	t_env_node *cur;
+	t_env_node	*cur;
 
 	cur = env->head->next;
 	while (cur != env->tail)

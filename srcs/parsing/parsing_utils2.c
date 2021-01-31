@@ -32,7 +32,7 @@ int	get_arg_quote(char **line, char **arg)
 			(*line)++;
 			break ;
 		}
-		else if (**line == '\\' && ((*line)[1] == quote || (*line)[1] == '\\'))
+		else if (**line == '\\' && (ft_isquote((*line)[1]) || (*line)[1] == '\\'))
 			(*line)++;
 		*(*arg)++ = *(*line)++;
 	}
@@ -78,7 +78,7 @@ int	get_arg_key(char **line, char **arg)
 
 	ret = 0;
 	while (is_key_char(**line) || ft_isquote(**line)
-		|| **line == '\\' || **line == '$')
+		|| **line == '\\')
 	{
 		if (**line == '\\')
 		{

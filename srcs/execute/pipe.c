@@ -35,22 +35,6 @@ void	set_pipe(t_minishell *ms, t_node *cur)
 	}
 }
 
-void	sort_cmd(t_node *cur)
-{
-	t_node	*node;
-
-	while (cur->next->type == TYPE_REDIRECT_INPUT)
-	{
-		node = cur->next;
-		node->next->prev = cur;
-		cur->prev->next = node;
-		node->prev = cur->prev;
-		cur->prev = node;
-		cur->next = node->next;
-		node->next = cur;
-	}
-}
-
 void	close_used_fd(t_minishell *ms, t_node *cur)
 {
 	if (ms->newfd[0] == -1 && ms->newfd[1] == -1)
@@ -80,14 +64,8 @@ void	save_pipe(int old[], int new[])
 int		fork_process(t_minishell *ms, t_node *cur)
 {
 	pid_t	pid;
-	int		ret;
 	int		status;
 
-	if (cur->next->type == TYPE_REDIRECT_INPUT)
-	{
-		sort_cmd(cur);
-		ret = fork_process(ms, cur->prev);
-	}
 	save_pipe(ms->oldfd, ms->newfd);
 	if ((cur->next->type == TYPE_REDIRECT_OUTPUT
 		|| cur->next->type == TYPE_DOUBLE_REDIRECT

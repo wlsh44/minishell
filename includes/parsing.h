@@ -15,13 +15,14 @@
 
 # include "minishell.h"
 
-int	parsing(t_minishell *ms);
+int	parsing(t_minishell *ms, char *line);
 
 int	get_arg_num(char *line);
 int	get_arg_size(char *line);
 int	get_arg_char(char **line, char *arg);
 int	get_arg(char **line, char **arg);
 int	get_arg_char_basic(char **line, char *arg, int(*endline_condition)(char c));
+int get_last_char(char *line);
 
 int	ft_endline_condition(char c);
 int	get_arg_quote(char **line, char **arg);

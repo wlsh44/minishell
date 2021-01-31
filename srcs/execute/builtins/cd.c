@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:04:48 by schang            #+#    #+#             */
-/*   Updated: 2021/01/29 21:02:01 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 18:15:49 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,6 @@ int	ft_cd(t_minishell *ms, t_node *cur)
 
 	getcwd(path, PATH_MAX);
 	update_env(ms->env, ft_strdup("OLDPWD"), ft_strdup(path));
-
-	if (cur->next->type == TYPE_PIPE)
-		return (0);
 	if (ft_strcmp(cur->arg, "") == 0 || ft_strcmp(cur->arg, "~") == 0)
 		chdir(get_env_value(ms->env, "HOME"));
 	else
