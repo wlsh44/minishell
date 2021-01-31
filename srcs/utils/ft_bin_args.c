@@ -72,6 +72,7 @@ static char	**get_args(char *arg, char **args, int count)
 		//int	get_arg_char_basic(char **line, char *arg, int (*endline_cond)(char c)
 		while (*arg && ft_isspace(*arg))
 			arg++;
+		args[i] = malloc(sizeof(char) * (ft_strlen(arg) + 1));
 		get_arg_char_basic(&arg, args[i], ft_endline_condition);
 		i++;
 	}

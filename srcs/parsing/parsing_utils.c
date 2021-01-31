@@ -107,18 +107,17 @@ int	get_last_char(char *line)
 	{
 		if (ft_isquote(line[i]))
 		{
-			quote = line[i++];
-			while (line[i])
+			quote = line[i];
+			while (line[++i])
 			{
-				last_char = ++i;
-				if (line[i - 2] != '\\' && line[i - 1] == quote)
+				if ((quote == '\'' || line[i - 1] != '\\') && line[i] == quote)
 				{
 					quote = 0;
 					break ;
 				}
 			}
 		}
-		else if (!ft_isspace(line[i++]))
+		if (!ft_isspace(line[i++]))
 			last_char = i - 1;
 	}
 	return (*line ? last_char + 1 : last_char);
