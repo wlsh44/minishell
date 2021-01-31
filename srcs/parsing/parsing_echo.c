@@ -24,58 +24,33 @@ int	check_echo_option(char **line)
 	return (0);
 }
 
-int get_last_char(char **line)
-{
-	int i;
-	int quote;
-	int last_char;
-
-	i = 0;
-	last_char = 0;
-	while (!endline_condition_quote((*line)[i]))
-	{
-		if (ft_isquote((*line)[i]))
-		{
-			quote = (*line)[i];
-			while ((*line)[++i])
-			{
-				if ((*line)[i] == quote)
-				{
-					quote = 0;
-					last_char = i++;
-					break ;
-				}
-			}
-		}
-		else if (!ft_isspace((*line)[i++]))
-			last_char = i - 1;
-	}
-	return (last_char + 1);
-}
-
 int	get_arg_char_echo(char **line, char *arg)
 {
 	int	ret;
-	int i;
-	int last;
-	char tmp;
-	char *ptr;
 
-	while (ft_isspace(**line))
-		(*line)++;
-	last = get_last_char(line);
-	ptr = *line;
-	if (**line == 0)
-		last = 0;
-	tmp = (*line)[last];
-	(*line)[last] = 0;
-	ret = get_arg_char_basic(line, arg, endline_condition_quote);
-	if (ret)
-		return (WRONG_QUOTE);
-	ptr[last] = tmp;
-	while (ft_isspace(**line))
-		(*line)++;
-	return (0);
+	ret = 0;
+	while (!endline_condition_quote(**line))
+	{
+		if (ft_isquote(**line))
+		{
+			if ((ret = get_arg_quote(line, &arg)) < 0)
+				return (ret);
+		}
+		else
+		{
+			if (**line == '\\')
+				(*line)++;
+			*(arg++) = *(*line)++;
+			if (ft_isspace(**line))
+			{
+				*(arg++) = *(*line)++;
+				while (ft_isspace(**line))
+					(*line)++;
+			}
+		}
+	}
+	*arg = '\0';
+	return (ret);
 }
 
 int	get_arg_echo(char **line, char **arg)
@@ -84,13 +59,15 @@ int	get_arg_echo(char **line, char **arg)
 	int		ret;
 	char	*tmp;
 
-	size = get_last_char(line);
-	tmp = malloc(sizeof(char) * (size + 1));
+	size = get_last_char(*line);
+	tmp = ft_calloc(sizeof(char), size + 2);
 	if ((ret = get_arg_char_echo(line, tmp)) < 0)
 	{
 		free(tmp);
 		return (ret);
 	}
+	if (ft_strlen(tmp) && ft_isspace(tmp[ft_strlen(tmp) - 1]))
+		tmp[ft_strlen(tmp) - 1] = 0;
 	*arg = tmp;
 	return (ret);
 }
@@ -101,6 +78,8 @@ int	parsing_echo(t_lstcmd *cmd, char **line)
 	int		type;
 	char	*arg;
 
+	while (ft_isspace(**line))
+		(*line)++;
 	type = check_echo_option(line) ? TYPE_ECHO_N : TYPE_ECHO;
 	if ((ret = get_arg_echo(line, &arg)) < 0)
 		return (ret);

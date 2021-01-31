@@ -35,21 +35,21 @@ void	set_pipe(t_minishell *ms, t_node *cur)
 	}
 }
 
-void	sort_cmd(t_node *cur)
-{
-	t_node	*node;
+// void	sort_cmd(t_node *cur)
+// {
+// 	t_node	*node;
 
-	while (cur->next->type == TYPE_REDIRECT_INPUT)
-	{
-		node = cur->next;
-		node->next->prev = cur;
-		cur->prev->next = node;
-		node->prev = cur->prev;
-		cur->prev = node;
-		cur->next = node->next;
-		node->next = cur;
-	}
-}
+// 	while (cur->next->type == TYPE_REDIRECT_INPUT)
+// 	{
+// 		node = cur->next;
+// 		node->next->prev = cur;
+// 		cur->prev->next = node;
+// 		node->prev = cur->prev;
+// 		cur->prev = node;
+// 		cur->next = node->next;
+// 		node->next = cur;
+// 	}
+// }
 
 void	close_used_fd(t_minishell *ms, t_node *cur)
 {
@@ -83,11 +83,11 @@ int		fork_process(t_minishell *ms, t_node *cur)
 	int		ret;
 	int		status;
 
-	if (cur->next->type == TYPE_REDIRECT_INPUT)
-	{
-		sort_cmd(cur);
-		ret = fork_process(ms, cur->prev);
-	}
+	// if (cur->next->type == TYPE_REDIRECT_INPUT)
+	// {
+	// 	sort_cmd(cur);
+	// 	ret = fork_process(ms, cur->prev);
+	// }
 	save_pipe(ms->oldfd, ms->newfd);
 	if ((cur->next->type == TYPE_REDIRECT_OUTPUT
 		|| cur->next->type == TYPE_DOUBLE_REDIRECT

@@ -13,11 +13,107 @@
 #include "minishell.h"
 #include <stdio.h>
 
-bool	is_env_cmd(int type)
+// bool	is_env_cmd(int type)
+// {
+// 	if (type == TYPE_CD || type == TYPE_EXPORT || type == TYPE_UNSET)
+// 		return (true);
+// 	return (false);
+// }
+
+void swap_cmd(t_node *cur)
 {
-	if (type == TYPE_CD || type == TYPE_EXPORT || type == TYPE_UNSET)
-		return (true);
-	return (false);
+	t_node *node;
+
+	node = cur->next;
+	node->next->prev = cur;
+	cur->prev->next = node;
+	node->prev = cur->prev;
+	cur->prev = node;
+	cur->next = node->next;
+	node->next = cur;
+}
+
+void concat_node(t_node *cur, t_node *node)
+{
+	char *tmp;
+
+	if (ft_strcmp(cur->arg, "") == 0)
+	{
+		free(cur->arg);
+		cur->arg = ft_strdup(node->name);
+	}
+	else
+	{
+		tmp = cur->arg;
+		cur->arg = ft_strjoin(cur->arg, " ");
+		free(tmp);
+		tmp = cur->arg;
+		cur->arg = ft_strjoin(cur->arg, node->name);
+		free(tmp);
+	}
+	if (ft_strcmp(node->arg, ""))
+	{
+		tmp = cur->arg;
+		cur->arg = ft_strjoin(cur->arg, " ");
+		free(tmp);
+		tmp = cur->arg;
+		cur->arg = ft_strjoin(cur->arg, node->arg);
+		free(tmp);
+	}
+}
+
+void change_cmd_to_arg(t_lstcmd *cmd)
+{
+	t_node *cur;
+	t_node *node;
+	t_node *tmp;
+
+	cur = cmd->head->next;
+	while (cur != cmd->tail)
+	{
+		if (cur->type / 10 == 1)
+		{
+			node = cur->next;
+			while (node != cmd->tail && node->type / 10 == 1)
+			{
+				concat_node(cur, node);
+				tmp = node;
+				node = node->next;
+				delete_cmd(tmp);
+			}
+			cur = node;
+		}
+		else
+			cur = cur->next;
+	}
+}
+
+void sort_cmd(t_lstcmd *cmd)
+{
+	t_node *node;
+	t_node *cur;
+	bool changed;
+
+	while (1)
+	{
+		changed = false;
+		cur = cmd->head->next;
+		while (cur->next != cmd->tail)
+		{
+			if (cur->type == TYPE_PIPE || cur->next->type == TYPE_PIPE)
+				cur = cur->next;
+			else if (cur->type / 10 > cur->next->type / 10)
+			{
+				swap_cmd(cur);
+				changed = true;
+			}
+			else
+				cur = cur->next;
+		}
+		if (!changed)
+			break;
+	}
+	change_cmd_to_arg(cmd);
 }
 
 int		execute_command(t_minishell *ms, t_node *cur)
@@ -77,11 +173,13 @@ int		execute(t_minishell *ms)
 	t_node	*cur;
 	int		ret;
 
+	sort_cmd(ms->cmd);
+	show(ms->cmd);
+
 	cur = ms->cmd->head->next;
 	while (cur != ms->cmd->tail && !(ret = 0))
 	{
-		if (!(is_env_cmd(cur->type) || is_env_cmd(cur->prev->type))
-			&& (cur->next->type == TYPE_REDIRECT_OUTPUT
+		if (cur->next->type == TYPE_REDIRECT_OUTPUT
 			|| cur->next->type == TYPE_REDIRECT_INPUT
 			|| cur->next->type == TYPE_DOUBLE_REDIRECT
 			|| cur->next->type == TYPE_PIPE
@@ -89,7 +187,7 @@ int		execute(t_minishell *ms)
 			|| cur->type == TYPE_REDIRECT_INPUT
 			|| cur->type == TYPE_DOUBLE_REDIRECT
 			|| cur->prev->type == TYPE_PIPE
-			|| cur->prev->type == TYPE_REDIRECT_INPUT))
+			|| cur->prev->type == TYPE_REDIRECT_INPUT)
 			ret = fork_process(ms, cur);
 		else if (!(cur->type == TYPE_REDIRECT_INPUT || cur->type == TYPE_PIPE))
 			ret = execute_command(ms, cur);

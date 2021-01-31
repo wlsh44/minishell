@@ -35,15 +35,15 @@ int	parsing_cmd2(t_minishell *ms, char **line, char *arg)
 
 int	parsing_cmd1(t_minishell *ms, char **line)
 {
-	if (!ft_strncmp(*line, ">", 1) && !ft_isseparator((*line)[1]))
+	if (!ft_strncmp(*line, ">", 1))
 		return (parsing_redirect_output(ms->cmd, line));
-	else if (!ft_strncmp(*line, "<", 1) && !ft_isseparator((*line)[1]))
+	else if (!ft_strncmp(*line, "<", 1))
 		return (parsing_redirect_input(ms->cmd, line));
-	else if (!ft_strncmp(*line, ">>", 2) && !ft_isseparator((*line)[2]))
+	else if (!ft_strncmp(*line, ">>", 2))
 		return (parsing_double_redirect(ms->cmd, line));
-	else if (!ft_strncmp(*line, "|", 1) && !ft_isseparator((*line)[1]))
+	else if (!ft_strncmp(*line, "|", 1))
 		return (parsing_pipe(ms->cmd, line));
-	else if (!ft_strncmp(*line, ";", 1) && !ft_isseparator((*line)[1]))
+	else if (!ft_strncmp(*line, ";", 1))
 		return (parsing_semicolon(ms, line));
 	return (0);
 }
@@ -66,36 +66,32 @@ int	parsing_cmd(t_minishell *ms, char **line)
 			free(arg);
 			return (ret);
 		}
-		if ((ret = parsing_cmd2(ms, line, arg)) < 0)
-			return (ret);
+		ret = parsing_cmd2(ms, line, arg);
 	}
 	free(arg);
 	return (ret);
 }
 
 
-int	parsing(t_minishell *ms)
+int	parsing(t_minishell *ms, char *line)
 {
 	int		ret;
 	int		type;
-	char	*line;
+	char	*newline;
 	char	*test;
 	char	*tmp;
 
-	line = parsing_env_val(ms->env, ms->cmd_line);
-	printf("line: %s|\n", line);
-	tmp = line;
-	while (*line && !(ret = 0))
+	newline = parsing_env_val(ms->env, line);
+	//printf("line: %s|\n", newline);
+	tmp = newline;
+	while (*newline && !(ret = 0))
 	{
-		while (ft_isspace(*line))
-			line++;
-		if ((ret = parsing_cmd(ms, &line)) < 0)
-		{
-			printf("ret: %d|\n", ret);
+		while (ft_isspace(*newline))
+			newline++;
+		if ((ret = parsing_cmd(ms, &newline)) < 0)
 			break ;
-		}
-		while (ft_isspace(*line))
-			line++;
+		while (ft_isspace(*newline))
+			newline++;
 	}
 	free(tmp);
 	return (ret);

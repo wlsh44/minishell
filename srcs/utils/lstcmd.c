@@ -47,13 +47,16 @@ t_node	*pop(t_lstcmd *cmd)
 
 void	delete_cmd(t_node *cur)
 {
+	printf("%s|\n", cur->name);
 	if (cur->name)
 	{
 		free(cur->name);
 		cur->name = NULL;
 	}
+	printf("%p|\n", cur->arg);
 	if (cur->arg)
 	{
+		printf("in\n");
 		free(cur->arg);
 		cur->arg = NULL;
 	}

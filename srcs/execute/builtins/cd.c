@@ -16,8 +16,6 @@ int	ft_cd(t_minishell *ms, t_node *cur)
 {
 	char	path[PATH_MAX];
 
-	if (cur->next->type == TYPE_PIPE)
-		return (0);
 	if (cur->next->type == TYPE_REDIRECT_OUTPUT)
 	{
 		getcwd(path, PATH_MAX);

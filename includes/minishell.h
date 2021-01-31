@@ -44,20 +44,22 @@
 # define TOO_MANY_ARG -2
 # define NOT_ENOUGH_ARG -1
 
-# define TYPE_CD 3
-# define TYPE_PWD 4
-# define TYPE_ECHO_N 5
-# define TYPE_EXPORT 6
-# define TYPE_ENV 7
-# define TYPE_UNSET 8
-# define TYPE_ECHO 9
-# define TYPE_REDIRECT_INPUT 10
-# define TYPE_REDIRECT_OUTPUT 11
-# define TYPE_DOUBLE_REDIRECT 12
-# define TYPE_SEMICOLON 13
-# define TYPE_PIPE 14
-# define TYPE_EXIT 15
-# define TYPE_NORMAL 16
+# define TYPE_REDIRECT_INPUT 0
+# define TYPE_SEMICOLON 1
+# define TYPE_PIPE 2
+
+# define TYPE_CD 10
+# define TYPE_PWD 11
+# define TYPE_ECHO_N 12
+# define TYPE_EXPORT 13
+# define TYPE_ENV 14
+# define TYPE_UNSET 15
+# define TYPE_ECHO 16
+# define TYPE_EXIT 17
+# define TYPE_NORMAL 18
+
+# define TYPE_REDIRECT_OUTPUT 20
+# define TYPE_DOUBLE_REDIRECT 21
 
 # define ERR_COMMAND_NOT_FOUND 127
 # define ERR_NO_DIRECTORY 1

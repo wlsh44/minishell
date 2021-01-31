@@ -64,17 +64,26 @@ int		main(int argc, char *argv[], char *envp[])
 			continue ;
 		else
 		{
-			ms.cmd_line = line;
-			ret = parsing(&ms);
-			if (ret < 0)
-				cmd_error(ret);
-			else
+			char **cmds = ft_split(line, ';');
+			int i = 0;
+
+			while (cmds[i])
 			{
-				show(ms.cmd);
-				if (!(g_exit_status = execute(&ms)))
-					execute_error(ret);
+				//ms.cmd_line = line;
+				//printf("cur: %s|\n", cmds[i]);
+				ret = parsing(&ms, cmds[i]);
+				if (ret < 0)
+					cmd_error(ret);
+				else
+				{
+					show(ms.cmd);
+					if (!(g_exit_status = execute(&ms)))
+						execute_error(ret);
+				}
+				clear(ms.cmd);
+				i++;
 			}
-			clear(ms.cmd);
+			free_double_char(cmds);
 			if (line)
 				free(line);
 		}
