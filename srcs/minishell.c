@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 22:45:36 by schang            #+#    #+#             */
-/*   Updated: 2021/01/31 18:14:31 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 18:53:49 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,39 +38,82 @@ void	init_ms(t_minishell *ms)
 	ms->newfd[1] = -1;
 }
 
+int		test_tool(int argc, char *argv[], char *envp[])
+{
+	t_minishell	ms;
+	char		*line;
+	int			ret;
+
+	init_ms(&ms);
+	init_env(&ms, envp);
+	if (argc == 3 && ft_strcmp(argv[1], "-c") == 0)
+	{
+			line = ft_strdup(argv[2]);
+			char **cmds = ft_split(line, ';');
+			int i = 0;
+			while (cmds[i])
+			{
+				//ms.cmd_line = line;
+				//printf("cur: %s|\n", cmds[i]);
+				ret = parsing(&ms, cmds[i]);
+				if (ret < 0)
+					cmd_error(ret);
+				else
+				{
+					//show(ms.cmd);
+					if (!(ret = execute(&ms)))
+						execute_error(ret);
+				}
+				clear(ms.cmd);
+				i++;
+			}
+			free_double_char(cmds);
+			if (line)
+				free(line);
+	}
+	return (0);
+}
+
+void	minishell(t_minishell *ms, char *line)
+{
+	char	**cmds;
+	int		i;
+	int		ret;
+
+	cmds = ft_split(line, ';');
+	i = 0;
+	while (cmds[i])
+	{
+		ret = parsing(ms, cmds[i]);
+		if (ret < 0)
+			cmd_error(ret);
+		else
+		{
+			show(ms->cmd);
+			if (!(ret = execute(ms)))
+				execute_error(ret);
+		}
+		clear(ms->cmd);
+		i++;
+	}
+	free_double_char(cmds);
+	if (line)
+		free(line);
+}
+
 int		main(int argc, char *argv[], char *envp[])
 {
 	t_minishell	ms;
 	char		*line;
 	int			ret;
 
-	//(void)argc;
-	//(void)argv;
-
-
+	if (argc == 3 && ft_strcmp(argv[1], "-c") == 0)
+		return (test_tool(argc, argv, envp));
+	(void)argc;
+	(void)argv;
 	init_ms(&ms);
 	init_env(&ms, envp);
-
-	if (argc == 3 && ft_strcmp(argv[1], "-c") == 0)
-	{
-		ms.cmd_line = ft_strdup(argv[2]);
-		ret = parsing(&ms);
-		if (ret < 0)
-			cmd_error(ret);
-		else
-		{
-			//show(ms.cmd);
-			if ((ret = execute(&ms)) < 0)
-				execute_error(ret);
-			//printf("out ret: %d\n", ret);
-		}
-		//g_exit_status = ret;
-		clear(ms.cmd);
-		return (g_exit_status);
-	}
-
-	ret = 0;
-	while (1)
+	while (!(ret = 0))
 	{
 		ft_putstr_fd("m$ ", STDOUT_FILENO);
 		signal(SIGINT, &default_sighandler);
@@ -84,30 +127,7 @@ int		main(int argc, char *argv[], char *envp[])
 		else if (ret < 0)
 			continue ;
 		else
-		{
-			char **cmds = ft_split(line, ';');
-			int i = 0;
-
-			while (cmds[i])
-			{
-				//ms.cmd_line = line;
-				//printf("cur: %s|\n", cmds[i]);
-				ret = parsing(&ms, cmds[i]);
-				if (ret < 0)
-					cmd_error(ret);
-				else
-				{
-					show(ms.cmd);
-					if (!(g_exit_status = execute(&ms)))
-						execute_error(ret);
-				}
-				clear(ms.cmd);
-				i++;
-			}
-			free_double_char(cmds);
-			if (line)
-				free(line);
-		}
+			minishell(&ms, line);
 	}
 	return (g_exit_status);
 }

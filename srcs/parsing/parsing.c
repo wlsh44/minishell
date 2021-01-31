@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 23:31:09 by schang            #+#    #+#             */
-/*   Updated: 2021/01/31 18:14:05 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 18:33:13 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	parsing_cmd2(t_minishell *ms, char **line, char *arg)
 {
 	if (!ft_strncmp(arg, "cd", 2) && ft_endline_condition(**line))
 		return (parsing_cd(ms->cmd, line));
-	else if (!ft_strncmp(arg, "pwd", 3)&& ft_endline_condition(**line))
+	else if (!ft_strncmp(arg, "pwd", 3) && ft_endline_condition(**line))
 		return (parsing_pwd(ms->cmd, line));
 	else if (!ft_strncmp(arg, "echo", 4) && ft_endline_condition(**line))
 		return (parsing_echo(ms->cmd, line));
@@ -71,7 +71,6 @@ int	parsing_cmd(t_minishell *ms, char **line)
 	free(arg);
 	return (ret);
 }
-
 
 int	parsing(t_minishell *ms, char *line)
 {

@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:04:48 by schang            #+#    #+#             */
-/*   Updated: 2021/01/31 18:15:49 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 18:24:55 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,5 @@ int	ft_cd(t_minishell *ms, t_node *cur)
 	}
 	getcwd(path, PATH_MAX);
 	update_env(ms->env, ft_strdup("PWD"), ft_strdup(path));
-
 	return (0);
 }

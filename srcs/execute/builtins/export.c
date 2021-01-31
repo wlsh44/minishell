@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:07:39 by schang            #+#    #+#             */
-/*   Updated: 2021/01/29 00:46:01 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 18:49:20 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ int			set_env(t_minishell *ms, char *arg)
 {
 	char	*ptr;
 	char	*key;
-	char	*tmp;
 
 	if (*arg == '=')
 		return (NOT_VAILD_IDENTIFIER);

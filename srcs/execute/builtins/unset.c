@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:10:48 by schang            #+#    #+#             */
-/*   Updated: 2021/01/26 20:48:03 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 18:49:03 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int			ft_unset(t_minishell *ms, t_node *cur)
 {
 	char	**args;
 	char	**tmp;
-	char	*key;
 	bool	flag;
 
 	flag = false;

@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/31 00:03:24 by schang            #+#    #+#             */
-/*   Updated: 2021/01/31 18:01:14 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 18:45:14 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static char	**path_list(t_minishell *ms)
 	return (list);
 }
 
-static int	default_command(t_minishell *ms, const char *cmd, char **path)
+static int	default_command(const char *cmd, char **path)
 {
 	struct stat	st;
 	char		*tmp;
@@ -54,11 +54,9 @@ static int	custom_command(t_minishell *ms, const char *cmd, char **path)
 	char		**dir;
 	char		*tmp;
 	int			i;
-	int			cnt;
 
 	dir = path_list(ms);
 	i = 0;
-	cnt = 0;
 	while (dir && dir[i])
 	{
 		tmp = make_path(dir[i++], (char *)cmd);
@@ -82,7 +80,7 @@ int			ft_check_command(t_minishell *ms, const char *cmd, char **path)
 
 	env_path = get_env_value(ms->env, "PATH");
 	if (!env_path || ft_strlen(env_path) == 0)
-		return (default_command(ms, cmd, path));
+		return (default_command(cmd, path));
 	else
 		return (custom_command(ms, cmd, path));
 }

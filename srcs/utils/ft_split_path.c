@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/31 15:50:23 by schang            #+#    #+#             */
-/*   Updated: 2021/01/31 17:15:53 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 18:29:32 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static char	**default_path(void)
 	return (path);
 }
 
-char	**ft_split_path(char *path)
+char		**ft_split_path(char *path)
 {
 	char	**tabs;
 	int		i;

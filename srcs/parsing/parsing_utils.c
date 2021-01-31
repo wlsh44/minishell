@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 21:03:18 by schang            #+#    #+#             */
-/*   Updated: 2021/01/27 21:22:26 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 18:32:46 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,21 +38,6 @@ int	get_arg_num(char *line)
 		}
 	}
 	return (arg_num);
-}
-
-int	get_arg_size(char *line)
-{
-	int	size;
-
-	size = 0;
-	while (ft_isspace(*line))
-		line++;
-	while (*line && !ft_isseparator(*line) && !ft_isspace(*line))
-	{
-		size++;
-		line++;
-	}
-	return (size);
 }
 
 int	get_arg_char_basic(char **line, char *arg, int (*endline_cond)(char c))
@@ -110,7 +95,7 @@ int	get_arg(char **line, char **arg)
 	return (ret);
 }
 
-int get_last_char(char *line)
+int	get_last_char(char *line)
 {
 	int i;
 	int quote;

@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:12:02 by schang            #+#    #+#             */
-/*   Updated: 2021/01/30 20:14:04 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 18:48:48 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ int		execute_command(t_minishell *ms, t_node *cur)
 	else if (cur->type == TYPE_EXIT)
 		ret = ft_exit(ms);
 	else if (cur->type == TYPE_ECHO || cur->type == TYPE_ECHO_N)
-		ret = ft_echo(ms, cur);
+		ret = ft_echo(cur);
 	else if (cur->type == TYPE_PWD)
-		ret = ft_pwd(cur);
+		ret = ft_pwd();
 	else if (cur->type == TYPE_REDIRECT_OUTPUT
 		|| cur->type == TYPE_DOUBLE_REDIRECT)
 		ret = ft_redirect_output(ms, cur);
@@ -71,8 +71,6 @@ int		execute(t_minishell *ms)
 	int		ret;
 
 	sort_cmd(ms->cmd);
-	show(ms->cmd);
-
 	cur = ms->cmd->head->next;
 	while (cur != ms->cmd->tail && !(ret = 0))
 	{

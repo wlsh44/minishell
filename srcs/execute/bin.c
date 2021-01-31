@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 13:08:54 by schang            #+#    #+#             */
-/*   Updated: 2021/01/31 18:09:28 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 18:46:31 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static void	print_shell_error(char *str, int err)
 {
-
 	if (err == WRONG_CMD)
 		shell_cmd_error(str, err);
 	else if (err == PERMISSION_DENIED)
@@ -29,7 +28,7 @@ static int	ft_bin_file(t_minishell *ms, t_node *node)
 {
 	int	ret;
 
-	if ((ret = ft_check_file(ms, node->name)) > 0)
+	if ((ret = ft_check_file(node->name)) > 0)
 	{
 		if (ft_exec_file(ms, node, ft_strdup(node->name)))
 			return (1);
@@ -39,6 +38,7 @@ static int	ft_bin_file(t_minishell *ms, t_node *node)
 		print_shell_error(ft_strdup(node->name), ret);
 		return (0);
 	}
+	return (0);
 }
 
 static int	ft_bin_command(t_minishell *ms, t_node *node)
@@ -59,13 +59,12 @@ static int	ft_bin_command(t_minishell *ms, t_node *node)
 		print_shell_error(path, ret);
 		return (0);
 	}
+	return (0);
 }
 
 int			ft_bin(t_minishell *ms, t_node *node)
 {
-	char	*path;
 	char	*tmp;
-	int		ret;
 
 	if (ms->cmd->head->next->type == TYPE_PIPE)
 	{

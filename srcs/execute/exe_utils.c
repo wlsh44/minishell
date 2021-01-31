@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exe_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/31 18:24:15 by schang            #+#    #+#             */
+/*   Updated: 2021/01/31 18:24:42 by schang           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	swap_cmd(t_node *cur)
@@ -90,7 +102,7 @@ void	sort_cmd(t_lstcmd *cmd)
 				cur = cur->next;
 		}
 		if (!changed)
-			break;
+			break ;
 	}
 	change_cmd_to_arg(cmd);
 }

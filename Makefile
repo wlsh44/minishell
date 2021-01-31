@@ -6,7 +6,7 @@
 #    By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/27 21:40:59 by schang            #+#    #+#              #
-#    Updated: 2021/01/31 18:16:06 by schang           ###   ########.fr        #
+#    Updated: 2021/01/31 18:27:03 by schang           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ SRC =	minishell.c \
  		parsing/parsing_sep.c	\
  		parsing/parsing_utils.c	\
  		parsing/parsing_utils2.c	\
+ 		parsing/parsing_utils3.c	\
  		parsing/parsing_bin.c	\
 		error/errors.c 	\
 		utils/lstcmd.c 	\

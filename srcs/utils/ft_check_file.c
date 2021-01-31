@@ -6,13 +6,13 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/31 00:24:51 by schang            #+#    #+#             */
-/*   Updated: 2021/01/31 17:55:35 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 18:43:51 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		ft_check_file(t_minishell *ms, const char *file)
+int		ft_check_file(const char *file)
 {
 	struct stat	st;
 	int			ret;
