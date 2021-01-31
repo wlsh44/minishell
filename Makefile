@@ -19,11 +19,12 @@ INC = -I ./includes/ \
 
 LIBS = -L./libs/libft -lft
 
-CFLAGS = $(INC) #-Wall -Werror -Wextra
+CFLAGS = $(INC) -Wall -Werror -Wextra
 
 SRC =	minishell.c \
-		env.c \
 		signal.c \
+		env/env.c \
+		env/env_utils.c \
  		parsing/parsing.c	\
  		parsing/parsing_cd.c	\
  		parsing/parsing_pwd.c	\
@@ -47,6 +48,7 @@ SRC =	minishell.c \
 		utils/show.c \
 		utils/endline_condition_quote.c \
 		execute/execute.c \
+		execute/exe_utils.c \
 		execute/bin.c \
 		execute/pipe.c \
 		execute/builtins/exit.c \

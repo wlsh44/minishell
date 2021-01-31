@@ -15,18 +15,24 @@
 
 # include "minishell.h"
 
-int	execute(t_minishell *ms);
-int	execute_command(t_minishell *ms, t_node *cur);
-int	ft_exit(t_minishell *ms);
-int	ft_echo(t_minishell *ms, t_node *node);
-int	ft_pwd(t_node *node);
-int	ft_cd(t_minishell *ms, t_node *cur);
-int	ft_env(t_minishell *ms);
-int	ft_export(t_minishell *ms, t_node *cur);
-int	ft_unset(t_minishell *ms, t_node *cur);
-int	ft_bin(t_minishell *ms, t_node *cur);
-int	ft_redirect_input(t_node *cur);
-int	ft_redirect_output(t_minishell *ms, t_node *cur);
-int	fork_process(t_minishell *ms, t_node *cur);
+int		execute(t_minishell *ms);
+int		execute_command(t_minishell *ms, t_node *cur);
+
+void	swap_cmd(t_node *cur);
+void	concat_node(t_node *cur, t_node *node);
+void	change_cmd_to_arg(t_lstcmd *cmd);
+void	sort_cmd(t_lstcmd *cmd);
+
+int		ft_exit(t_minishell *ms);
+int		ft_echo(t_minishell *ms, t_node *node);
+int		ft_pwd(t_node *node);
+int		ft_cd(t_minishell *ms, t_node *cur);
+int		ft_env(t_minishell *ms);
+int		ft_export(t_minishell *ms, t_node *cur);
+int		ft_unset(t_minishell *ms, t_node *cur);
+int		ft_bin(t_minishell *ms, t_node *cur);
+int		ft_redirect_input(t_node *cur);
+int		ft_redirect_output(t_minishell *ms, t_node *cur);
+int		fork_process(t_minishell *ms, t_node *cur);
 
 #endif

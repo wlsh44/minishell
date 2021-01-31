@@ -76,13 +76,10 @@ int	parsing_cmd(t_minishell *ms, char **line)
 int	parsing(t_minishell *ms, char *line)
 {
 	int		ret;
-	int		type;
 	char	*newline;
-	char	*test;
 	char	*tmp;
 
 	newline = parsing_env_val(ms->env, line);
-	//printf("line: %s|\n", newline);
 	tmp = newline;
 	while (*newline && !(ret = 0))
 	{
