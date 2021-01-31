@@ -6,22 +6,47 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 23:11:54 by schang            #+#    #+#             */
-/*   Updated: 2021/01/29 00:25:07 by schang           ###   ########.fr       */
+/*   Updated: 2021/02/01 00:40:57 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+bool	check_quote(char *arg)
+{
+	int sq;
+	int dq;
+
+	sq = 0;
+	dq = 0;
+	while (*arg)
+	{
+		if (*arg == '\'')
+			sq = sq ? 0 : 1;
+		else if (*arg == '\"')
+			dq = dq ? 0 : 1;
+		arg++;
+	}
+	if (sq || dq)
+		return (false);
+	return (true);
+}
+
 int	parsing_bin(t_lstcmd *cmd, char **line, char *name)
 {
-	int		ret;
+	int		size;
 	char	*arg;
 	char	*key;
 
 	while (ft_isspace(**line))
 		(*line)++;
-	if ((ret = get_arg_echo(line, &arg)) < 0)
-		return (ret);
+	size = get_last_char(*line);
+	arg = ft_substr(*line, 0, size);
+	if (!check_quote(arg))
+		return (WRONG_QUOTE);
+	(*line) += size;
+	while (ft_isspace(**line))
+		(*line)++;
 	key = ft_strdup(name);
 	push_back_normal(cmd, TYPE_NORMAL, key, arg);
 	return (0);

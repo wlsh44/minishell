@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 20:54:34 by schang            #+#    #+#             */
-/*   Updated: 2021/01/31 18:43:25 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 21:07:00 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,17 @@ char	**ft_bin_args(char *cmd, char *arg);
 
 int		ft_check_abs_path(t_minishell *ms, char *name, char **path);
 
-void	show(t_lstcmd *cmd);
 int		endline_condition_quote(char c);
 char	*get_command(char *name);
 int		ft_execute_bin(t_minishell *ms, t_node *node, char *path);
 int		ft_check_command(t_minishell *ms, const char *cmd, char **path);
 int		ft_check_file(const char *file);
+int		ft_check_file2(const char *file);
 char	**ft_split_path(char *path);
 
 int		command_permission_check(struct stat st);
 int		file_permission_check(struct stat st);
+int		fileread_permission_check(struct stat st);
 
 int		free_and_null(void *ptr);
 

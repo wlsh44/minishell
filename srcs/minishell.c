@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 22:45:36 by schang            #+#    #+#             */
-/*   Updated: 2021/01/31 18:53:49 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 22:31:58 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,67 +38,54 @@ void	init_ms(t_minishell *ms)
 	ms->newfd[1] = -1;
 }
 
-int		test_tool(int argc, char *argv[], char *envp[])
+int		check_syntax(char *line)
 {
-	t_minishell	ms;
-	char		*line;
-	int			ret;
+	int	i;
+	int	flag;
 
-	init_ms(&ms);
-	init_env(&ms, envp);
-	if (argc == 3 && ft_strcmp(argv[1], "-c") == 0)
+	i = 0;
+	while (line[i])
 	{
-			line = ft_strdup(argv[2]);
-			char **cmds = ft_split(line, ';');
-			int i = 0;
-			while (cmds[i])
-			{
-				//ms.cmd_line = line;
-				//printf("cur: %s|\n", cmds[i]);
-				ret = parsing(&ms, cmds[i]);
-				if (ret < 0)
-					cmd_error(ret);
-				else
-				{
-					//show(ms.cmd);
-					if (!(ret = execute(&ms)))
-						execute_error(ret);
-				}
-				clear(ms.cmd);
-				i++;
-			}
-			free_double_char(cmds);
-			if (line)
-				free(line);
+		flag = false;
+		while (line[i] && line[i] != ';')
+		{
+			if (!ft_isspace(line[i]))
+				flag = true;
+			i++;
+		}
+		if (!flag)
+			return (-1);
+		if (line[i] == 0)
+			break ;
+		i++;
 	}
 	return (0);
 }
 
 void	minishell(t_minishell *ms, char *line)
 {
-	char	**cmds;
+	char	*cmd;
 	int		i;
 	int		ret;
 
-	cmds = ft_split(line, ';');
-	i = 0;
-	while (cmds[i])
+	if ((ret = check_syntax(line)) < 0)
 	{
-		ret = parsing(ms, cmds[i]);
+		cmd_error(SYNTAX_ERROR);
+		return ;
+	}
+	i = 0;
+	while (line[i])
+	{
+		i = sub_cmd(line, &cmd, i);
+		ret = parsing(ms, cmd);
 		if (ret < 0)
 			cmd_error(ret);
 		else
-		{
-			show(ms->cmd);
-			if (!(ret = execute(ms)))
-				execute_error(ret);
-		}
+			execute(ms);
 		clear(ms->cmd);
-		i++;
+		free(cmd);
 	}
-	free_double_char(cmds);
-	if (line)
-		free(line);
+	free_and_null(line);
 }
 
 int		main(int argc, char *argv[], char *envp[])
@@ -107,15 +94,13 @@ int		main(int argc, char *argv[], char *envp[])
 	char		*line;
 	int			ret;
 
-	if (argc == 3 && ft_strcmp(argv[1], "-c") == 0)
-		return (test_tool(argc, argv, envp));
 	(void)argc;
 	(void)argv;
 	init_ms(&ms);
 	init_env(&ms, envp);
 	while (!(ret = 0))
 	{
-		ft_putstr_fd("m$ ", STDOUT_FILENO);
+		ft_putstr_fd("minishell$ ", STDOUT_FILENO);
 		signal(SIGINT, &default_sighandler);
 		signal(SIGQUIT, &default_sighandler);
 		ret = get_next_line(0, &line);

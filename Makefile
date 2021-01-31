@@ -6,7 +6,7 @@
 #    By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/27 21:40:59 by schang            #+#    #+#              #
-#    Updated: 2021/01/31 18:27:03 by schang           ###   ########.fr        #
+#    Updated: 2021/01/31 21:06:50 by schang           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,6 @@ SRC =	minishell.c \
 		utils/free_double_char.c \
 		utils/get_env_list.c \
 		utils/ft_bin_args.c \
-		utils/show.c \
 		utils/endline_condition_quote.c \
 		utils/get_command.c \
 		utils/ft_check_file.c \

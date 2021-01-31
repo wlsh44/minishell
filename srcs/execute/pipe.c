@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 20:52:28 by schang            #+#    #+#             */
-/*   Updated: 2021/01/27 21:19:51 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 19:52:19 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,18 +55,27 @@ void	close_used_fd(t_minishell *ms, t_node *cur)
 	}
 }
 
-void	save_pipe(int old[], int new[])
+void	save_pipe(int old[], int new[], int stdfd[])
 {
 	old[0] = new[0];
 	old[1] = new[1];
+	stdfd[0] = dup(STDIN_FILENO);
+	stdfd[1] = dup(STDOUT_FILENO);
+}
+
+void	get_std(int stdfd[2])
+{
+	dup2(stdfd[0], STDIN_FILENO);
+	dup2(stdfd[1], STDOUT_FILENO);
 }
 
 int		fork_process(t_minishell *ms, t_node *cur)
 {
 	pid_t	pid;
 	int		status;
+	int		stdfd[2];
 
-	save_pipe(ms->oldfd, ms->newfd);
+	save_pipe(ms->oldfd, ms->newfd, stdfd);
 	if ((cur->next->type == TYPE_REDIRECT_OUTPUT
 		|| cur->next->type == TYPE_DOUBLE_REDIRECT
 		|| cur->type == TYPE_REDIRECT_INPUT
@@ -77,9 +86,13 @@ int		fork_process(t_minishell *ms, t_node *cur)
 	else if (pid == 0)
 	{
 		set_pipe(ms, cur);
-		status = execute_command(ms, cur);
+		if ((status = execute_command(ms, cur)) < 0)
+		{
+			get_std(stdfd);
+			execute_error(status);
+		}
 		exit(status);
 	}
 	close_used_fd(ms, cur);
-	return (WEXITSTATUS(status));
+	return (0);
 }

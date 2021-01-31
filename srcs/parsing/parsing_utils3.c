@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/31 18:26:05 by schang            #+#    #+#             */
-/*   Updated: 2021/01/31 18:31:25 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 23:41:46 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,31 @@ int	get_arg_size(char *line)
 		line++;
 	}
 	return (size);
+}
+
+int	sub_cmd(char *line, char **sub, int start)
+{
+	int		i;
+	int		quote;
+
+	i = start;
+	quote = 0;
+	while (line[i])
+	{
+		if (ft_isquote(line[i]))
+		{
+			quote = line[i++];
+			while (line[i])
+				if (line[i++] == quote)
+					break ;
+		}
+		else if (line[i] == ';')
+			break ;
+		else
+			i++;
+	}
+	*sub = ft_substr(line, start, i - start);
+	if (line[i])
+		i++;
+	return (i);
 }

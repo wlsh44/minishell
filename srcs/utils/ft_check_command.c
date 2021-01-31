@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/31 00:03:24 by schang            #+#    #+#             */
-/*   Updated: 2021/01/31 18:45:14 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 21:31:01 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ static int	default_command(const char *cmd, char **path)
 		*path = tmp;
 		return (command_permission_check(st));
 	}
+	free(tmp);
 	return (NO_DIRECTORY);
 }
 
@@ -65,12 +66,14 @@ static int	custom_command(t_minishell *ms, const char *cmd, char **path)
 			if (S_ISDIR(st.st_mode) && (free_and_null(tmp)))
 				continue;
 			*path = tmp;
+			free_double_char(dir);
 			return (command_permission_check(st));
 		}
 		free_and_null(tmp);
 	}
 	if (!dir)
 		return (NO_DIRECTORY);
+	free_double_char(dir);
 	return (WRONG_CMD);
 }
 

@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 21:50:48 by schang            #+#    #+#             */
-/*   Updated: 2021/01/26 20:43:06 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 22:19:43 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,6 @@ int	parsing_bin(t_lstcmd *cmd, char **line, char *name);
 int	parsing_semicolon(t_minishell *ms, char **line);
 
 int	endline_condition_quote(char c);
+int	sub_cmd(char *line, char **sub, int start);
 
 #endif

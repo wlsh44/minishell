@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 21:04:16 by schang            #+#    #+#             */
-/*   Updated: 2021/01/26 21:06:59 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 21:38:21 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,11 @@ int	get_arg_value(char **line, char **arg)
 			if (**line)
 				*(*arg)++ = *(*line)++;
 		}
-		else if (ft_isquote(**line) && (ret = get_arg_quote(line, arg)) < 0)
-			return (ret);
+		else if (ft_isquote(**line))
+		{
+			if ((ret = get_arg_quote(line, arg)) < 0)
+				return (ret);
+		}
 		else
 			*(*arg)++ = *(*line)++;
 	}

@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 20:48:12 by schang            #+#    #+#             */
-/*   Updated: 2021/01/29 20:53:25 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 20:14:57 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,12 @@ int		ft_redirect_input(t_node *cur)
 
 	ret = 0;
 	line = ft_strdup("");
+	if ((ret = ft_check_file2(cur->arg)) < 0)
+		return (ret);
 	fd = open(cur->arg, O_RDONLY);
 	read_line(fd, &line);
 	write(1, line, ft_strlen(line));
 	free(line);
 	close(fd);
-	return (ret);
+	return (0);
 }

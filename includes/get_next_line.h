@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 21:49:43 by schang            #+#    #+#             */
-/*   Updated: 2021/01/28 21:23:22 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 22:49:30 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 6000000
+#  define BUFFER_SIZE 1024
 # endif
 
 # define FD_MAX 1024

@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 20:59:35 by schang            #+#    #+#             */
-/*   Updated: 2021/01/25 22:59:44 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 20:45:57 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	default_sighandler(int code)
 	if (code == SIGINT)
 	{
 		ft_putstr_fd(" \b\b \b\b \b\n", STDOUT_FILENO);
-		ft_putstr_fd("m$ ", STDOUT_FILENO);
+		ft_putstr_fd("minishell$ ", STDOUT_FILENO);
 		g_exit_status = 130;
 	}
 	else if (code == SIGQUIT)

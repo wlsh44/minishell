@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 13:08:54 by schang            #+#    #+#             */
-/*   Updated: 2021/01/31 18:46:31 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 22:43:04 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,10 @@ static int	ft_bin_file(t_minishell *ms, t_node *node)
 
 	if ((ret = ft_check_file(node->name)) > 0)
 	{
-		if (ft_exec_file(ms, node, ft_strdup(node->name)))
+		if ((ret = ft_exec_file(ms, node, ft_strdup(node->name))) > 0)
 			return (1);
+		else
+			return (0);
 	}
 	else
 	{
@@ -49,8 +51,10 @@ static int	ft_bin_command(t_minishell *ms, t_node *node)
 	path = NULL;
 	if ((ret = ft_check_command(ms, node->name, &path)) > 0)
 	{
-		if (ft_exec_command(ms, node, path))
+		if ((ret = ft_exec_command(ms, node, path)) > 0)
 			return (1);
+		else
+			return (0);
 	}
 	else
 	{

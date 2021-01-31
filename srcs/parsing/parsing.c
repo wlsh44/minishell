@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 23:31:09 by schang            #+#    #+#             */
-/*   Updated: 2021/01/31 18:33:13 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 19:11:08 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,12 @@ int	parsing_cmd2(t_minishell *ms, char **line, char *arg)
 
 int	parsing_cmd1(t_minishell *ms, char **line)
 {
-	if (!ft_strncmp(*line, ">", 1))
+	if (!ft_strncmp(*line, ">>", 2))
+		return (parsing_double_redirect(ms->cmd, line));
+	else if (!ft_strncmp(*line, ">", 1))
 		return (parsing_redirect_output(ms->cmd, line));
 	else if (!ft_strncmp(*line, "<", 1))
 		return (parsing_redirect_input(ms->cmd, line));
-	else if (!ft_strncmp(*line, ">>", 2))
-		return (parsing_double_redirect(ms->cmd, line));
 	else if (!ft_strncmp(*line, "|", 1))
 		return (parsing_pipe(ms->cmd, line));
 	else if (!ft_strncmp(*line, ";", 1))

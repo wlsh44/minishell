@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/31 15:50:23 by schang            #+#    #+#             */
-/*   Updated: 2021/01/31 18:29:32 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 19:57:47 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,6 @@ char		**ft_split_path(char *path)
 	if (i > 0 && path[i] == '\0' && cnt == 0)
 		tabs[cnt] = ft_substr(path, 0, i);
 	else if (pos < i)
-		tabs[cnt++] = ft_substr(path, pos, i - pos);
+		tabs[cnt] = ft_substr(path, pos, i - pos);
 	return (tabs);
 }

@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 22:55:57 by schang            #+#    #+#             */
-/*   Updated: 2021/01/26 21:07:42 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 19:04:59 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,13 @@ t_node	*pop(t_lstcmd *cmd)
 
 void	delete_cmd(t_node *cur)
 {
-	printf("%s|\n", cur->name);
 	if (cur->name)
 	{
 		free(cur->name);
 		cur->name = NULL;
 	}
-	printf("%p|\n", cur->arg);
 	if (cur->arg)
 	{
-		printf("in\n");
 		free(cur->arg);
 		cur->arg = NULL;
 	}

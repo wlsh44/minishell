@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 21:00:43 by schang            #+#    #+#             */
-/*   Updated: 2021/01/29 01:25:58 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 23:25:24 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,8 @@ int	get_arg_char_echo(char **line, char *arg)
 				(*line)++;
 			*(arg++) = *(*line)++;
 			if (ft_isspace(**line))
-			{
-				*(arg++) = *(*line)++;
 				while (ft_isspace(**line))
 					(*line)++;
-			}
 		}
 	}
 	*arg = '\0';
@@ -81,6 +78,8 @@ int	parsing_echo(t_lstcmd *cmd, char **line)
 	while (ft_isspace(**line))
 		(*line)++;
 	type = check_echo_option(line) ? TYPE_ECHO_N : TYPE_ECHO;
+	while (ft_isspace(**line))
+		(*line)++;
 	if ((ret = get_arg_echo(line, &arg)) < 0)
 		return (ret);
 	push_back(cmd, type, arg);

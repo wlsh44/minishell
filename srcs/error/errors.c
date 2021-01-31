@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 22:47:42 by schang            #+#    #+#             */
-/*   Updated: 2021/01/30 22:29:21 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 19:16:32 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,10 @@ void	cmd_error(int err)
 void	execute_error(int err)
 {
 	if (err == NOT_VAILD_IDENTIFIER)
+	{
 		write(1, "not a vaild identifier\n", 24);
+		g_exit_status = 1;
+	}
 	else if (err == NO_DIRECTORY)
 	{
 		write(1, "No such file or directory\n", 26);
