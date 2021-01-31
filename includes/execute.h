@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 21:49:12 by schang            #+#    #+#             */
-/*   Updated: 2021/01/25 22:46:38 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 18:05:37 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,8 @@ int	ft_bin(t_minishell *ms, t_node *cur);
 int	ft_redirect_input(t_node *cur);
 int	ft_redirect_output(t_minishell *ms, t_node *cur);
 int	fork_process(t_minishell *ms, t_node *cur);
+
+int	ft_exec_file(t_minishell *ms, t_node *node, char *path);
+int	ft_exec_command(t_minishell *ms, t_node *node, char *path);
 
 #endif

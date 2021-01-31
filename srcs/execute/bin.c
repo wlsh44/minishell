@@ -6,74 +6,75 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/19 13:08:54 by schang            #+#    #+#             */
-/*   Updated: 2021/01/29 00:22:19 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/31 18:09:28 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*get_command(char *name)
+static void	print_shell_error(char *str, int err)
 {
-	char	*str;
 
-	if (!(str = ft_strrchr(name, '/')))
-		return (name);
-	return (str + 1);
+	if (err == WRONG_CMD)
+		shell_cmd_error(str, err);
+	else if (err == PERMISSION_DENIED)
+		shell_exec_error(str, PERMISSION_DENIED);
+	else if (err == NO_DIRECTORY)
+		shell_exec_error(str, NO_DIRECTORY);
+	else if (err == IS_A_DIRECTORY)
+		shell_exec_error(str, IS_A_DIRECTORY);
 }
 
-static void	free_data(char **env, char **args, char *path)
+static int	ft_bin_file(t_minishell *ms, t_node *node)
 {
-	free(path);
-	free_double_char(env);
-	free_double_char(args);
-}
+	int	ret;
 
-int			ft_execute_bin(t_minishell *ms, char *path, char *arg)
-{
-	pid_t	pid;
-	int		status;
-	char	**env_list;
-	char	**args;
-
-	if (!(env_list = get_env_list(ms))
-		|| !(args = ft_bin_args(get_command(path), arg)))
-		return (-1);
-	signal(SIGINT, &bin_parent_sighandler);
-	signal(SIGQUIT, &bin_parent_sighandler);
-	pid = fork();
-	if (pid == 0)
+	if ((ret = ft_check_file(ms, node->name)) > 0)
 	{
-		signal(SIGINT, &bin_child_sighandler);
-		signal(SIGQUIT, &bin_child_sighandler);
-		status = execve(path, args, env_list);
-		free_data(env_list, args, path);
-		exit(status);
+		if (ft_exec_file(ms, node, ft_strdup(node->name)))
+			return (1);
 	}
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status) > 0)
-		g_exit_status = WEXITSTATUS(status);
-	free_data(env_list, args, path);
-	return (g_exit_status);
+	else
+	{
+		print_shell_error(ft_strdup(node->name), ret);
+		return (0);
+	}
+}
+
+static int	ft_bin_command(t_minishell *ms, t_node *node)
+{
+	char	*path;
+	int		ret;
+
+	path = NULL;
+	if ((ret = ft_check_command(ms, node->name, &path)) > 0)
+	{
+		if (ft_exec_command(ms, node, path))
+			return (1);
+	}
+	else
+	{
+		if (!path)
+			path = ft_strdup(node->name);
+		print_shell_error(path, ret);
+		return (0);
+	}
 }
 
 int			ft_bin(t_minishell *ms, t_node *node)
 {
 	char	*path;
 	char	*tmp;
+	int		ret;
 
-	//printf("%d |%s| |%s|\n", node->type, node->name, node->arg);
-	if (ft_file_exists(node->name))
-		return (ft_execute_bin(ms, ft_strdup(node->name), node->arg));
-	tmp = ft_strchr(node->name, '/');
-	path = ft_check_abs_path(ms, node->name);
-	if (!path)
+	if (ms->cmd->head->next->type == TYPE_PIPE)
 	{
-		if (tmp == NULL)
-			cmd_error(WRONG_CMD);
-		else
-			execute_error(NO_DIRECTORY);
-		return (ERR_COMMAND_NOT_FOUND);
+		cmd_error(SYNTAX_ERROR);
+		return (g_exit_status = 2);
 	}
+	tmp = ft_strchr(node->name, '/');
+	if (tmp)
+		return (ft_bin_file(ms, node));
 	else
-		return (ft_execute_bin(ms, path, node->arg));
+		return (ft_bin_command(ms, node));
 }

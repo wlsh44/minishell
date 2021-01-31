@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 23:31:09 by schang            #+#    #+#             */
-/*   Updated: 2021/01/29 01:18:20 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/29 01:34:20 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,17 +83,13 @@ int	parsing(t_minishell *ms)
 	char	*tmp;
 
 	line = parsing_env_val(ms->env, ms->cmd_line);
-	printf("line: %s|\n", line);
 	tmp = line;
 	while (*line && !(ret = 0))
 	{
 		while (ft_isspace(*line))
 			line++;
 		if ((ret = parsing_cmd(ms, &line)) < 0)
-		{
-			printf("ret: %d|\n", ret);
 			break ;
-		}
 		while (ft_isspace(*line))
 			line++;
 	}

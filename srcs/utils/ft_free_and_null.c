@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing_exit.c                                     :+:      :+:    :+:   */
+/*   ft_free_and_null.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/25 23:11:11 by schang            #+#    #+#             */
-/*   Updated: 2021/01/30 18:28:42 by schang           ###   ########.fr       */
+/*   Created: 2021/01/31 17:56:36 by schang            #+#    #+#             */
+/*   Updated: 2021/01/31 18:01:47 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	parsing_exit(t_lstcmd *cmd, char **line)
+int	free_and_null(void *ptr)
 {
-	while (**line && !ft_isseparator(**line))
-		(*line)++;
-	push_back(cmd, TYPE_EXIT, NULL);
+	if (ptr)
+		free(ptr);
+	ptr = NULL;
 	return (0);
 }

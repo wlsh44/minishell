@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:04:48 by schang            #+#    #+#             */
-/*   Updated: 2021/01/29 00:51:36 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/29 21:02:01 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,11 @@ int	ft_cd(t_minishell *ms, t_node *cur)
 {
 	char	path[PATH_MAX];
 
+	getcwd(path, PATH_MAX);
+	update_env(ms->env, ft_strdup("OLDPWD"), ft_strdup(path));
+
 	if (cur->next->type == TYPE_PIPE)
 		return (0);
-	if (cur->next->type == TYPE_REDIRECT_OUTPUT)
-	{
-		getcwd(path, PATH_MAX);
-		ms->oldpath = ft_strdup(path);
-	}
 	if (ft_strcmp(cur->arg, "") == 0 || ft_strcmp(cur->arg, "~") == 0)
 		chdir(get_env_value(ms->env, "HOME"));
 	else
@@ -33,5 +31,8 @@ int	ft_cd(t_minishell *ms, t_node *cur)
 			return (ERR_NO_DIRECTORY);
 		}
 	}
+	getcwd(path, PATH_MAX);
+	update_env(ms->env, ft_strdup("PWD"), ft_strdup(path));
+
 	return (0);
 }

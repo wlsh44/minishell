@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 21:50:03 by schang            #+#    #+#             */
-/*   Updated: 2021/01/26 21:51:34 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/30 12:51:08 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdbool.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
+# include <sys/types.h>
 # include <signal.h>
 # include <errno.h>
 # include <string.h>
@@ -33,6 +34,8 @@
 # include "env.h"
 # include "execute.h"
 
+# define PERMISSION_DENIED -12
+# define IS_A_DIRECTORY -11
 # define HEAD -10
 # define TAIL -9
 # define NOT_VAILD_IDENTIFIER -8
@@ -58,9 +61,6 @@
 # define TYPE_PIPE 14
 # define TYPE_EXIT 15
 # define TYPE_NORMAL 16
-
-# define ERR_COMMAND_NOT_FOUND 127
-# define ERR_NO_DIRECTORY 1
 
 # ifndef PATH_MAX
 #  define PATH_MAX 1024

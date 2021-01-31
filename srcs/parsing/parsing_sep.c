@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 23:12:23 by schang            #+#    #+#             */
-/*   Updated: 2021/01/26 21:06:08 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/29 21:29:53 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int	parsing_redirect_output(t_lstcmd *cmd, char **line)
 	if (ft_strcmp(arg, "") == 0)
 		return (SYNTAX_ERROR);
 	push_back(cmd, TYPE_REDIRECT_OUTPUT, arg);
-	printf("out\n");
 	return (0);
 }
 

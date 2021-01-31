@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 22:45:36 by schang            #+#    #+#             */
-/*   Updated: 2021/01/28 22:07:00 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/30 19:52:07 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,31 @@ int		main(int argc, char *argv[], char *envp[])
 	char		*line;
 	int			ret;
 
-	(void)argc;
-	(void)argv;
+	//(void)argc;
+	//(void)argv;
+
+
 	init_ms(&ms);
 	init_env(&ms, envp);
+
+	if (argc == 3 && ft_strcmp(argv[1], "-c") == 0)
+	{
+		ms.cmd_line = ft_strdup(argv[2]);
+		ret = parsing(&ms);
+		if (ret < 0)
+			cmd_error(ret);
+		else
+		{
+			//show(ms.cmd);
+			if ((ret = execute(&ms)) < 0)
+				execute_error(ret);
+			//printf("out ret: %d\n", ret);
+		}
+		//g_exit_status = ret;
+		clear(ms.cmd);
+		return (g_exit_status);
+	}
+
 	ret = 0;
 	while (1)
 	{
@@ -71,9 +92,10 @@ int		main(int argc, char *argv[], char *envp[])
 			else
 			{
 				show(ms.cmd);
-				if (!(g_exit_status = execute(&ms)))
+				if ((ret = execute(&ms)) < 0)
 					execute_error(ret);
 			}
+			//g_exit_status = ret;
 			clear(ms.cmd);
 			if (line)
 				free(line);

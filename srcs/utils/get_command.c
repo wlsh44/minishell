@@ -1,21 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing_exit.c                                     :+:      :+:    :+:   */
+/*   get_command.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/25 23:11:11 by schang            #+#    #+#             */
-/*   Updated: 2021/01/30 18:28:42 by schang           ###   ########.fr       */
+/*   Created: 2021/01/30 17:39:40 by schang            #+#    #+#             */
+/*   Updated: 2021/01/30 17:40:01 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	parsing_exit(t_lstcmd *cmd, char **line)
+char	*get_command(char *name)
 {
-	while (**line && !ft_isseparator(**line))
-		(*line)++;
-	push_back(cmd, TYPE_EXIT, NULL);
-	return (0);
+	char	*str;
+
+	if (!(str = ft_strrchr(name, '/')))
+		return (name);
+	return (str + 1);
 }

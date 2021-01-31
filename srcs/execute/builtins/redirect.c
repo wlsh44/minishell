@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 20:48:12 by schang            #+#    #+#             */
-/*   Updated: 2021/01/26 20:48:38 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/29 20:53:25 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,17 @@ int		read_line(int fd, char **line)
 	return (0);
 }
 
-void	get_oldpath(t_minishell *ms, t_node *cur)
+void	get_oldpath(t_lstenv *env, t_node *cur)
 {
 	char	*tmp;
+	char	*arg;
 
-	tmp = ms->oldpath;
-	ms->oldpath = ft_strjoin(ms->oldpath, "/");
+	tmp = dup_env_value(env, "OLDPWD", 6);
+	arg = ft_strjoin(tmp, "/");
 	free(tmp);
 	tmp = cur->arg;
-	cur->arg = ft_strjoin(ms->oldpath, cur->arg);
+	cur->arg = ft_strjoin(arg, cur->arg);
+	free(arg);
 	free(tmp);
 }
 
@@ -49,10 +51,7 @@ int		ft_redirect_output(t_minishell *ms, t_node *cur)
 
 	ret = 0;
 	if (cur->prev->type == TYPE_CD)
-	{
-		get_oldpath(ms, cur);
-		free(ms->oldpath);
-	}
+		get_oldpath(ms->env, cur);
 	option = cur->type == TYPE_REDIRECT_OUTPUT ? O_TRUNC : O_APPEND;
 	fd = open(cur->arg, O_CREAT | O_WRONLY | option, 0644);
 	line = ft_strdup("");

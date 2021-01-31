@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 21:34:24 by schang            #+#    #+#             */
-/*   Updated: 2021/01/25 22:55:47 by schang           ###   ########.fr       */
+/*   Updated: 2021/01/29 21:40:56 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char		**ft_bin_args(char *cmd, char *arg)
 		offset = i;
 		while (arg[i] && !ft_isspace(arg[i]))
 			i++;
-		args[cnt] = ft_substr(arg, offset, i);
+		args[cnt] = ft_substr(arg, offset, i - offset);
 		cnt++;
 	}
 	return (args);

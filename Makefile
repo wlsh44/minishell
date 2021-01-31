@@ -6,7 +6,7 @@
 #    By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/27 21:40:59 by schang            #+#    #+#              #
-#    Updated: 2021/01/29 00:19:09 by schang           ###   ########.fr        #
+#    Updated: 2021/01/31 18:04:34 by schang           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,14 +39,19 @@ SRC =	minishell.c \
 		error/errors.c 	\
 		utils/lstcmd.c 	\
 		utils/get_next_line.c \
-		utils/ft_file_exists.c \
 		utils/free_double_char.c \
 		utils/get_env_list.c \
-		utils/ft_check_abs_path.c \
 		utils/ft_bin_args.c \
 		utils/show.c \
 		utils/endline_condition_quote.c \
+		utils/get_command.c \
+		utils/ft_check_file.c \
+		utils/ft_check_command.c \
+		utils/ft_split_path.c \
+		utils/ft_check_permission.c \
+		utils/ft_free_and_null.c \
 		execute/execute.c \
+		execute/execute_bin.c \
 		execute/bin.c \
 		execute/pipe.c \
 		execute/builtins/exit.c \
