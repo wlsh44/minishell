@@ -120,5 +120,5 @@ int	get_last_char(char *line)
 		if (!ft_isspace(line[i++]))
 			last_char = i - 1;
 	}
-	return (*line ? last_char + 1 : last_char);
+	return (last_char ? last_char + 1 : last_char);
 }
