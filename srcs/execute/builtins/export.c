@@ -6,13 +6,13 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:07:39 by schang            #+#    #+#             */
-/*   Updated: 2021/01/31 18:49:20 by schang           ###   ########.fr       */
+/*   Updated: 2021/02/02 22:57:04 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int			export_print_env(t_lstenv *env)
+int		export_print_env(t_lstenv *env)
 {
 	t_env_node	*cur;
 
@@ -34,36 +34,11 @@ int			export_print_env(t_lstenv *env)
 	return (0);
 }
 
-static bool	is_error(bool *flag, char *arg)
-{
-	if (ft_strchr(arg, NOT_VAILD_IDENTIFIER))
-	{
-		if (!*flag)
-		{
-			*flag = true;
-			execute_error(NOT_VAILD_IDENTIFIER);
-		}
-		return (true);
-	}
-	if (ft_strchr(arg, WRONG_QUOTE))
-	{
-		if (!*flag)
-		{
-			*flag = true;
-			execute_error(WRONG_QUOTE);
-		}
-		return (true);
-	}
-	return (false);
-}
-
-int			set_env(t_minishell *ms, char *arg)
+int		set_env(t_minishell *ms, char *arg)
 {
 	char	*ptr;
 	char	*key;
 
-	if (*arg == '=')
-		return (NOT_VAILD_IDENTIFIER);
 	ptr = ft_strchr(arg, '=');
 	if (ptr == NULL)
 	{
@@ -80,25 +55,37 @@ int			set_env(t_minishell *ms, char *arg)
 	return (0);
 }
 
-int			ft_export(t_minishell *ms, t_node *cur)
+void	init_export(t_minishell *ms, char **tmp, int *flag)
 {
-	char	**args;
-	char	**tmp;
-	bool	flag;
-	int		ret;
+	char	*arg;
+	int		rt;
 
-	flag = false;
+	while (**tmp && ft_isspace(**tmp))
+		(*tmp)++;
+	arg = malloc(sizeof(char) * (ft_strlen(*tmp) + 1));
+	if (((rt = get_arg_char_basic(tmp, arg, endline_condition_normal) < 0)
+		|| ((rt = check_key(arg)) < 0)) && !(*flag))
+	{
+		*flag = true;
+		execute_error(rt);
+	}
+	else
+		set_env(ms, arg);
+	free(arg);
+}
+
+int		ft_export(t_minishell *ms, t_node *cur)
+{
+	char	*tmp;
+	int		cnt;
+	int		flag;
+
 	if (ft_strcmp(cur->arg, "") == 0)
 		return (export_print_env(ms->env));
-	args = ft_split(cur->arg, ' ');
-	tmp = args;
-	while (*args)
-	{
-		if (!is_error(&flag, *args))
-			if ((ret = set_env(ms, *args)) < 0 && !flag)
-				execute_error(ret);
-		args++;
-	}
-	free_double_char(tmp);
+	flag = false;
+	tmp = cur->arg;
+	cnt = count_args(cur->arg);
+	while (cnt--)
+		init_export(ms, &tmp, &flag);
 	return (0);
 }

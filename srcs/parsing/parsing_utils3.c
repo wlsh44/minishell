@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/31 18:26:05 by schang            #+#    #+#             */
-/*   Updated: 2021/01/31 23:41:46 by schang           ###   ########.fr       */
+/*   Updated: 2021/02/02 15:52:28 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,26 @@ int	is_key_char(char c)
 
 int	get_arg_size(char *line)
 {
-	int	size;
+	int	i;
+	int	quote;
 
-	size = 0;
 	while (ft_isspace(*line))
 		line++;
-	while (*line && !ft_isseparator(*line) && !ft_isspace(*line))
+	i = 0;
+	quote = 0;
+	while (!ft_endline_condition(line[i]))
 	{
-		size++;
-		line++;
+		if (ft_isquote(line[i]))
+		{
+			quote = line[i++];
+			while (line[i])
+				if (line[i++] == quote)
+					break ;
+		}
+		else
+			i++;
 	}
-	return (size);
+	return (i);
 }
 
 int	sub_cmd(char *line, char **sub, int start)

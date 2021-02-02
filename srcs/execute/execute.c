@@ -6,12 +6,11 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:12:02 by schang            #+#    #+#             */
-/*   Updated: 2021/01/31 22:41:41 by schang           ###   ########.fr       */
+/*   Updated: 2021/02/02 23:07:30 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>
 
 int		execute_command(t_minishell *ms, t_node *cur)
 {
@@ -65,29 +64,43 @@ void	close_fd(t_minishell *ms)
 	}
 }
 
+bool	is_fork_type(t_node *cur)
+{
+	if (cur->next->type == TYPE_REDIRECT_OUTPUT
+		|| cur->next->type == TYPE_REDIRECT_INPUT
+		|| cur->next->type == TYPE_DOUBLE_REDIRECT
+		|| cur->next->type == TYPE_PIPE
+		|| cur->type == TYPE_REDIRECT_OUTPUT
+		|| cur->type == TYPE_REDIRECT_INPUT
+		|| cur->type == TYPE_DOUBLE_REDIRECT
+		|| cur->prev->type == TYPE_PIPE
+		|| cur->prev->type == TYPE_REDIRECT_INPUT)
+		return (true);
+	return (false);
+}
+
 int		execute(t_minishell *ms)
 {
 	t_node	*cur;
 	int		ret;
+	char	*tmp;
 
 	sort_cmd(ms->cmd);
 	cur = ms->cmd->head->next;
 	while (cur != ms->cmd->tail && !(ret = 0))
 	{
-		if (cur->next->type == TYPE_REDIRECT_OUTPUT
-			|| cur->next->type == TYPE_REDIRECT_INPUT
-			|| cur->next->type == TYPE_DOUBLE_REDIRECT
-			|| cur->next->type == TYPE_PIPE
-			|| cur->type == TYPE_REDIRECT_OUTPUT
-			|| cur->type == TYPE_REDIRECT_INPUT
-			|| cur->type == TYPE_DOUBLE_REDIRECT
-			|| cur->prev->type == TYPE_PIPE
-			|| cur->prev->type == TYPE_REDIRECT_INPUT)
+		if (is_fork_type(cur))
 			ret = fork_process(ms, cur);
 		else if (!(cur->type == TYPE_REDIRECT_INPUT || cur->type == TYPE_PIPE))
+		{
+			if (cur->arg)
+			{
+				tmp = cur->arg;
+				cur->arg = parsing_env_val(ms->env, cur->arg);
+				free(tmp);
+			}
 			ret = execute_command(ms, cur);
-		if (ret != 0)
-			break ;
+		}
 		cur = cur->next;
 	}
 	close_fd(ms);

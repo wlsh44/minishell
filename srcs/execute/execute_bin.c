@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/31 18:03:29 by schang            #+#    #+#             */
-/*   Updated: 2021/01/31 22:40:25 by schang           ###   ########.fr       */
+/*   Updated: 2021/02/02 11:53:39 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int			ft_exec_file(t_minishell *ms, t_node *node, char *path)
 	char	**args;
 
 	if (!(env = get_env_list(ms))
-		|| !(args = ft_bin_args(node->name, node->arg)))
+		|| !(args = ft_bin_args(ms, node->name, node->arg)))
 		return (-1);
 	signal(SIGINT, &bin_parent_sighandler);
 	signal(SIGQUIT, &bin_parent_sighandler);
@@ -55,7 +55,7 @@ int			ft_exec_command(t_minishell *ms, t_node *node, char *path)
 	char	**args;
 
 	if (!(env = get_env_list(ms))
-		|| !(args = ft_bin_args(node->name, node->arg)))
+		|| !(args = ft_bin_args(ms, node->name, node->arg)))
 		return (-1);
 	signal(SIGINT, &bin_parent_sighandler);
 	signal(SIGQUIT, &bin_parent_sighandler);

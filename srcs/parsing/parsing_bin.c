@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 23:11:54 by schang            #+#    #+#             */
-/*   Updated: 2021/02/01 00:40:57 by schang           ###   ########.fr       */
+/*   Updated: 2021/02/02 23:08:19 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ bool	check_quote(char *arg)
 	return (true);
 }
 
-int	parsing_bin(t_lstcmd *cmd, char **line, char *name)
+int		parsing_bin(t_lstcmd *cmd, char **line, char *name)
 {
 	int		size;
 	char	*arg;

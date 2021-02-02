@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 21:49:12 by schang            #+#    #+#             */
-/*   Updated: 2021/01/31 18:48:38 by schang           ###   ########.fr       */
+/*   Updated: 2021/02/02 22:47:25 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@ void	swap_cmd(t_node *cur);
 void	concat_node(t_node *cur, t_node *node);
 void	change_cmd_to_arg(t_lstcmd *cmd);
 void	sort_cmd(t_lstcmd *cmd);
+
+void	skip_quote(char *arg, int *i);
+int		count_args(char *arg);
+int		check_key_quote(char *arg, int *i);
+int		check_key(char *arg);
 
 int		ft_exit(t_minishell *ms);
 int		ft_echo(t_node *node);

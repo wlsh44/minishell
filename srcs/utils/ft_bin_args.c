@@ -6,90 +6,48 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 21:34:24 by schang            #+#    #+#             */
-/*   Updated: 2021/02/01 01:15:29 by schang           ###   ########.fr       */
+/*   Updated: 2021/02/02 22:47:22 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	skip_quote(char *arg, int *i)
-{
-	int	quote;
-	int	o;
-
-	quote = 0;
-	o = *i;
-	if (ft_isquote(arg[o]))
-	{
-		quote = arg[o++];
-		while (arg[o])
-		{
-			if (arg[o++] == quote)
-			{
-				*i = o;
-				break ;
-			}
-		}
-	}
-	*i = o;
-}
-
-static int	count_args(char *arg)
-{
-	int	i;
-	int	cnt;
-	int	offset;
-
-	i = 0;
-	cnt = 0;
-	offset = 0;
-	while (arg[i])
-	{
-		if (ft_isquote(arg[i]))
-			skip_quote(arg, &i);
-		else if (ft_isspace(arg[i]))
-		{
-			cnt++;
-			while (arg[i] && ft_isspace(arg[i]))
-				i++;
-			offset = i;
-		}
-		else
-			i++;
-	}
-	if (offset < i)
-		cnt++;
-	return (cnt);
-}
-
-static char	**get_args(char *arg, char **args, int count)
+static char	**get_args(t_minishell *ms, char *arg, char **args, int count)
 {
 	int		i;
+	char	*tmp;
+	char	*env;
 
 	i = 1;
 	while (i <= count)
 	{
-		//int	get_arg_char_basic(char **line, char *arg, int (*endline_cond)(char c)
 		while (*arg && ft_isspace(*arg))
 			arg++;
 		args[i] = malloc(sizeof(char) * (ft_strlen(arg) + 1));
-		get_arg_char_basic(&arg, args[i], ft_endline_condition);
+		get_arg_char_basic(&arg, args[i], endline_condition_normal);
+		if (ft_strncmp(args[i], "~", 1) == 0)
+		{
+			tmp = args[i];
+			env = dup_env_value(ms->env, "HOME", 4);
+			args[i] = ft_strjoin(env, tmp + 1);
+			free_and_null(tmp);
+			free_and_null(env);
+		}
 		i++;
 	}
 	return (NULL);
 }
 
-char		**ft_bin_args(char *cmd, char *arg)
+char		**ft_bin_args(t_minishell *ms, char *cmd, char *arg)
 {
 	int		cnt;
 	char	**args;
 
 	args = NULL;
 	cnt = count_args(arg);
-	printf("cnt: %d\n", cnt);
 	if (!(args = ft_calloc(sizeof(char *), cnt + 2)))
 		return (NULL);
 	args[0] = ft_strdup(cmd);
-	get_args(arg, args, cnt);
+	get_args(ms, arg, args, cnt);
 	return (args);
 }

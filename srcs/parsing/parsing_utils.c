@@ -6,26 +6,33 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 21:03:18 by schang            #+#    #+#             */
-/*   Updated: 2021/01/31 18:32:46 by schang           ###   ########.fr       */
+/*   Updated: 2021/02/02 22:57:36 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	get_arg_num(char *line)
+void	skip_space(char *line, int *i)
+{
+	while (line[*i] && ft_isspace(line[*i]))
+		(*i)++;
+}
+
+int		get_arg_num(char *line)
 {
 	int	arg_num;
 	int	flag;
+	int	i;
 
 	flag = 0;
 	arg_num = 0;
-	while (*line && !ft_isseparator(*line))
+	i = 0;
+	while (i < get_last_char(line))
 	{
-		if (ft_isspace(*line))
+		if (ft_isspace(line[i]))
 		{
 			flag = 0;
-			while (ft_isspace(*line))
-				line++;
+			skip_space(line, &i);
 		}
 		else
 		{
@@ -34,13 +41,13 @@ int	get_arg_num(char *line)
 				flag = 1;
 				arg_num++;
 			}
-			line++;
+			i++;
 		}
 	}
 	return (arg_num);
 }
 
-int	get_arg_char_basic(char **line, char *arg, int (*endline_cond)(char c))
+int		get_arg_char_basic(char **line, char *arg, int (*endline_cond)(char c))
 {
 	int	ret;
 
@@ -65,7 +72,7 @@ int	get_arg_char_basic(char **line, char *arg, int (*endline_cond)(char c))
 	return (ret);
 }
 
-int	get_arg_char(char **line, char *arg)
+int		get_arg_char(char **line, char *arg)
 {
 	char	ret;
 
@@ -78,7 +85,7 @@ int	get_arg_char(char **line, char *arg)
 	return (0);
 }
 
-int	get_arg(char **line, char **arg)
+int		get_arg(char **line, char **arg)
 {
 	int		size;
 	int		ret;
@@ -93,32 +100,4 @@ int	get_arg(char **line, char **arg)
 	}
 	*arg = tmp;
 	return (ret);
-}
-
-int	get_last_char(char *line)
-{
-	int i;
-	int quote;
-	int last_char;
-
-	i = 0;
-	last_char = 0;
-	while (!endline_condition_quote(line[i]))
-	{
-		if (ft_isquote(line[i]))
-		{
-			quote = line[i];
-			while (line[++i])
-			{
-				if ((quote == '\'' || line[i - 1] != '\\') && line[i] == quote)
-				{
-					quote = 0;
-					break ;
-				}
-			}
-		}
-		if (!ft_isspace(line[i++]))
-			last_char = i - 1;
-	}
-	return (last_char ? last_char + 1 : last_char);
 }

@@ -6,7 +6,7 @@
 #    By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/27 21:40:59 by schang            #+#    #+#              #
-#    Updated: 2021/01/31 21:06:50 by schang           ###   ########.fr        #
+#    Updated: 2021/02/02 22:48:11 by schang           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ SRC =	minishell.c \
  		parsing/parsing_utils.c	\
  		parsing/parsing_utils2.c	\
  		parsing/parsing_utils3.c	\
+ 		parsing/parsing_utils4.c	\
  		parsing/parsing_bin.c	\
 		error/errors.c 	\
 		utils/lstcmd.c 	\
@@ -53,7 +54,8 @@ SRC =	minishell.c \
 		utils/ft_free_and_null.c \
 		execute/execute.c \
 		execute/execute_bin.c \
-		execute/exe_utils.c \
+		execute/execute_utils1.c \
+		execute/execute_utils2.c \
 		execute/bin.c \
 		execute/pipe.c \
 		execute/builtins/exit.c \

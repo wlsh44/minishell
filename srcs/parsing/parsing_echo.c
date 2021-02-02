@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 21:00:43 by schang            #+#    #+#             */
-/*   Updated: 2021/01/31 23:25:24 by schang           ###   ########.fr       */
+/*   Updated: 2021/02/02 14:49:51 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 
 int	check_echo_option(char **line)
 {
+	char	*tmp;
+
+	tmp = *line;
 	while (ft_isspace(**line))
 		(*line)++;
-	if (**line == '-' && (*line)[1] == 'n' && ft_isspace((*line)[2]))
-	{
-		(*line) += 2;
+	if (valid_echo_option(line))
 		return (1);
-	}
+	*line = tmp;
 	return (0);
 }
 
@@ -28,7 +29,6 @@ int	get_arg_char_echo(char **line, char *arg)
 {
 	int	ret;
 
-	ret = 0;
 	while (!endline_condition_quote(**line))
 	{
 		if (ft_isquote(**line))
@@ -40,14 +40,18 @@ int	get_arg_char_echo(char **line, char *arg)
 		{
 			if (**line == '\\')
 				(*line)++;
-			*(arg++) = *(*line)++;
 			if (ft_isspace(**line))
+			{
+				*(arg++) = *(*line)++;
 				while (ft_isspace(**line))
 					(*line)++;
+			}
+			else
+				*(arg++) = *(*line)++;
 		}
 	}
 	*arg = '\0';
-	return (ret);
+	return (0);
 }
 
 int	get_arg_echo(char **line, char **arg)

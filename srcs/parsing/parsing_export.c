@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 21:04:16 by schang            #+#    #+#             */
-/*   Updated: 2021/01/31 21:38:21 by schang           ###   ########.fr       */
+/*   Updated: 2021/02/02 22:52:19 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,24 +66,16 @@ int	get_arg_export(char **line, char *arg)
 
 int	parsing_export(t_lstcmd *cmd, char **line)
 {
-	int		arg_num;
 	char	*arg;
-	char	*tmp;
-	char	*save;
+	int		size;
 
 	while (ft_isspace(**line))
 		(*line)++;
-	arg_num = get_arg_num(*line);
-	arg = ft_strdup("");
-	while (arg_num--)
-	{
-		tmp = malloc(sizeof(char) * (get_arg_size(*line) + 2));
-		get_arg_export(line, tmp);
-		save = arg;
-		arg = ft_strjoin(arg, tmp);
-		free(save);
-		free(tmp);
-	}
+	size = get_last_char(*line);
+	arg = ft_substr(*line, 0, size);
+	(*line) += size;
+	while (ft_isspace(**line))
+		(*line)++;
 	push_back(cmd, TYPE_EXPORT, arg);
 	return (0);
 }

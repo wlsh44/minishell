@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 20:54:34 by schang            #+#    #+#             */
-/*   Updated: 2021/01/31 21:07:00 by schang           ###   ########.fr       */
+/*   Updated: 2021/02/02 16:13:58 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,12 @@ void	show(t_lstcmd *cmd);
 void	delete_cmd(t_node *cur);
 void	free_double_char(char **str);
 char	**get_env_list(t_minishell *ms);
-char	**ft_bin_args(char *cmd, char *arg);
+char	**ft_bin_args(t_minishell *ms, char *cmd, char *arg);
 
 int		ft_check_abs_path(t_minishell *ms, char *name, char **path);
 
 int		endline_condition_quote(char c);
+int		endline_condition_normal(char c);
 char	*get_command(char *name);
 int		ft_execute_bin(t_minishell *ms, t_node *node, char *path);
 int		ft_check_command(t_minishell *ms, const char *cmd, char **path);
