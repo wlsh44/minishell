@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 14:49:06 by schang            #+#    #+#             */
-/*   Updated: 2021/02/02 22:57:56 by schang           ###   ########.fr       */
+/*   Updated: 2021/02/03 00:56:41 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,16 +78,20 @@ int			get_last_char(char *line)
 		{
 			quote = line[i];
 			while (line[++i])
-			{
 				if ((quote == '\'' || line[i - 1] != '\\') && line[i] == quote)
-				{
-					quote = 0;
 					break ;
-				}
+			if (!line[i])
+			{
+				last_char = i - 1;
+				break ;
 			}
 		}
 		if (!ft_isspace(line[i++]))
+		{
+			if (line[i] && line[i - 1] == '\\')
+				i++;
 			last_char = i - 1;
+		}
 	}
 	return (last_char ? last_char + 1 : last_char);
 }

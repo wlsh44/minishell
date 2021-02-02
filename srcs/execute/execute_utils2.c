@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 22:46:07 by schang            #+#    #+#             */
-/*   Updated: 2021/02/02 22:57:16 by schang           ###   ########.fr       */
+/*   Updated: 2021/02/03 00:18:34 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int		count_args(char *arg)
 	{
 		if (ft_isquote(arg[i]))
 			skip_quote(arg, &i);
-		else if (ft_isspace(arg[i]))
+		else if (i != 0 && arg[i - 1] != '\\' && ft_isspace(arg[i]))
 		{
 			cnt++;
 			while (arg[i] && ft_isspace(arg[i]))
@@ -62,46 +62,15 @@ int		count_args(char *arg)
 	return (cnt);
 }
 
-int		check_key_quote(char *arg, int *i)
-{
-	int	quote;
-
-	quote = arg[*i];
-	while (arg[*i] && !(ft_isseparator(arg[*i])
-		|| ft_isspace(arg[*i]) || arg[*i] == '='))
-	{
-		if (ft_isalpha(arg[*i]) || ft_isdigit(arg[*i]) || arg[*i] == '_')
-			(*i)++;
-		else if (arg[*i] == quote)
-		{
-			quote = 0;
-			(*i)++;
-			break ;
-		}
-		else
-			return (NOT_VAILD_IDENTIFIER);
-	}
-	if (quote)
-		return (WRONG_QUOTE);
-	return (0);
-}
-
 int		check_key(char *arg)
 {
 	int	i;
 
 	i = 0;
-	while (is_key_char(arg[i]) || arg[i] == '\\')
-	{
-		if (arg[i] == '\\')
-		{
-			i++;
-			if (!is_key_char(arg[i]))
-				return (NOT_VAILD_IDENTIFIER);
-		}
-		else
-			i++;
-	}
+	if (!arg[i] || arg[i] == '=' || ft_isdigit(arg[i]))
+		return (NOT_VAILD_IDENTIFIER);
+	while (is_key_char(arg[i]))
+		i++;
 	if (arg[i] && arg[i] != '=')
 		return (NOT_VAILD_IDENTIFIER);
 	return (0);

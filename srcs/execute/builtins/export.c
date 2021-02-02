@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:07:39 by schang            #+#    #+#             */
-/*   Updated: 2021/02/02 22:57:04 by schang           ###   ########.fr       */
+/*   Updated: 2021/02/03 00:16:49 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int		set_env(t_minishell *ms, char *arg)
 	return (0);
 }
 
-void	init_export(t_minishell *ms, char **tmp, int *flag)
+void	init_export(t_minishell *ms, char **tmp)
 {
 	char	*arg;
 	int		rt;
@@ -63,12 +63,9 @@ void	init_export(t_minishell *ms, char **tmp, int *flag)
 	while (**tmp && ft_isspace(**tmp))
 		(*tmp)++;
 	arg = malloc(sizeof(char) * (ft_strlen(*tmp) + 1));
-	if (((rt = get_arg_char_basic(tmp, arg, endline_condition_normal) < 0)
-		|| ((rt = check_key(arg)) < 0)) && !(*flag))
-	{
-		*flag = true;
+	if ((rt = get_arg_char_basic(tmp, arg, endline_condition_normal) < 0)
+		|| ((rt = check_key(arg)) < 0))
 		execute_error(rt);
-	}
 	else
 		set_env(ms, arg);
 	free(arg);
@@ -78,14 +75,12 @@ int		ft_export(t_minishell *ms, t_node *cur)
 {
 	char	*tmp;
 	int		cnt;
-	int		flag;
 
 	if (ft_strcmp(cur->arg, "") == 0)
 		return (export_print_env(ms->env));
-	flag = false;
 	tmp = cur->arg;
 	cnt = count_args(cur->arg);
 	while (cnt--)
-		init_export(ms, &tmp, &flag);
+		init_export(ms, &tmp);
 	return (0);
 }

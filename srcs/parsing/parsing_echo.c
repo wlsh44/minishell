@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 21:00:43 by schang            #+#    #+#             */
-/*   Updated: 2021/02/02 14:49:51 by schang           ###   ########.fr       */
+/*   Updated: 2021/02/03 00:57:40 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,21 @@
 
 int	check_echo_option(char **line)
 {
-	char	*tmp;
+	int		flag;
 
-	tmp = *line;
-	while (ft_isspace(**line))
-		(*line)++;
-	if (valid_echo_option(line))
-		return (1);
-	*line = tmp;
-	return (0);
+	flag = false;
+	while (1)
+	{
+		while (ft_isspace(**line))
+			(*line)++;
+		if (valid_echo_option(line))
+			flag = true;
+		else if (flag)
+			return (true);
+		else
+			return (false);
+	}
+	return (false);
 }
 
 int	get_arg_char_echo(char **line, char *arg)
@@ -58,17 +64,19 @@ int	get_arg_echo(char **line, char **arg)
 {
 	int		size;
 	int		ret;
+	int		len;
 	char	*tmp;
 
 	size = get_last_char(*line);
+	len = ft_isspace((*line)[size]) ? -1 : 0;
 	tmp = ft_calloc(sizeof(char), size + 2);
 	if ((ret = get_arg_char_echo(line, tmp)) < 0)
 	{
 		free(tmp);
 		return (ret);
 	}
-	if (ft_strlen(tmp) && ft_isspace(tmp[ft_strlen(tmp) - 1]))
-		tmp[ft_strlen(tmp) - 1] = 0;
+	len += ft_strlen(tmp);
+	tmp[len] = 0;
 	*arg = tmp;
 	return (ret);
 }

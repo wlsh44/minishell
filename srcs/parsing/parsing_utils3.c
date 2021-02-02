@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/31 18:26:05 by schang            #+#    #+#             */
-/*   Updated: 2021/02/02 15:52:28 by schang           ###   ########.fr       */
+/*   Updated: 2021/02/02 23:43:52 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	sub_cmd(char *line, char **sub, int start)
 				if (line[i++] == quote)
 					break ;
 		}
-		else if (line[i] == ';')
+		else if (i != 0 && line[i - 1] != '\\' && line[i] == ';')
 			break ;
 		else
 			i++;
