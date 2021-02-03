@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 21:00:43 by schang            #+#    #+#             */
-/*   Updated: 2021/02/03 00:57:40 by schang           ###   ########.fr       */
+/*   Updated: 2021/02/03 22:42:09 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,19 +81,25 @@ int	get_arg_echo(char **line, char **arg)
 	return (ret);
 }
 
-int	parsing_echo(t_lstcmd *cmd, char **line)
+int	parsing_echo(t_minishell *ms, char **line)
 {
 	int		ret;
 	int		type;
 	char	*arg;
+	char	*tmp;
+	char	*tmp2;
 
 	while (ft_isspace(**line))
 		(*line)++;
-	type = check_echo_option(line) ? TYPE_ECHO_N : TYPE_ECHO;
-	while (ft_isspace(**line))
-		(*line)++;
-	if ((ret = get_arg_echo(line, &arg)) < 0)
+	tmp = parsing_env_val(ms->env, *line);
+	tmp2 = tmp;
+	(*line) += get_last_char(*line);
+	type = check_echo_option(&tmp) ? TYPE_ECHO_N : TYPE_ECHO;
+	while (ft_isspace(*tmp))
+		tmp++;
+	if ((ret = get_arg_echo(&tmp, &arg)) < 0)
 		return (ret);
-	push_back(cmd, type, arg);
+	free(tmp2);
+	push_back(ms->cmd, type, arg);
 	return (0);
 }

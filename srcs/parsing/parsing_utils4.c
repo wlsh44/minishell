@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 14:49:06 by schang            #+#    #+#             */
-/*   Updated: 2021/02/03 00:56:41 by schang           ###   ########.fr       */
+/*   Updated: 2021/02/03 22:51:55 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,34 +64,41 @@ int			valid_echo_option(char **line)
 	return (0);
 }
 
+void		quote_control(char *line, int *i, int *last_char)
+{
+	int	quote;
+
+	quote = line[*i];
+	while (line[++(*i)])
+		if ((quote == '\'' || line[*i - 1] != '\\') && line[*i] == quote)
+			return ;
+	if (!line[*i])
+	{
+		*last_char = *i - 1;
+		return ;
+	}
+}
+
 int			get_last_char(char *line)
 {
-	int i;
-	int quote;
-	int last_char;
+	int	i;
+	int	last_char;
+	int	flag;
 
 	i = 0;
 	last_char = 0;
+	flag = false;
 	while (!endline_condition_quote(line[i]))
 	{
 		if (ft_isquote(line[i]))
-		{
-			quote = line[i];
-			while (line[++i])
-				if ((quote == '\'' || line[i - 1] != '\\') && line[i] == quote)
-					break ;
-			if (!line[i])
-			{
-				last_char = i - 1;
-				break ;
-			}
-		}
+			quote_control(line, &i, &last_char);
 		if (!ft_isspace(line[i++]))
 		{
 			if (line[i] && line[i - 1] == '\\')
 				i++;
 			last_char = i - 1;
+			flag = true;
 		}
 	}
-	return (last_char ? last_char + 1 : last_char);
+	return (flag ? last_char + 1 : last_char);
 }

@@ -6,53 +6,36 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:10:48 by schang            #+#    #+#             */
-/*   Updated: 2021/01/31 18:49:03 by schang           ###   ########.fr       */
+/*   Updated: 2021/02/03 22:47:58 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static bool	is_error(bool *flag, char *arg)
+void	init_unset(t_minishell *ms, char **tmp)
 {
-	if (ft_strchr(arg, NOT_VAILD_IDENTIFIER))
-	{
-		if (!*flag)
-		{
-			*flag = true;
-			execute_error(NOT_VAILD_IDENTIFIER);
-		}
-		return (true);
-	}
-	if (ft_strchr(arg, WRONG_QUOTE))
-	{
-		if (!*flag)
-		{
-			*flag = true;
-			execute_error(WRONG_QUOTE);
-		}
-		return (true);
-	}
-	return (false);
+	char	*arg;
+	int		rt;
+
+	while (**tmp && ft_isspace(**tmp))
+		(*tmp)++;
+	arg = malloc(sizeof(char) * (ft_strlen(*tmp) + 1));
+	if ((rt = get_arg_char_basic(tmp, arg, endline_condition_normal) < 0)
+		|| ((rt = check_key(arg)) < 0))
+		execute_error(rt);
+	else
+		delete_env(ms->env, arg);
+	free(arg);
 }
 
-int			ft_unset(t_minishell *ms, t_node *cur)
+int		ft_unset(t_minishell *ms, t_node *cur)
 {
-	char	**args;
-	char	**tmp;
-	bool	flag;
+	char	*tmp;
+	int		cnt;
 
-	flag = false;
-	args = ft_split(cur->arg, ' ');
-	tmp = args;
-	while (*args)
-	{
-		if (!is_error(&flag, *args))
-		{
-			if (get_env_value(ms->env, *args) != NULL)
-				delete_env(ms->env, *args);
-		}
-		args++;
-	}
-	free_double_char(tmp);
+	tmp = cur->arg;
+	cnt = count_args(cur->arg);
+	while (cnt--)
+		init_unset(ms, &tmp);
 	return (0);
 }

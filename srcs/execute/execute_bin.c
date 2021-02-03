@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/31 18:03:29 by schang            #+#    #+#             */
-/*   Updated: 2021/02/02 11:53:39 by schang           ###   ########.fr       */
+/*   Updated: 2021/02/03 22:47:36 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@ static void	free_data(char **env, char **args, char *path)
 	free(path);
 	free_double_char(env);
 	free_double_char(args);
+}
+
+static void	set_exit_status(int status)
+{
+	g_exit_status = status;
 }
 
 int			ft_exec_file(t_minishell *ms, t_node *node, char *path)
@@ -69,8 +74,8 @@ int			ft_exec_command(t_minishell *ms, t_node *node, char *path)
 		exit(EXIT_SUCCESS);
 	}
 	waitpid(pid, &status, 0);
+	if (WIFEXITED(status) > 0)
+		set_exit_status(WEXITSTATUS(status));
 	free_data(env, args, path);
-	if (status == 256 && errno == 2)
-		return (NO_DIRECTORY);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 22:45:36 by schang            #+#    #+#             */
-/*   Updated: 2021/02/02 23:10:56 by schang           ###   ########.fr       */
+/*   Updated: 2021/02/03 22:54:32 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,14 +98,6 @@ int		main(int argc, char *argv[], char *envp[])
 	(void)argv;
 	init_ms(&ms);
 	init_env(&ms, envp);
-
-	if (argc == 3 && ft_strncmp("-c", argv[1], 2) == 0)
-	{
-		line = ft_strdup(argv[2]);
-		minishell(&ms, line);
-		return (g_exit_status);
-	}
-
 	while (!(ret = 0))
 	{
 		ft_putstr_fd("minishell$ ", STDOUT_FILENO);

@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 21:50:48 by schang            #+#    #+#             */
-/*   Updated: 2021/02/02 14:57:03 by schang           ###   ########.fr       */
+/*   Updated: 2021/02/03 22:28:33 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	get_arg_export(char **line, char *arg);
 int	get_arg_unset(char **line, char *arg);
 int	get_arg_echo(char **line, char **arg);
 int	parsing_cd(t_lstcmd *cmd, char **line);
-int	parsing_echo(t_lstcmd *cmd, char **line);
+int	parsing_echo(t_minishell *ms, char **line);
 int	parsing_pwd(t_lstcmd *cmd, char **line);
 int	parsing_env(t_lstcmd *cmd, char **line);
 int	parsing_export(t_lstcmd *cmd, char **line);
