@@ -6,7 +6,7 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:04:48 by schang            #+#    #+#             */
-/*   Updated: 2021/02/03 23:14:21 by schang           ###   ########.fr       */
+/*   Updated: 2021/02/03 23:34:17 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,12 @@ int	ft_cd(t_minishell *ms, t_node *cur)
 	else
 	{
 		if (ft_strncmp(cur->arg, "~", 1) == 0)
+		{
 			env = get_env_value(ms->env, "HOME");
-		tmp = cur->arg;
-		cur->arg = ft_strjoin(env, tmp + 1);
-		free(tmp);
+			tmp = cur->arg;
+			cur->arg = ft_strjoin(env, tmp + 1);
+			free(tmp);
+		}
 		if (chdir(cur->arg) < 0)
 		{
 			execute_error(NO_DIRECTORY);
