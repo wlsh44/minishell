@@ -6,17 +6,30 @@
 /*   By: schang <schang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/15 21:04:48 by schang            #+#    #+#             */
-/*   Updated: 2021/02/03 23:34:17 by schang           ###   ########.fr       */
+/*   Updated: 2021/02/03 23:42:20 by schang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_cd(t_minishell *ms, t_node *cur)
+char	*convert_home(t_minishell *ms, char *arg)
 {
-	char	path[PATH_MAX];
 	char	*tmp;
 	char	*env;
+
+	if (ft_strncmp(arg, "~", 1) == 0)
+	{
+		env = get_env_value(ms->env, "HOME");
+		tmp = arg;
+		arg = ft_strjoin(env, tmp + 1);
+		free(tmp);
+	}
+	return (arg);
+}
+
+int		ft_cd(t_minishell *ms, t_node *cur)
+{
+	char	path[PATH_MAX];
 
 	getcwd(path, PATH_MAX);
 	update_env(ms->env, ft_strdup("OLDPWD"), ft_strdup(path));
@@ -24,13 +37,7 @@ int	ft_cd(t_minishell *ms, t_node *cur)
 		chdir(get_env_value(ms->env, "HOME"));
 	else
 	{
-		if (ft_strncmp(cur->arg, "~", 1) == 0)
-		{
-			env = get_env_value(ms->env, "HOME");
-			tmp = cur->arg;
-			cur->arg = ft_strjoin(env, tmp + 1);
-			free(tmp);
-		}
+		cur->arg = convert_home(ms, cur->arg);
 		if (chdir(cur->arg) < 0)
 		{
 			execute_error(NO_DIRECTORY);
